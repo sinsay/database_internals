@@ -1,0 +1,297 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Column- Versus Row-Oriented DBMS - Database Internals</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="part_1_storage_engine.html"><strong aria-hidden="true">1.</strong> Storage Engine</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_1_introduction_and_overview.html"><strong aria-hidden="true">1.1.</strong> Introduction and Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_2_dbms_architecture.html"><strong aria-hidden="true">1.1.1.</strong> DBMS Architecture</a></li><li class="chapter-item expanded "><a href="chapter_1_3_memory_disk_base_dbms.html"><strong aria-hidden="true">1.1.2.</strong> Memory- Versus Disk-Based DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_4_column_row_oriented.html" class="active"><strong aria-hidden="true">1.1.3.</strong> Column- Versus Row-Oriented DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_5_data_files_and_index_files.html"><strong aria-hidden="true">1.1.4.</strong> Data Files and Index Files</a></li><li class="chapter-item expanded "><a href="chapter_1_6_buffering_immutability_and_ordering.html"><strong aria-hidden="true">1.1.5.</strong> Buffering Immutability and Ordering</a></li><li class="chapter-item expanded "><a href="chapter_1_7_summary.html"><strong aria-hidden="true">1.1.6.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2_1_btree_basic.html"><strong aria-hidden="true">1.2.</strong> BTree Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_2_2_binary_search_trees.html"><strong aria-hidden="true">1.2.1.</strong> Binary Search Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_3_disk_based_structures.html"><strong aria-hidden="true">1.2.2.</strong> Disk Based Structures</a></li><li class="chapter-item expanded "><a href="chapter_2_4_ubiquitous_btrees.html"><strong aria-hidden="true">1.2.3.</strong> Ubiquitous B-Trees</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3_1_file_format.html"><strong aria-hidden="true">1.3.</strong> File Format</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Database Internals</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2><a class="header" href="#column--versus-row-oriented-dbms" id="column--versus-row-oriented-dbms">Column- Versus Row-Oriented DBMS</a></h2>
+<p>大部分的数据库都会存储一系列的数据记录，这些记录集合称为 <code>Table</code> 表 ，表则由  <code>Column</code> 列跟 <code>Row</code> 行组成。<code>Field</code> 字段是行与列的交集: 他是单一的某些类型的值。属于同一个列的字段往往具有相同的数据类型，比如如果我们定义了一个表用来保存用户记录，那其中的用户名都会是同一个类型并且属于同一个列。属于同一条记录的值的集合则形成一行 <em>(往往会使用某个 key 来作为这行的标识符)</em>。</p>
+<p>有一种用来对数据库进行分类的方式是看数据是如何在磁盘中存储的：基于行的或基于列的。数据表能够按照<strong>水平</strong> <em>(将属于同一行的数据保存到一起)</em> 或者<strong>垂直</strong> <em>(将属于同一列的数据保存到一起)</em> 的方式进行分区。Figure 1-2 描述了其中的区别： (a) 展示了按照列进行分区的数据，(b) 展示了按照行进行分区的数据。</p>
+<img src="./chapter_1_4_column_row_oriented.assets/image-20210219105353161.png" style="width: 85%">
+<p>面向行组织数据的数据库有: MySQL、PostgreSQL，以及大部分的传统关系型数据库都是。有两个开源的先驱列式数据库，分别是 MongoDB 跟 C-Store <em>(C-Store 的前任是名为 Vertica 的开源数据库)</em></p>
+<h3><a class="header" href="#row-oriented-data-layout" id="row-oriented-data-layout">Row-Oriented Data Layout</a></h3>
+<p>面向行的数据库管理系统使用记录或行来存储数据。他们的布局非常接近表格式的形式，即每一行都拥有相同的字段集合。比如面向行的数据库可以高效的存储用户实体信息，包括名字、出生日期跟电话号码:</p>
+<table><thead><tr><th>ID</th><th>Name</th><th>Birth Date</th><th>Phone Number</th></tr></thead><tbody>
+<tr><td>10</td><td>John</td><td>01 Aug 1981</td><td>+1 111 222 333</td></tr>
+<tr><td>20</td><td>Sam</td><td>14 Sep 1988</td><td>+1 555 888 999</td></tr>
+<tr><td>30</td><td>Keith</td><td>07 Jan 1984</td><td>+1 333 444 555</td></tr>
+</tbody></table>
+<p>使用多个列组成一行 <em>(如这里的名字、出生日期跟电话号码)</em> 并用一个键来作为唯一标识符 <em>(在这里是一个自增的数字)</em> 的方式能够适应许多的场景。如用户记录中的所有字段常常会被同时读取；创建记录时 <em>(如用户填写了注册表单)</em> 能够将所有信息同时写入存储引擎；同时每个字段也能够单独的进行修改。</p>
+<p>面向行的存储在大部分按照行来访问数据的场景中都非常有用，而存储整行的数据也同时提高了其空间局部性。</p>
+<p>因为数据在如磁盘这类持久化介质上一般都是以 <code>Block</code> 块的方式来访问的 <em>(换种说法就是，在磁盘中最小的访问单元就是块)</em>，一个单独的块可以包含记录的所有列。这对需要访问整个用户记录的场景是非常高效的，但对于获取多个记录当只需要其中某些列的查询 <em>(比如只需要获取电话号码)</em> 来说代价确实比较大的，因为那些不需要的字段也会同时被读取。</p>
+<h3><a class="header" href="#column-oriented-data-layout" id="column-oriented-data-layout">Column-Oriented Data Layout</a></h3>
+<p>面向列的数据库管理系统将数据以垂直的方式 <em>(比如以列的方式)</em> 而不是整行的方式进行存储。在这里同一个列的数据会以连续的形式存储在磁盘上 <em>(对比与上一个例子中以行的方式连续保存)</em>。举例来说，我们存储股票市场的价格，则所有的价格都会存储到一起。不同列的的值会被分割到不同的文件或者是文件段，这让引擎能够高效的根据列来进行查询，因为他们可以单独的获取，而不是读取整行数据然后再丢弃那些查询不需要的列。</p>
+<p>面向列的存储对于一些分析及数据聚合的场景非常有效，比如查找趋势，计算平均值等等。处理复杂的聚合常常是从具有非常多列的记录中挑取其中少数的列 <em>(如本例中的价格)</em> 进行集中的处理。</p>
+<p>作为一种逻辑上的表达方式，股票市场的价格信息依然可以用表的形式来呈现</p>
+<table><thead><tr><th>ID</th><th>Symbol</th><th>Date</th><th>Price</th></tr></thead><tbody>
+<tr><td>1</td><td>DOW</td><td>08 Aug 2018</td><td>24,314.65</td></tr>
+<tr><td>2</td><td>DOW</td><td>09 Aug 2018</td><td>24.136.16</td></tr>
+<tr><td>3</td><td>S&amp;P</td><td>08 Aug 2018</td><td>2,414.45</td></tr>
+<tr><td>4</td><td>S&amp;P</td><td>09 Aug 2018</td><td>2,232.32</td></tr>
+</tbody></table>
+<p>然而物理上的列式存储布局看起来将是完全不一样的，每个相同列的值会保存在更靠近的位置</p>
+<ul>
+<li>Symbol: 1:DOW;             2:DOW;             3:S&amp;P;               4:S&amp;P</li>
+<li>Date:     1:08 Aug 2018; 2:09 Aug 2018; 3:08 Aug 2018; 4:09 Aug 2018</li>
+<li>Price:     1:24,313.655;     2:24,136.16;      3:2,414.45;        4:2,232.32</li>
+</ul>
+<p>为了能够重组数据元祖 <em>(可能对联表、过滤跟多行的聚合分析有用)</em> ，我们需要在列上维护一些元信息用来定位哪些数据跟哪些列是关联的。如果我们直接将信息记录到值上，那每个值都需要保存这个键，这将导致该信息的大量重复并引起存储空间的剧增。有些列式存储引擎使用了隐含的标识符 <em>(virtual IDs)</em> 来作为替代，还使用了值在文件中的位置 <em>(也可称为偏移量)</em> 来定位关联的数据。</p>
+<p>在最近的几年里，因为有更多需要在庞大数据集上运行复杂查询的需求浮现，我们看到了许多新的列式文件存储结构，如 <a href="https://databass.dev/links/112">Apache Parquet,</a> <a href="https://databass.dev/links/113">Apache ORC</a>, <a href="https://databass.dev/links/114">RCFile</a>，同时也有一些新的列式存储引擎如 <a href="https://databass.dev/links/115">Apache Kudu</a>, <a href="https://databass.dev/links/116">ClickHouse</a> 等。</p>
+<h3><a class="header" href="#distinctions-and-optimizations" id="distinctions-and-optimizations">Distinctions and Optimizations</a></h3>
+<p>说列式存储跟行式存储之间的差别只是存储方式不同是不够的，选择数据的布局只是其中的步骤之一，我们还需要其他的各种方式去优化列式存储引擎。</p>
+<p>一次读取同一列的多个值能显著的提高缓存的命中率以及提高计算的效率。在现代的 CPU 中，使用向量化指令能够在一条 CPU 指令中处理多条数据。</p>
+<p>将相同类型的数据存储在一起 <em>(比如数字跟数字、字符串跟字符串一起)</em> 让数据的压缩率得到了更好的提升。我们还可以根据数据类型来选择不同的压缩算法，这样能根据不同的场景来得到最好的压缩效果。</p>
+<p>想知道何时使用面向列还是面向行的存储引擎，你需要了解具体的对数据的访问模式。如果读取数据时是已记录的方式来消费的 <em>(即每次都需要读取大部分的列)</em> 并且具体的工作负载是由单个查询跟区间扫描组成的，那面向行的方式能够得到更好的效果。如果扫描需要跳过许多的行，或者分析更多的只需要一小部分的列，那就更值得去考虑使用面向列的方式。</p>
+<h3><a class="header" href="#wide-column-stores" id="wide-column-stores">Wide Column Stores</a></h3>
+<p>面向列的数据库很容易跟 <code>Wide Column Store</code> 宽列存储混淆，比如 BigTable 或 HBase，他们的数据呈现为一个多重维度的字典，许多的列使用 <code>Column families</code> 列族来进行了分组，在每个列族里面的列最终会使用基于行的方式来进行存储。这样的布局对那些使用键值或键值序列进行检索的数据是非常有效的。</p>
+<p>Bigtable 论文中的官方例子是 WebTable。WebTable 以时间戳分版本存储了目标网页的内容快照以及其他的一些属性。这些网页使用反转的 URL 链接作为标识符，并且所有的属性 <em>(如页面内容、锚点、页面的引用等)</em> 都按照页面获取的时间戳建立了不同的快照版本。用简单一点的方式来描述就是，如 Figure 1-3 所示</p>
+<pre><code class="language-text">{
+  &quot;com.cnn.www&quot;: {
+    contents: {
+      t6: html: &quot;&lt;html&gt;...&quot;
+      t5: html: &quot;&lt;html&gt;...&quot;
+      t3: html: &quot;&lt;html&gt;...&quot;
+    },
+    anchor: {
+    	t9: cnnsi.com: &quot;CNN&quot;
+    	t8: my.look.ca: &quot;CNN.com&quot;
+    }
+  }
+  &quot;com.example.www&quot;: {
+  	contents: {
+  		t5: html: &quot;&lt;html&gt;...&quot;
+  	},
+  	anchor: {}
+  }
+}
+</code></pre>
+<p>数据按照多个维度存储到一个具有层次结构的有序的字典内：我们能够通过网页的反转 URL 来定位到特定页面的内容或者锚点的指定时间戳版本。每一行都使用称之为 <em>row key</em> 的键建立了索引。相关联的列则按照列族进行了分组 -- 如示例中的 contents 跟 anchor 列族，因此不同列族的数据会在磁盘上分开存储。每一个列族内的列都以称为 <code>column key</code> 的键作为标识符，他们是以列族名跟列名 <em>(如示例中的 html, cnnsi.com, my.look.ca)</em> 所组合而成。列族会按照时间戳存储数据的多个版本。这个布局允许我们快速的定位高层级的实体 <em>(如本例中的网页)</em> 跟他们的参数信息 <em>(如网页中的内容及其他页面的链接的各个版本)</em>。</p>
+<p>对理解 <code>Wide Column Store</code> 的各个概念是非常有用的，他们的物理布局相对其他的有很大不同。对列族的一个略为粗略的结构图在 Figure 1-4 展示：每个列族被独立的进行存储，但同一个列族内的数据是集中存储的。</p>
+<img src="./chapter_1_4_column_row_oriented.assets/image-20210219173935889.png" style="witdh: 80%" >
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="chapter_1_3_memory_disk_base_dbms.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="chapter_1_5_data_files_and_index_files.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="chapter_1_3_memory_disk_base_dbms.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="chapter_1_5_data_files_and_index_files.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

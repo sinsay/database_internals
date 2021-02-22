@@ -1,0 +1,250 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Memory- Versus Disk-Based DBMS - Database Internals</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="part_1_storage_engine.html"><strong aria-hidden="true">1.</strong> Storage Engine</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_1_introduction_and_overview.html"><strong aria-hidden="true">1.1.</strong> Introduction and Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_2_dbms_architecture.html"><strong aria-hidden="true">1.1.1.</strong> DBMS Architecture</a></li><li class="chapter-item expanded "><a href="chapter_1_3_memory_disk_base_dbms.html" class="active"><strong aria-hidden="true">1.1.2.</strong> Memory- Versus Disk-Based DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_4_column_row_oriented.html"><strong aria-hidden="true">1.1.3.</strong> Column- Versus Row-Oriented DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_5_data_files_and_index_files.html"><strong aria-hidden="true">1.1.4.</strong> Data Files and Index Files</a></li><li class="chapter-item expanded "><a href="chapter_1_6_buffering_immutability_and_ordering.html"><strong aria-hidden="true">1.1.5.</strong> Buffering Immutability and Ordering</a></li><li class="chapter-item expanded "><a href="chapter_1_7_summary.html"><strong aria-hidden="true">1.1.6.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2_1_btree_basic.html"><strong aria-hidden="true">1.2.</strong> BTree Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_2_2_binary_search_trees.html"><strong aria-hidden="true">1.2.1.</strong> Binary Search Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_3_disk_based_structures.html"><strong aria-hidden="true">1.2.2.</strong> Disk Based Structures</a></li><li class="chapter-item expanded "><a href="chapter_2_4_ubiquitous_btrees.html"><strong aria-hidden="true">1.2.3.</strong> Ubiquitous B-Trees</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3_1_file_format.html"><strong aria-hidden="true">1.3.</strong> File Format</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Database Internals</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2><a class="header" href="#memory---versus-disk-based-dbms" id="memory---versus-disk-based-dbms">Memory - Versus Disk-Based DBMS</a></h2>
+<p>数据库系统将数据存储在内存以及磁盘中，<code>In-memory database management systems</code> 内存式数据库管理系统 <em>(有时也称为主存式数据库管理系统)</em> 主要将数据存储于内存中，然后使用磁盘来作为恢复及日志记录的支持。<code>Disk-based</code> 基于磁盘的数据库管理系统则将大部分的数据保存在磁盘中，然后使用内存来缓存磁盘中的及一些临时性的数据。两种类型的数据库都会使用磁盘来作为重要的扩展，只是内存性数据库只会将数据存储在内存中。</p>
+<p>内存的访问速度相较于对磁盘的访问速度，至今仍然要快出几个数量级。因此使用内存作为主要的存储介质是非常有吸引力的，并且随着内存价格的下降这样做具有了更高的经济可行性。然而，内存的价格相对于类似 SSD 跟 HDD 这些持久化介质来说仍然是比较高昂的。</p>
+<p>内存数据库系统跟基于磁盘的数据库不仅仅是其主要的存储介质有所不同，还包括了如实现的数据结构、数据组织跟具体的优化技术等等区别。</p>
+<p>数据库使用内存作为主要存储截止主要是为了性能、相对较低的访问开销及粒度。而且对内存的操作相对于磁盘也是简易了许多。操作系统所抽象的内存管理机制允许我们自如的控制对任意内存大小进行分配跟释放。在磁盘中，我们需要手动的去管理数据间的引用，序列化的格式，被释放的内存跟碎片等问题。</p>
+<p>内存数据库数据增长的主要的限制因素是内存的不稳定性 <em>(换句话说就是较弱的可靠性)</em> 以及花费的成本。因为内存中的数据是非持久化的，所以软件的错误、崩溃、硬件的失效或是电源的切断都会导致数据丢失。当然也有许多办法来确保可靠性，比如提供不会中断的电源跟有备用电池的内存，但这又会导致额外的硬件资源跟操作要求。在实际实践中，这些都不会发生，主要还是归因于磁盘更容易进行管理以及拥有更低廉的价格。</p>
+<p>但随着高可用跟更流行的 <code>Non-Volatile Memory</code> <em>(NVM)</em> 的发展，这个情形似乎会发生转变。NVM 存储能够减少或是消除 <em>(依赖一些其他的技术)</em> 读写延迟间的不对称性，提供更高的读写性能，以及允许使用内存寻址的方式来访问。</p>
+<h3><a class="header" href="#durability-in-memory-based-stores" id="durability-in-memory-based-stores">Durability in Memory-Based Stores</a></h3>
+<p>内存数据库系统使用磁盘进行备份来提供可靠性跟防止数据的丢失。有一些数据库则选择只将数据存储在内存中，并不做任何可靠性的保证，但是这类的数据库我们并不会在本书内进行讨论。</p>
+<p>在可以确保操作完成之前，会先将其写入到顺序的日志文件中，我们将会在 <code>Recovery</code> 章节中来讨论 <code>Write-ahead Log</code> 预写日志。为了防止在数据库启动或是崩溃后需要回放所有的操作日志，内存数据库会管理一份数据备份。这份数据备份会以有序的基于磁盘的数据结构进行管理，并且对这个数据结构的操作一般都是异步的 <em>(是与客户端请求分离的)</em> 批量提交，用来减少 I/O 操作。在需要的时候，数据库的内容就可以从这个备份跟日志进行恢复了。 </p>
+<p>日志的记录通常会批量的应用到备份数据上，在日志处理完之后，备份数据就成了数据库某个时刻的快照，这时在这个时刻之前的日志就可以被丢弃了。这个操作称作 <code>checkpointing</code> 检查点。他能够减少恢复的时间，让数据库通过日志保持在足够新的状态，以便客户端无需在更新备份数据时被堵塞。</p>
+<blockquote>
+<p>不能说内存数据库等同于具有巨大页面缓存的磁盘数据库。尽管页面会被缓存在内存中，但序列化格式、数据的布局都会增加磁盘数据库的开销，这些开销无法跟内存存储中所达到的优化程度做对比。</p>
+</blockquote>
+<p>基于磁盘的数据库使用了特殊的为磁盘访问做了优化的存储数据结构。在内存中，可以对指针快速的进行跟踪，而且内存的随机访问要远远比磁盘的随机访问要快，基于磁盘的存储数据结构通常会使用较宽并且较低的树结构，因为基于内存的实现可以从一个很大的池中获取所需的数据结构并做出各种优化，但这些在基于磁盘的实现中基本上是不可能做到的。同样的，在磁盘上处理可变长度的数据需要特别注意，而在内存中他可能只是从指针中获取一个值。</p>
+<p>在某些场景中，确认整个数据集是否能够放进内存中是有意义的。有些数据集受真实世界的限制可能只有少量 KB 的数据跟数据条目的限制。比如学校中的学生记录、大企业中的客户记录或在线商城的存货量。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="chapter_1_2_dbms_architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="chapter_1_4_column_row_oriented.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="chapter_1_2_dbms_architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="chapter_1_4_column_row_oriented.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

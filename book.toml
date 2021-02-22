@@ -1,0 +1,5 @@
+[book]
+authors = ["sinsay"]
+multilingual = false
+src = "src"
+title = "Database Internals"

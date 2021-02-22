@@ -1,0 +1,287 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Data Files and Index Files - Database Internals</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="part_1_storage_engine.html"><strong aria-hidden="true">1.</strong> Storage Engine</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_1_introduction_and_overview.html"><strong aria-hidden="true">1.1.</strong> Introduction and Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_2_dbms_architecture.html"><strong aria-hidden="true">1.1.1.</strong> DBMS Architecture</a></li><li class="chapter-item expanded "><a href="chapter_1_3_memory_disk_base_dbms.html"><strong aria-hidden="true">1.1.2.</strong> Memory- Versus Disk-Based DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_4_column_row_oriented.html"><strong aria-hidden="true">1.1.3.</strong> Column- Versus Row-Oriented DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_5_data_files_and_index_files.html" class="active"><strong aria-hidden="true">1.1.4.</strong> Data Files and Index Files</a></li><li class="chapter-item expanded "><a href="chapter_1_6_buffering_immutability_and_ordering.html"><strong aria-hidden="true">1.1.5.</strong> Buffering Immutability and Ordering</a></li><li class="chapter-item expanded "><a href="chapter_1_7_summary.html"><strong aria-hidden="true">1.1.6.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2_1_btree_basic.html"><strong aria-hidden="true">1.2.</strong> BTree Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_2_2_binary_search_trees.html"><strong aria-hidden="true">1.2.1.</strong> Binary Search Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_3_disk_based_structures.html"><strong aria-hidden="true">1.2.2.</strong> Disk Based Structures</a></li><li class="chapter-item expanded "><a href="chapter_2_4_ubiquitous_btrees.html"><strong aria-hidden="true">1.2.3.</strong> Ubiquitous B-Trees</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3_1_file_format.html"><strong aria-hidden="true">1.3.</strong> File Format</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Database Internals</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2><a class="header" href="#data-files-and-index-files" id="data-files-and-index-files">Data Files and Index Files</a></h2>
+<p>数据库系统的主要目标就是能够存储数据然后在需要的时候能够快速的进行读取。但数据应该如何组织呢？为什么我们需要使用数据库管理系统而不是直接管理一大堆的文件？文件要如何组织才能高效的使用呢？</p>
+<p>数据库确实使用文件来存储我们的数据，但他并不是直接使用了文件系统的目录跟文件的结构来定位数据记录，他实现了自定义的文件存储格式来组织文件。在扁平文件上使用自定义文件格式来组织的主要原因有：</p>
+<ul>
+<li>
+<p>Storage efficiency 高效存储</p>
+<p>文件的组织最小化了存储每条数据记录的开销</p>
+</li>
+<li>
+<p>Access efficiency 高效访问</p>
+<p>能够在最小化的步骤中快速定位所需的数据记录</p>
+</li>
+<li>
+<p>Update efficiency 高效更新</p>
+<p>对记录进行更新时，能够最小化对磁盘数据的修改</p>
+</li>
+</ul>
+<p>数据库系统以表的形式存储数据记录，表则是以字段来组成，一般来说每个表都会以独立的文件来表示。表中的每条记录都能够以 <code>search key</code> 来进行定位。为了定位到某条记录，数据库系统使用了索引：一种辅助性的数据结构，他帮助数据库系统能够在不需要对整个表进行扫描的前提下高效的定位数据。索引使用了表字段的子集进行构建，并以对应的自己作为该记录的新的标识符。</p>
+<p>一般来说数据库系统会把数据文件跟索引文件区分开：数据文件存储具体的数据记录，索引文件则存储记录的元数据并使用该元数据来从数据文件中定位数据。一般来说索引文件都会比数据文件要小。文件会以页来进行分区，而页的尺寸一般会跟磁盘的块大小对应。页一般会被组织为一系列的记录或是一系列的分槽页。</p>
+<p>新的数据记录 <em>(比如新插入的数据)</em> 跟对现有记录的更新会被表现为一系列的键值对，大部分现代的存储系统并不会明确的删除数据，相反，他们使用 <code>deleteion markers</code> 删除标识 <em>(或称为 tombstones)</em> 作为删除的元数据，例如是一个 Key 或是一个时间戳。那些由删除或更新被标记的记录所占用的空间会在垃圾回收时进行回收，比如读取其对应的页，将仍然存活的记录写入到新的位置，并且丢弃掉已经删除的那些。</p>
+<h3><a class="header" href="#data-files" id="data-files">Data Files</a></h3>
+<p>数据文件 <em>(有时也称为 Primary files 主文件)</em> 能以 <em>Index-organized tables</em> <em>(索引组织表 IOT)</em> 或 <code>heap-organized tables</code> <em>(堆文件 heap files)</em> 或 <code>hash-organized tables</code> <em>(哈希文件 hashed files)</em> 的方式实现。</p>
+<p>存储在堆文件的记录不需要遵从某些特定的顺序，在大部分情况下他们按照写入的顺序来排序。使用这种方式在有新页面添加进来时无须花费额外的工作或进行文件重组。堆文件需要额外的索引数据结构来定位到已存储的数据记录，以此实现检索功能。</p>
+<p>对于哈希文件，数据记录会存储到桶中，而数据记录的标识符则作为 Key 由哈希函数计算后确认该记录对应的哈希桶。在同一个桶中的数据记录可以按照 Key 来进行排序以提高同一桶中的查找速度。</p>
+<p>索引组织表将数据存储在索引上，因为数据记录是以 Key 的顺序存储的，对索引组织表进行区间扫描可以实现为顺序扫描其该表的内容。</p>
+<p>当数据记录是存储在独立的文件中时，索引文件将保存数据实体，从而唯一的对数据进行标识并且包含足够的信息用来定位记录在数据文件的位置。比如，我们可以保存数据文件的偏移量 <em>(有时也称为 row locators 行定位符)</em> 或在使用哈希文件时保存桶的 ID，或在使用索引组织表时保存完整的数据实体。</p>
+<h3><a class="header" href="#index-files" id="index-files">Index Files</a></h3>
+<p>索引是一种用来对存储在磁盘中的数据进行组织并提供高效读取操作的数据结构。索引文件以特定的数据结构通过 Key 定位到数据记录在数据文件中的位置 <em>(如果使用的是堆文件)</em> 或是主键 <em>(如果使用的是索引组织表)</em> 存储的位置。</p>
+<p>对应到主文件 <em>(数据文件)</em> 的索引成为主索引，然而在大部分的场景中我们都可以假定主索引都是通过 <code>Primary key</code> 主键或是由其他一些键所组成的主键来构建。其他的索引则称为 <code>secondary</code> 二级索引。</p>
+<p>二级索引可以直接指向对应的数据记录，也可以只是存储其对应的主键。指向数据记录的指针可以存储堆文件或是索引组织表的偏移量。多个二级索引可以指向同一条数据记录，也允许同一个数据记录在不同的二级索引中使用不同的字段作为标识符。主索引文件为每条唯一记录保存了唯一的搜索键，二级索引则允许多条数据记录使用同一个搜索键。</p>
+<p>如果数据记录的顺序跟搜索键的顺序是一致的，则称该索引为 <code>clustered</code> 聚集索引 <em>(也广泛的使用 clustering)</em>。聚集的数据记录通常会保存在同一个文件或者是保障了键的顺序的聚集文件中。如果数据存储在独立的文件中，并且数据记录的顺序跟键的顺序不是一致的，则称索引为非聚集的 <em>(也会使用 unclustered)</em>。</p>
+<p>Figure 1-5 展示了这两种区别</p>
+<ul>
+<li>a) 两种索引方式在二级索引中引用数据的方式不同</li>
+<li>b) 二级索引使用一级索引来间接的引用数据</li>
+</ul>
+<img src="./chapter_1_5_data_files_and_index_files.assets/image-20210220013928564.png" style="width: 85%" title="figure 1-5" >
+<blockquote>
+<p>索引组织表在索引中存储数据，并且是定义为聚集的。主索引绝大部分情况下都是聚集的。二级索引在定义上是非聚集的，他们提供了用非主键的键来快速访问数据的功能。聚集索引可以是索引组织表也可以是索引跟数据文件分离的形式。</p>
+</blockquote>
+<p>大部分的数据库系统都有固定的主键，他可以是用来唯一标识数据记录的列的集合。当主键没定义时，存储引擎会创建一个隐含的主键 <em>(比如 MySQL 的 InnoDB 会自动添加一个自增的列并自动递增该字段的值)</em>。</p>
+<p>这个技术在许多不同的数据库系统中都使用了：关系型数据库包括 MySQL 跟 PostgreSQL，基于 Dynamo 的 NoSQL 存储如 Apache Cassandra 跟 Riak，文档型的存储则有 MongoDB。还有其他未提到的名字，但他们中的大部分都是使用了这个技术。</p>
+<h3><a class="header" href="#primary-index-as-an-indirection" id="primary-index-as-an-indirection">Primary Index as an Indirection</a></h3>
+<p>在数据库社区中，对选择文件偏移量还是主键索引作为对数据记录的引用存在不同的意见。</p>
+<p>两种做法各有其优点跟缺点，但最好还是需要在他们的完整实现上进行讨论。如果直接引用数据本身，我们可以减少对磁盘的读取，但在需要付出更多的代价来处理数据的更新或是重新分配的情形。使用间接引用主索引的方式允许我们无需为数据的更新付出额外的代价，但却会带来额外的读取操作。</p>
+<p>更新索引在工作负载中绝大部分是读取操作时是是可行的，但这个方式并不适用于有多个索引且存在大量写的工作负载。为了减少数据更新的成本，有些实现使用主键来代替偏移量作为间接层。比如 MySQL 的 InnoDB 使用主索引并执行了两次查询：第一次在二级索引中进行，第二次则在主索引中进行。相对于在二级索引中存储偏移量的做法，这增加了对主索引进行读取的开销。</p>
+<p>Figure 1-6 展示了两种方式的区别</p>
+<ul>
+<li>a) 两种索引直接从二级索引引用数据条目</li>
+<li>b) 二级索引需要使用主索引间接的定位数据实体</li>
+</ul>
+<img src="./chapter_1_5_data_files_and_index_files.assets/image-20210220031346358.png" style="witdh: 85%">
+<p>还有另外一种混合使用数据文件偏移量跟主键的方式。首先，需要检查文件的偏移量是否有效，如果偏移量失效了则需要付出额外的开销到使用主键到主索引查询，最后在找到新的偏移量时去更新二级索引。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="chapter_1_4_column_row_oriented.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="chapter_1_6_buffering_immutability_and_ordering.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="chapter_1_4_column_row_oriented.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="chapter_1_6_buffering_immutability_and_ordering.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

@@ -1,0 +1,696 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Database Internals</title>
+        
+        <meta name="robots" content="noindex" />
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="part_1_storage_engine.html"><strong aria-hidden="true">1.</strong> Storage Engine</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_1_introduction_and_overview.html"><strong aria-hidden="true">1.1.</strong> Introduction and Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_2_dbms_architecture.html"><strong aria-hidden="true">1.1.1.</strong> DBMS Architecture</a></li><li class="chapter-item expanded "><a href="chapter_1_3_memory_disk_base_dbms.html"><strong aria-hidden="true">1.1.2.</strong> Memory- Versus Disk-Based DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_4_column_row_oriented.html"><strong aria-hidden="true">1.1.3.</strong> Column- Versus Row-Oriented DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_5_data_files_and_index_files.html"><strong aria-hidden="true">1.1.4.</strong> Data Files and Index Files</a></li><li class="chapter-item expanded "><a href="chapter_1_6_buffering_immutability_and_ordering.html"><strong aria-hidden="true">1.1.5.</strong> Buffering Immutability and Ordering</a></li><li class="chapter-item expanded "><a href="chapter_1_7_summary.html"><strong aria-hidden="true">1.1.6.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2_1_btree_basic.html"><strong aria-hidden="true">1.2.</strong> BTree Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_2_2_binary_search_trees.html"><strong aria-hidden="true">1.2.1.</strong> Binary Search Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_3_disk_based_structures.html"><strong aria-hidden="true">1.2.2.</strong> Disk Based Structures</a></li><li class="chapter-item expanded "><a href="chapter_2_4_ubiquitous_btrees.html"><strong aria-hidden="true">1.2.3.</strong> Ubiquitous B-Trees</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3_1_file_format.html"><strong aria-hidden="true">1.3.</strong> File Format</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Database Internals</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#part-1" id="part-1">Part 1</a></h1>
+<h2><a class="header" href="#storage-engine-存储引擎" id="storage-engine-存储引擎">Storage Engine 存储引擎</a></h2>
+<p>数据库管理系统的的主要工作是可靠的将数据进行存储，并在需要时提供给用户使用。我们使用数据库作为主要的数据来源，帮助我们在应用的各个模块间共享数据。我们倾向于使用数据库，而不是每次创建新应用时都尝试新的方法来存储、获取跟管理数据。这样我们就能够将精力集中在应用的逻辑而不是底层设施上了。</p>
+<p>因为 <strong>数据库管理系统</strong> <em>(DBMS)</em> 这个词所表达的含义已经越来越复杂了，在本书中我们将使用更简洁的名词，<strong>数据库系统跟数据库</strong> 来表达跟他一样的概念。</p>
+<p>数据库是个多部件的系统，他由多个不同的组件组成：包括传输层接收请求，查询处理器确认查询最有效的实现方式，执行引擎处理所有的操作，以及存储数据的存储引擎。</p>
+<p>数据库管理系统使用存储引擎来存储、查询以及管理内存或磁盘中的数据，他被设计来持久化每个服务节点的内存中的数据。为了让数据库能够响应各种复杂的查询，存储引擎提供了许多细粒度的简洁的 API 接口，让用户能够创建、更新、删除跟获取数据记录。因此数据库管理系统基于存储引擎来构建，提供了结构定义、查询语言、索引、事务及其他各种有用的特性。</p>
+<p>为了灵活性，键跟值并没没预定的格式，而是都被看待为严格的字节序列。因此那些排序或表示的语义都在更高层级的子系统中定义。比如可以使用 <code>int32</code> <em>(32-bit integer)</em> 作为一个表的键，然后其他的都是 <code>ascii</code> 值，而从存储引擎的角度来看，这些键都只是需要序列化的条目而已。</p>
+<p>存储引擎如 <code>BerkeleyDB</code> 、<code>LevelDB</code> 及他们的衍生数据库如 <code>RocksDB</code>、<code>LMDB</code> 及他们的衍生数据库如 <code>libmbx</code> 、<code>Sophia</code>、<code>HaloDB</code>，都作为一些独立的存储引擎插件被使用。使用插件化的存储引擎让数据库的管理员在能够管理数据库能够从现有的一些存储引擎中做选择，并考虑其他子系统的状况。</p>
+<p>同时，数据库系统中清晰分离的组件机制给了每个人机会去选择自己的存储引擎，比如从用例中选择合适的存储引擎，比如 <code>MySQL</code> 这个最流行的数据库管理系统，拥有数种存储引擎，其中包括了 <code>InnoDB</code> 、<code>MyISAM</code> 及 <code>RocksDB</code> ，<code>MongoDB</code> 则允许我们从 <code>WiredTiger</code>、内存是的或已弃用的 <code>MMAPv1</code> 等存储引擎。</p>
+<h3><a class="header" href="#comparing-databases" id="comparing-databases">Comparing Databases</a></h3>
+<p>对数据库系统的挑选可能是因为一系列的因果选择。如果所挑选的数据库可能会因为性能不够好、一致性问题或一些操作上的挑战，那最好是能在开发阶段就发现这些问题，因为迁移到另一种数据库系统可能并不容易。在某些情况下，可能还会导致需要对应用的代码进行大量的修改。</p>
+<p>每个数据库系统都有他的优点及缺点，为了减少迁移可能造成的风险，你最好先花费一些时间来调研数据库的各项能力是否能够满足所需要构建的应用。</p>
+<p>一般来说我们会使用数据库的基本组件来对他们进行各个范围的比较 <em>(比如使用了哪种存储引擎，数据是如何分片、复制跟分布的等等)</em>，他们的排位 (如其在一些咨询公司如 <strong>ThoughtWorks</strong> 或者一些数据库比较的站点如 <strong>DB-Engine</strong>、<strong>Database of Database</strong> 上的 流行程度)，或是他们实现所用的编程语言 <em>(C++、Java 或 Go 等)</em> 都能够导致无效或过早的抉择。这些因素都只能用在较高层次上的比较，或是用来做一些粗略的选择，比如从 HBase 跟 SQlite 上做选择，因此对数据库的功能或其内在实现进行一些粗略的了解，可能都比上面的那些比较方式来得更加有用。</p>
+<p>每一个比较方式都应该从一个定义清晰的目标开始，因为就算是一些轻微的偏向性都可能会导致所作的选择全盘失效。如果你在寻找一个匹配你现在正在进行的工作负载量 <em>(或计划中)</em>，你能做的最好的事情就是在不同的数据库系统中模拟你所需具体的负载量，确认具体的性能指标对你以及比较的结果都是非常重要的。有些问题，特别是像性能或是扩展性上的只会在一段时间或是数据量不断增长后出现。为了能够发现这些潜在的问题，最好的方法就是有一个能够长时间运行的并尽可能模拟真实产品运行场景的测试环境。</p>
+<p>模拟真实环境的负载不知能够让你了解到数据库的运行状况，还能够帮助你学习到如何操作、调试及发现相关社区的友好及帮助的氛围。数据库的选择常常都是由这些因素组成的，而性能往往最后不是那最重要的因素：数据库最终能够提供一个较慢的处理性能，总好过完全不可用。</p>
+<p>为了比较数据库，了解现在以及将来所需要使用具体的用例是非常有帮助的，比如：</p>
+<ul>
+<li>数据结构及记录的数据量</li>
+<li>客户端的数量</li>
+<li>查询的类型及访问的模式</li>
+<li>读取与写入之间的比例</li>
+<li>以上这些信息可能会改变的是哪些</li>
+</ul>
+<p>了解了上述的这些变量能够帮助我们回答下列的这些问题：</p>
+<ul>
+<li>数据库是否支持我们所需的查询</li>
+<li>数据库是否能够处理我们预计需要存储的数据量</li>
+<li>单个的数据库节点能够处理多少读取跟写入的操作</li>
+<li>我们的系统会需要多少个数据库节点</li>
+<li>在预定的增长率上，如何来扩展数据库集群</li>
+<li>数据库需要哪些管理操作</li>
+</ul>
+<p>回答了这些问题后，就能够构建一个测试的集群，然后来模拟具体的负载了。大部分的数据库都会有压力测试工具用来构建一些特定的使用场景。如果对应的数据库没有标准的测试工具能够用来生成实际的随机工作负载测试，那这可能是一个危险的信号。如果基于某些原因无法使用默认的工具，那你可以尝试一些已经广泛使用的工具，或是自己去实现一套。</p>
+<p>如果测试最终都有比较良好的结果，去了解数据库的代码可能会非常有用。查看这些代码，首先看看数据库各个部分各个模块的代码是有用的，找到数据库的各个模块的代码，然后导航过去看看。就算只是对代码有个粗略的了解，也能够帮助你更好的了解那些日志是如何产生的、有哪些配置项，还能够帮助你去定位应用中使用数据库所产生的问题，或是数据库本身有什么问题。</p>
+<p>如果能够把数据库当成一个黑盒子来使用，并且永远都不去查看他的内部当然很好，但实际的经验告诉我们，最好是对或早、或晚肯定会出现 Bug、运行中断了、性能倒退了或是其他的一些问题提前做好准备。如果你对数据库的内部有所了解，你能够减少这些工作上的风险并且提高能够快速修复他们的机会。</p>
+<p>有一个流行的用来进行基准性能测试的比较工具是 <code>Yahoo! Cloud Serving Benchmark</code>(YCSB)。YCSB 提供了一个框架及一些可以用来应用到不同数据存储的常见负载集合。跟很多其他的通用工具一样，我们需要谨慎的使用他，因为他可能很容易就给我们下一个错误的结论。为了能够的带一个公平的比较结果跟做一个合适的选择，我们需要投入足够的时间来了解不同数据库在真实场景中的表现，并为他们定制基准测试。</p>
+<blockquote>
+<h3><a class="header" href="#tpc-c-benchmark" id="tpc-c-benchmark">TPC-C Benchmark</a></h3>
+<p>Transaction Processing Performance Council (TPC) 有一系列基准提供给数据库开发商用来比较跟发布他们自身产品的测试结果。TPC-C 是一个在线事务处理 (OLTP) 基准，混合了读取及写入的事务来模拟常见的应用工作负载。</p>
+<p>该基准关注并发事务的性能及正确性，其中主要的性能指标是 <code>throughput</code> 吞吐量: 即数据库系统在每分钟能够处理的事务量。该基准在执行事务需要维持 ACID 属性并遵从这些属性所做的定义。</p>
+<p>该基准不关注那些特定的商业场景，它只是提供了一些抽象的对于大部分使用 OLTP 数据库的应用来说非常重要的操作集合。其中包含了一些仓储、股票、客户跟订单管理的表跟实体，具体的数据表布局、事务的详情都能在这些表信息的周围获取到，还包括了每个表最少的数据量跟数据跟数据可靠性的限制。</p>
+</blockquote>
+<p>这并不意味着这些基准只适用于对数据库进行比较，基准测试对于服务级别的一致性、了解系统要求、容量规划等细节都是非常有用的。在使用数据库前对他了解得越多，在真实的产品运行中所需要花的时间就越少。</p>
+<p>选择一个数据库是一个耗时长久的决定，最好还能够对其版本的更新迭代保持跟踪，去明白每次更新的内容跟思考其具体的原因，然后制定好升级的策略。新的版本通常都会包含一些提升或修复一些 Bug 或者安全性之类的问题，但同时也可能会产生新的 Bug、性能的回归或一些未定义的行为，因此在升级前对新版本进行完善的测试也是非常重要的。回顾数据库的实施人员以前是如何处理升级的能够帮助我们了解以后可能会遇到的各种情况。过去那些平滑的升级不代表以后的升级都会是平滑的，但过去如果有复杂的升级过程意味着以后的升级也可能没那么容易。</p>
+<h3><a class="header" href="#understanding-trade-offs" id="understanding-trade-offs">Understanding Trade-Offs</a></h3>
+<p>作为用户，我们需要看到数据库在不同的环境中会有什么不同的表现，但当我们在使用数据库时，需要针对这些行为来做出具体的决定。</p>
+<p>设计存储引擎比实现哪些教科书中的数据结构要难得多，因为很难在一开始就把太多的细节跟边界场景考虑清晰。我们需要去设计物理上的数据布局跟如何组织那些指针信息，要设计那些序列化的数据格式，要了解数据将会如何进行垃圾回收，要了解存储引擎如何去适配整个数据库的语义，要解决如何运行在并行的环境中，最后还要确保在任何情况下都不会有数据丢失的情况发生。</p>
+<p>其中不只要对很多事情做决定，更重要的是其中的大部分决定都需要进行权衡。比如，如果我们以数据保存的顺序来存储到数据库，那我们可以以较快的速度来完成存储，但如果后续想按照字符的顺序来获取这些数据，那我们需要在将数据返回给客户端之前对他们重新排序。在本书后续我们可以看到，有很多设计存储引擎的方式，每种不同的实现都有着他的优点跟缺点。</p>
+<p>在我们调研一个不同的存储引擎时，会同时对他的优点跟缺点进行分析。如果有一个符合所有我们所需要的场景的存储引擎，谁都会选择使用它，很遗憾的是并不存在这样的引擎，因此我们需要理智的，基于我们具体的负载跟所需的场景来进行选择。</p>
+<p>现在有非常多的存储引擎，使用各种不同的数据结构，不同的开发语言，从 C 这种底层类别的语言到 Java 这种高层语言都有。但所有的存储引擎面对的都是相同的挑战跟约束。跟城市规划做类比，我们可能会为了特定的人群选择建立高楼或是往外扩展。在这两种处理方式中，这座城市能够容纳同样的人数，但两种做法可能会为他们带来不一样的人生。当我们选择了高楼，人们可能会住公寓并且因为人群集中导致更大的交通压力；如果是往外扩展，人们可能会住在自己的房子中，但人与人之间的交流距离可能会变得更远。</p>
+<p>同样的，开发人员在存储引擎中所作的选择可能也是会偏向于某些类型: 有些优化是为了更低的读写延迟，有些是为了提供更大的数据密度 <em>(比如为了让单个节点存储更多数据)</em>，而有些则可能集中于如何让操作更加简单快捷。</p>
+<p>在本书每章的总结中你可以找到具体算法的实现以及其相关的引用信息，通过本书能够让你具有充分利用这些资源的能力，并对其中所描述的各种概念有深刻的理解。</p>
+<h1><a class="header" href="#chapter-1" id="chapter-1">Chapter 1</a></h1>
+<h2><a class="header" href="#introduction-and-overview" id="introduction-and-overview">Introduction and Overview</a></h2>
+<p>数据库管理系统提供了几个不同的目标：有些主要用来存储临时的热数据，有些用来存储持久的冷数据，有些支持复杂的分析查询，有些只支持使用 Key 来查找对应的 Value，有些是为时间序列相关的数据做的优化，有些能够高效的存储大量的二进制数据。为了对他们之间的区别有个具体的了解，我们会先对他们进行简单的分类跟建立整体的了解，这些将会对我们后续的讨论提供更好的理解。</p>
+<p>术语有时会产生歧义或是在没有完整上下文时难以理解，比如 <code>column</code> 跟 <code>wide column</code> 的存储之间可能几乎是没有关联的，又或者 <code>clustered</code> 跟 <code>nonclustered indexes</code> 跟 <code>index-organized tables</code> 之间具有怎样的关联。本章的目标是消除这些歧义跟给他们确定具体的定义。</p>
+<p>我们首先会从数据库管理系统的架构着手来建立概览信息，然后讨论系统中各个组件以及其对应的职责。在这之后会会讨论数据库管理系统所使用的存储介质及布局。</p>
+<p>这两个分组并不能体现完整的数据库管理系统的分类，因为他们还有其他各种不同的分类方式，比如有些数据库管理系统会被分为下面三个大类</p>
+<ul>
+<li>
+<p><code>Online trasaction processing (OLTP) databases</code></p>
+<p>这种类型的数据库用来处理大量的客户请求及事务，相关的查询通常会有预先做好的定义及能够快速的完成。</p>
+</li>
+<li>
+<p><code>Online analytical processing (OLAP) databases</code></p>
+<p>这种类型的数据库处理复杂的聚合分析。 OLAP 数据库通常用做分析跟数据仓库，因此更擅长于处理复杂的、长时间运行的各种临时查询。</p>
+</li>
+<li>
+<p><code>Hybrid trasactional and analytical processing (HTAP)</code></p>
+<p>这种数据库混合了 OLTP 跟 OLAP 两种数据库的特性</p>
+</li>
+</ul>
+<p>除此之外还有很多其他的分类：使用键值对存储的、关系型的数据库、文档型的存储以及图数据库等。我们不会在这里为这些概念做定义，我们假定读者对这些较高层次的东西跟功能都具有一定的理解。因为这些概念都是被广泛接受并且在大部分提过的存储中都使用到，完整的对其进行分类的必要性及重要性对于后续的讨论来说并不高。</p>
+<p>在本书的第一部分中，我们会集中于存储以及索引的结构上，我们需要对高层次数据的组织以及数据跟索引之间的关系有深入的理解。</p>
+<p>最后，在 <code>Buffering, Immutability, and Ordering</code> 小节中，我们会讨论三种高效的常用存储结构技术，以及这些技术是如何影响其设计跟实现的。</p>
+<h2><a class="header" href="#dbms-architecture" id="dbms-architecture">DBMS Architecture</a></h2>
+<p>现在并没有一个通用的关于数据库管理系统的设计蓝图。每个数据库都会有一些略微的不同，并且组件之间的边界也并很难去下定义。尽管这些边界在文档 <em>(比如项目文档)</em> 中体积，但在代码中，那些看起来映带独立的组件可能会因为一些性能优化、边界条件处理或架构选择等原因混杂在一起。</p>
+<p>这些资料描述了数据库管理系统的架构 <em>(如 [HELLERSTEIN07]，[WEIKUM01]、[ELMASRI11] 跟 [MOLINA08])</em>，定义了组件之间的关联以及差异。在 Figure 1-1 中展示了其中较为通用部分的整体的架构。</p>
+<img src="./chapter_1_2_dbms_architecture.assets/image-20210218111215564.png" style="width: 60%" title="Architecture of a database management system" />
+<p>数据库管理系统使用的是 <code>client/server</code> 模式，数据库系统的实例 <em>(节点)</em> 充当服务端 <code>server</code> 角色，应用的实例则充当客户端 <code>client</code> 的角色。</p>
+<p>客户端的请求通过 <em>transport</em> <strong>传输层</strong> 子系统接收，这些请求已查询的形式送达，大部分情况下他们是某种查询语言的表达式，传输层子系统同时还负责数据库集群中节点与节点之间的通信。</p>
+<p>在接收到请求后<strong>传输层</strong>将查询转发给  <em>query processor</em> <strong>查询处理器</strong>进行解析、翻译跟验证，在解析完成后，会对其进行访问控制验证，确认其执行权限。</p>
+<p>之后解析完成的查询会被转发给 <code>query optimizer</code> 查询优化器，他会首先对查询中不必要的或者多于的部分进行排除跟裁减，然后会尝试根据一些全局的信息来找出最高效的执行方式，比如根据索引数据的数据量，或者数据的分布信息（比如集群中的哪些节点包含所需的数据以及其传输的代价等）进行分析。优化器同时需要对查询解析的关系操作 <em>(通常表示为依赖树)</em> 以及优化 <em>(如索引顺序、数据的基数以及选择访问的方式)</em> 进行处理。</p>
+<p>具体的查询最后通常会表示为 <code>execution plan</code> 执行计划 (或 <code>query plan</code>)，他是一个操作的序列，在他被完整执行之后我们就能得到所需要的查询结果。相同的查询可能会同时符合不同的查询计划，优化器会在符合的查询计划中挑选出最合适的。</p>
+<p>执行计划最后会交由 <code>execution engine</code> 执行引擎来执行，他会收集本地以及远程操作的执行结果，远程执行可能还会涉及到集群中其他节点的数据读写跟复制等操作。</p>
+<p>本地的查询 <em>(直接从客户端或其他节点发出的)</em> 会交给 <code>storage engine</code> 存储引擎进行处理，存储引擎由下面的几个组件组成</p>
+<ul>
+<li>
+<p><code>Transaction manager</code></p>
+<p>该管理器对事务进行调度，以保证这些事务不会导致数据库产生逻辑性上的不一致。</p>
+</li>
+<li>
+<p><code>Lock manager</code></p>
+<p>该管理器为数据库上执行的事务所涉及到的对象进行锁的管理，确保那些并行的操作不会违反数据在物理上的完整性。</p>
+</li>
+<li>
+<p><code>Access methods (storage structures)</code></p>
+<p>该管理器负责访问跟组织磁盘上的数据，访问的方式主要包括了堆文件及存储的数据结构如 B-Trees 或 LSM Trees。</p>
+</li>
+<li>
+<p><code>Buffer manager</code></p>
+<p>该管理器对内存中的数据页进行缓存</p>
+</li>
+<li>
+<p><code>Recovery manager</code></p>
+<p>该处理器管理了操作日志，并负责将系统从失效的状态中恢复到正常状态。</p>
+</li>
+</ul>
+<p>这些组件合到一起就是，事务跟锁管理器负责并行控制，他们让并发操作能够尽量高效的执行，并确保数据在逻辑跟物理上的完整性。</p>
+<h2><a class="header" href="#memory---versus-disk-based-dbms" id="memory---versus-disk-based-dbms">Memory - Versus Disk-Based DBMS</a></h2>
+<p>数据库系统将数据存储在内存以及磁盘中，<code>In-memory database management systems</code> 内存式数据库管理系统 <em>(有时也称为主存式数据库管理系统)</em> 主要将数据存储于内存中，然后使用磁盘来作为恢复及日志记录的支持。<code>Disk-based</code> 基于磁盘的数据库管理系统则将大部分的数据保存在磁盘中，然后使用内存来缓存磁盘中的及一些临时性的数据。两种类型的数据库都会使用磁盘来作为重要的扩展，只是内存性数据库只会将数据存储在内存中。</p>
+<p>内存的访问速度相较于对磁盘的访问速度，至今仍然要快出几个数量级。因此使用内存作为主要的存储介质是非常有吸引力的，并且随着内存价格的下降这样做具有了更高的经济可行性。然而，内存的价格相对于类似 SSD 跟 HDD 这些持久化介质来说仍然是比较高昂的。</p>
+<p>内存数据库系统跟基于磁盘的数据库不仅仅是其主要的存储介质有所不同，还包括了如实现的数据结构、数据组织跟具体的优化技术等等区别。</p>
+<p>数据库使用内存作为主要存储截止主要是为了性能、相对较低的访问开销及粒度。而且对内存的操作相对于磁盘也是简易了许多。操作系统所抽象的内存管理机制允许我们自如的控制对任意内存大小进行分配跟释放。在磁盘中，我们需要手动的去管理数据间的引用，序列化的格式，被释放的内存跟碎片等问题。</p>
+<p>内存数据库数据增长的主要的限制因素是内存的不稳定性 <em>(换句话说就是较弱的可靠性)</em> 以及花费的成本。因为内存中的数据是非持久化的，所以软件的错误、崩溃、硬件的失效或是电源的切断都会导致数据丢失。当然也有许多办法来确保可靠性，比如提供不会中断的电源跟有备用电池的内存，但这又会导致额外的硬件资源跟操作要求。在实际实践中，这些都不会发生，主要还是归因于磁盘更容易进行管理以及拥有更低廉的价格。</p>
+<p>但随着高可用跟更流行的 <code>Non-Volatile Memory</code> <em>(NVM)</em> 的发展，这个情形似乎会发生转变。NVM 存储能够减少或是消除 <em>(依赖一些其他的技术)</em> 读写延迟间的不对称性，提供更高的读写性能，以及允许使用内存寻址的方式来访问。</p>
+<h3><a class="header" href="#durability-in-memory-based-stores" id="durability-in-memory-based-stores">Durability in Memory-Based Stores</a></h3>
+<p>内存数据库系统使用磁盘进行备份来提供可靠性跟防止数据的丢失。有一些数据库则选择只将数据存储在内存中，并不做任何可靠性的保证，但是这类的数据库我们并不会在本书内进行讨论。</p>
+<p>在可以确保操作完成之前，会先将其写入到顺序的日志文件中，我们将会在 <code>Recovery</code> 章节中来讨论 <code>Write-ahead Log</code> 预写日志。为了防止在数据库启动或是崩溃后需要回放所有的操作日志，内存数据库会管理一份数据备份。这份数据备份会以有序的基于磁盘的数据结构进行管理，并且对这个数据结构的操作一般都是异步的 <em>(是与客户端请求分离的)</em> 批量提交，用来减少 I/O 操作。在需要的时候，数据库的内容就可以从这个备份跟日志进行恢复了。 </p>
+<p>日志的记录通常会批量的应用到备份数据上，在日志处理完之后，备份数据就成了数据库某个时刻的快照，这时在这个时刻之前的日志就可以被丢弃了。这个操作称作 <code>checkpointing</code> 检查点。他能够减少恢复的时间，让数据库通过日志保持在足够新的状态，以便客户端无需在更新备份数据时被堵塞。</p>
+<blockquote>
+<p>不能说内存数据库等同于具有巨大页面缓存的磁盘数据库。尽管页面会被缓存在内存中，但序列化格式、数据的布局都会增加磁盘数据库的开销，这些开销无法跟内存存储中所达到的优化程度做对比。</p>
+</blockquote>
+<p>基于磁盘的数据库使用了特殊的为磁盘访问做了优化的存储数据结构。在内存中，可以对指针快速的进行跟踪，而且内存的随机访问要远远比磁盘的随机访问要快，基于磁盘的存储数据结构通常会使用较宽并且较低的树结构，因为基于内存的实现可以从一个很大的池中获取所需的数据结构并做出各种优化，但这些在基于磁盘的实现中基本上是不可能做到的。同样的，在磁盘上处理可变长度的数据需要特别注意，而在内存中他可能只是从指针中获取一个值。</p>
+<p>在某些场景中，确认整个数据集是否能够放进内存中是有意义的。有些数据集受真实世界的限制可能只有少量 KB 的数据跟数据条目的限制。比如学校中的学生记录、大企业中的客户记录或在线商城的存货量。</p>
+<h2><a class="header" href="#column--versus-row-oriented-dbms" id="column--versus-row-oriented-dbms">Column- Versus Row-Oriented DBMS</a></h2>
+<p>大部分的数据库都会存储一系列的数据记录，这些记录集合称为 <code>Table</code> 表 ，表则由  <code>Column</code> 列跟 <code>Row</code> 行组成。<code>Field</code> 字段是行与列的交集: 他是单一的某些类型的值。属于同一个列的字段往往具有相同的数据类型，比如如果我们定义了一个表用来保存用户记录，那其中的用户名都会是同一个类型并且属于同一个列。属于同一条记录的值的集合则形成一行 <em>(往往会使用某个 key 来作为这行的标识符)</em>。</p>
+<p>有一种用来对数据库进行分类的方式是看数据是如何在磁盘中存储的：基于行的或基于列的。数据表能够按照<strong>水平</strong> <em>(将属于同一行的数据保存到一起)</em> 或者<strong>垂直</strong> <em>(将属于同一列的数据保存到一起)</em> 的方式进行分区。Figure 1-2 描述了其中的区别： (a) 展示了按照列进行分区的数据，(b) 展示了按照行进行分区的数据。</p>
+<img src="./chapter_1_4_column_row_oriented.assets/image-20210219105353161.png" style="width: 85%">
+<p>面向行组织数据的数据库有: MySQL、PostgreSQL，以及大部分的传统关系型数据库都是。有两个开源的先驱列式数据库，分别是 MongoDB 跟 C-Store <em>(C-Store 的前任是名为 Vertica 的开源数据库)</em></p>
+<h3><a class="header" href="#row-oriented-data-layout" id="row-oriented-data-layout">Row-Oriented Data Layout</a></h3>
+<p>面向行的数据库管理系统使用记录或行来存储数据。他们的布局非常接近表格式的形式，即每一行都拥有相同的字段集合。比如面向行的数据库可以高效的存储用户实体信息，包括名字、出生日期跟电话号码:</p>
+<table><thead><tr><th>ID</th><th>Name</th><th>Birth Date</th><th>Phone Number</th></tr></thead><tbody>
+<tr><td>10</td><td>John</td><td>01 Aug 1981</td><td>+1 111 222 333</td></tr>
+<tr><td>20</td><td>Sam</td><td>14 Sep 1988</td><td>+1 555 888 999</td></tr>
+<tr><td>30</td><td>Keith</td><td>07 Jan 1984</td><td>+1 333 444 555</td></tr>
+</tbody></table>
+<p>使用多个列组成一行 <em>(如这里的名字、出生日期跟电话号码)</em> 并用一个键来作为唯一标识符 <em>(在这里是一个自增的数字)</em> 的方式能够适应许多的场景。如用户记录中的所有字段常常会被同时读取；创建记录时 <em>(如用户填写了注册表单)</em> 能够将所有信息同时写入存储引擎；同时每个字段也能够单独的进行修改。</p>
+<p>面向行的存储在大部分按照行来访问数据的场景中都非常有用，而存储整行的数据也同时提高了其空间局部性。</p>
+<p>因为数据在如磁盘这类持久化介质上一般都是以 <code>Block</code> 块的方式来访问的 <em>(换种说法就是，在磁盘中最小的访问单元就是块)</em>，一个单独的块可以包含记录的所有列。这对需要访问整个用户记录的场景是非常高效的，但对于获取多个记录当只需要其中某些列的查询 <em>(比如只需要获取电话号码)</em> 来说代价确实比较大的，因为那些不需要的字段也会同时被读取。</p>
+<h3><a class="header" href="#column-oriented-data-layout" id="column-oriented-data-layout">Column-Oriented Data Layout</a></h3>
+<p>面向列的数据库管理系统将数据以垂直的方式 <em>(比如以列的方式)</em> 而不是整行的方式进行存储。在这里同一个列的数据会以连续的形式存储在磁盘上 <em>(对比与上一个例子中以行的方式连续保存)</em>。举例来说，我们存储股票市场的价格，则所有的价格都会存储到一起。不同列的的值会被分割到不同的文件或者是文件段，这让引擎能够高效的根据列来进行查询，因为他们可以单独的获取，而不是读取整行数据然后再丢弃那些查询不需要的列。</p>
+<p>面向列的存储对于一些分析及数据聚合的场景非常有效，比如查找趋势，计算平均值等等。处理复杂的聚合常常是从具有非常多列的记录中挑取其中少数的列 <em>(如本例中的价格)</em> 进行集中的处理。</p>
+<p>作为一种逻辑上的表达方式，股票市场的价格信息依然可以用表的形式来呈现</p>
+<table><thead><tr><th>ID</th><th>Symbol</th><th>Date</th><th>Price</th></tr></thead><tbody>
+<tr><td>1</td><td>DOW</td><td>08 Aug 2018</td><td>24,314.65</td></tr>
+<tr><td>2</td><td>DOW</td><td>09 Aug 2018</td><td>24.136.16</td></tr>
+<tr><td>3</td><td>S&amp;P</td><td>08 Aug 2018</td><td>2,414.45</td></tr>
+<tr><td>4</td><td>S&amp;P</td><td>09 Aug 2018</td><td>2,232.32</td></tr>
+</tbody></table>
+<p>然而物理上的列式存储布局看起来将是完全不一样的，每个相同列的值会保存在更靠近的位置</p>
+<ul>
+<li>Symbol: 1:DOW;             2:DOW;             3:S&amp;P;               4:S&amp;P</li>
+<li>Date:     1:08 Aug 2018; 2:09 Aug 2018; 3:08 Aug 2018; 4:09 Aug 2018</li>
+<li>Price:     1:24,313.655;     2:24,136.16;      3:2,414.45;        4:2,232.32</li>
+</ul>
+<p>为了能够重组数据元祖 <em>(可能对联表、过滤跟多行的聚合分析有用)</em> ，我们需要在列上维护一些元信息用来定位哪些数据跟哪些列是关联的。如果我们直接将信息记录到值上，那每个值都需要保存这个键，这将导致该信息的大量重复并引起存储空间的剧增。有些列式存储引擎使用了隐含的标识符 <em>(virtual IDs)</em> 来作为替代，还使用了值在文件中的位置 <em>(也可称为偏移量)</em> 来定位关联的数据。</p>
+<p>在最近的几年里，因为有更多需要在庞大数据集上运行复杂查询的需求浮现，我们看到了许多新的列式文件存储结构，如 <a href="https://databass.dev/links/112">Apache Parquet,</a> <a href="https://databass.dev/links/113">Apache ORC</a>, <a href="https://databass.dev/links/114">RCFile</a>，同时也有一些新的列式存储引擎如 <a href="https://databass.dev/links/115">Apache Kudu</a>, <a href="https://databass.dev/links/116">ClickHouse</a> 等。</p>
+<h3><a class="header" href="#distinctions-and-optimizations" id="distinctions-and-optimizations">Distinctions and Optimizations</a></h3>
+<p>说列式存储跟行式存储之间的差别只是存储方式不同是不够的，选择数据的布局只是其中的步骤之一，我们还需要其他的各种方式去优化列式存储引擎。</p>
+<p>一次读取同一列的多个值能显著的提高缓存的命中率以及提高计算的效率。在现代的 CPU 中，使用向量化指令能够在一条 CPU 指令中处理多条数据。</p>
+<p>将相同类型的数据存储在一起 <em>(比如数字跟数字、字符串跟字符串一起)</em> 让数据的压缩率得到了更好的提升。我们还可以根据数据类型来选择不同的压缩算法，这样能根据不同的场景来得到最好的压缩效果。</p>
+<p>想知道何时使用面向列还是面向行的存储引擎，你需要了解具体的对数据的访问模式。如果读取数据时是已记录的方式来消费的 <em>(即每次都需要读取大部分的列)</em> 并且具体的工作负载是由单个查询跟区间扫描组成的，那面向行的方式能够得到更好的效果。如果扫描需要跳过许多的行，或者分析更多的只需要一小部分的列，那就更值得去考虑使用面向列的方式。</p>
+<h3><a class="header" href="#wide-column-stores" id="wide-column-stores">Wide Column Stores</a></h3>
+<p>面向列的数据库很容易跟 <code>Wide Column Store</code> 宽列存储混淆，比如 BigTable 或 HBase，他们的数据呈现为一个多重维度的字典，许多的列使用 <code>Column families</code> 列族来进行了分组，在每个列族里面的列最终会使用基于行的方式来进行存储。这样的布局对那些使用键值或键值序列进行检索的数据是非常有效的。</p>
+<p>Bigtable 论文中的官方例子是 WebTable。WebTable 以时间戳分版本存储了目标网页的内容快照以及其他的一些属性。这些网页使用反转的 URL 链接作为标识符，并且所有的属性 <em>(如页面内容、锚点、页面的引用等)</em> 都按照页面获取的时间戳建立了不同的快照版本。用简单一点的方式来描述就是，如 Figure 1-3 所示</p>
+<pre><code class="language-text">{
+  &quot;com.cnn.www&quot;: {
+    contents: {
+      t6: html: &quot;&lt;html&gt;...&quot;
+      t5: html: &quot;&lt;html&gt;...&quot;
+      t3: html: &quot;&lt;html&gt;...&quot;
+    },
+    anchor: {
+    	t9: cnnsi.com: &quot;CNN&quot;
+    	t8: my.look.ca: &quot;CNN.com&quot;
+    }
+  }
+  &quot;com.example.www&quot;: {
+  	contents: {
+  		t5: html: &quot;&lt;html&gt;...&quot;
+  	},
+  	anchor: {}
+  }
+}
+</code></pre>
+<p>数据按照多个维度存储到一个具有层次结构的有序的字典内：我们能够通过网页的反转 URL 来定位到特定页面的内容或者锚点的指定时间戳版本。每一行都使用称之为 <em>row key</em> 的键建立了索引。相关联的列则按照列族进行了分组 -- 如示例中的 contents 跟 anchor 列族，因此不同列族的数据会在磁盘上分开存储。每一个列族内的列都以称为 <code>column key</code> 的键作为标识符，他们是以列族名跟列名 <em>(如示例中的 html, cnnsi.com, my.look.ca)</em> 所组合而成。列族会按照时间戳存储数据的多个版本。这个布局允许我们快速的定位高层级的实体 <em>(如本例中的网页)</em> 跟他们的参数信息 <em>(如网页中的内容及其他页面的链接的各个版本)</em>。</p>
+<p>对理解 <code>Wide Column Store</code> 的各个概念是非常有用的，他们的物理布局相对其他的有很大不同。对列族的一个略为粗略的结构图在 Figure 1-4 展示：每个列族被独立的进行存储，但同一个列族内的数据是集中存储的。</p>
+<img src="./chapter_1_4_column_row_oriented.assets/image-20210219173935889.png" style="witdh: 80%" ><h2><a class="header" href="#data-files-and-index-files" id="data-files-and-index-files">Data Files and Index Files</a></h2>
+<p>数据库系统的主要目标就是能够存储数据然后在需要的时候能够快速的进行读取。但数据应该如何组织呢？为什么我们需要使用数据库管理系统而不是直接管理一大堆的文件？文件要如何组织才能高效的使用呢？</p>
+<p>数据库确实使用文件来存储我们的数据，但他并不是直接使用了文件系统的目录跟文件的结构来定位数据记录，他实现了自定义的文件存储格式来组织文件。在扁平文件上使用自定义文件格式来组织的主要原因有：</p>
+<ul>
+<li>
+<p>Storage efficiency 高效存储</p>
+<p>文件的组织最小化了存储每条数据记录的开销</p>
+</li>
+<li>
+<p>Access efficiency 高效访问</p>
+<p>能够在最小化的步骤中快速定位所需的数据记录</p>
+</li>
+<li>
+<p>Update efficiency 高效更新</p>
+<p>对记录进行更新时，能够最小化对磁盘数据的修改</p>
+</li>
+</ul>
+<p>数据库系统以表的形式存储数据记录，表则是以字段来组成，一般来说每个表都会以独立的文件来表示。表中的每条记录都能够以 <code>search key</code> 来进行定位。为了定位到某条记录，数据库系统使用了索引：一种辅助性的数据结构，他帮助数据库系统能够在不需要对整个表进行扫描的前提下高效的定位数据。索引使用了表字段的子集进行构建，并以对应的自己作为该记录的新的标识符。</p>
+<p>一般来说数据库系统会把数据文件跟索引文件区分开：数据文件存储具体的数据记录，索引文件则存储记录的元数据并使用该元数据来从数据文件中定位数据。一般来说索引文件都会比数据文件要小。文件会以页来进行分区，而页的尺寸一般会跟磁盘的块大小对应。页一般会被组织为一系列的记录或是一系列的分槽页。</p>
+<p>新的数据记录 <em>(比如新插入的数据)</em> 跟对现有记录的更新会被表现为一系列的键值对，大部分现代的存储系统并不会明确的删除数据，相反，他们使用 <code>deleteion markers</code> 删除标识 <em>(或称为 tombstones)</em> 作为删除的元数据，例如是一个 Key 或是一个时间戳。那些由删除或更新被标记的记录所占用的空间会在垃圾回收时进行回收，比如读取其对应的页，将仍然存活的记录写入到新的位置，并且丢弃掉已经删除的那些。</p>
+<h3><a class="header" href="#data-files" id="data-files">Data Files</a></h3>
+<p>数据文件 <em>(有时也称为 Primary files 主文件)</em> 能以 <em>Index-organized tables</em> <em>(索引组织表 IOT)</em> 或 <code>heap-organized tables</code> <em>(堆文件 heap files)</em> 或 <code>hash-organized tables</code> <em>(哈希文件 hashed files)</em> 的方式实现。</p>
+<p>存储在堆文件的记录不需要遵从某些特定的顺序，在大部分情况下他们按照写入的顺序来排序。使用这种方式在有新页面添加进来时无须花费额外的工作或进行文件重组。堆文件需要额外的索引数据结构来定位到已存储的数据记录，以此实现检索功能。</p>
+<p>对于哈希文件，数据记录会存储到桶中，而数据记录的标识符则作为 Key 由哈希函数计算后确认该记录对应的哈希桶。在同一个桶中的数据记录可以按照 Key 来进行排序以提高同一桶中的查找速度。</p>
+<p>索引组织表将数据存储在索引上，因为数据记录是以 Key 的顺序存储的，对索引组织表进行区间扫描可以实现为顺序扫描其该表的内容。</p>
+<p>当数据记录是存储在独立的文件中时，索引文件将保存数据实体，从而唯一的对数据进行标识并且包含足够的信息用来定位记录在数据文件的位置。比如，我们可以保存数据文件的偏移量 <em>(有时也称为 row locators 行定位符)</em> 或在使用哈希文件时保存桶的 ID，或在使用索引组织表时保存完整的数据实体。</p>
+<h3><a class="header" href="#index-files" id="index-files">Index Files</a></h3>
+<p>索引是一种用来对存储在磁盘中的数据进行组织并提供高效读取操作的数据结构。索引文件以特定的数据结构通过 Key 定位到数据记录在数据文件中的位置 <em>(如果使用的是堆文件)</em> 或是主键 <em>(如果使用的是索引组织表)</em> 存储的位置。</p>
+<p>对应到主文件 <em>(数据文件)</em> 的索引成为主索引，然而在大部分的场景中我们都可以假定主索引都是通过 <code>Primary key</code> 主键或是由其他一些键所组成的主键来构建。其他的索引则称为 <code>secondary</code> 二级索引。</p>
+<p>二级索引可以直接指向对应的数据记录，也可以只是存储其对应的主键。指向数据记录的指针可以存储堆文件或是索引组织表的偏移量。多个二级索引可以指向同一条数据记录，也允许同一个数据记录在不同的二级索引中使用不同的字段作为标识符。主索引文件为每条唯一记录保存了唯一的搜索键，二级索引则允许多条数据记录使用同一个搜索键。</p>
+<p>如果数据记录的顺序跟搜索键的顺序是一致的，则称该索引为 <code>clustered</code> 聚集索引 <em>(也广泛的使用 clustering)</em>。聚集的数据记录通常会保存在同一个文件或者是保障了键的顺序的聚集文件中。如果数据存储在独立的文件中，并且数据记录的顺序跟键的顺序不是一致的，则称索引为非聚集的 <em>(也会使用 unclustered)</em>。</p>
+<p>Figure 1-5 展示了这两种区别</p>
+<ul>
+<li>a) 两种索引方式在二级索引中引用数据的方式不同</li>
+<li>b) 二级索引使用一级索引来间接的引用数据</li>
+</ul>
+<img src="./chapter_1_5_data_files_and_index_files.assets/image-20210220013928564.png" style="width: 85%" title="figure 1-5" >
+<blockquote>
+<p>索引组织表在索引中存储数据，并且是定义为聚集的。主索引绝大部分情况下都是聚集的。二级索引在定义上是非聚集的，他们提供了用非主键的键来快速访问数据的功能。聚集索引可以是索引组织表也可以是索引跟数据文件分离的形式。</p>
+</blockquote>
+<p>大部分的数据库系统都有固定的主键，他可以是用来唯一标识数据记录的列的集合。当主键没定义时，存储引擎会创建一个隐含的主键 <em>(比如 MySQL 的 InnoDB 会自动添加一个自增的列并自动递增该字段的值)</em>。</p>
+<p>这个技术在许多不同的数据库系统中都使用了：关系型数据库包括 MySQL 跟 PostgreSQL，基于 Dynamo 的 NoSQL 存储如 Apache Cassandra 跟 Riak，文档型的存储则有 MongoDB。还有其他未提到的名字，但他们中的大部分都是使用了这个技术。</p>
+<h3><a class="header" href="#primary-index-as-an-indirection" id="primary-index-as-an-indirection">Primary Index as an Indirection</a></h3>
+<p>在数据库社区中，对选择文件偏移量还是主键索引作为对数据记录的引用存在不同的意见。</p>
+<p>两种做法各有其优点跟缺点，但最好还是需要在他们的完整实现上进行讨论。如果直接引用数据本身，我们可以减少对磁盘的读取，但在需要付出更多的代价来处理数据的更新或是重新分配的情形。使用间接引用主索引的方式允许我们无需为数据的更新付出额外的代价，但却会带来额外的读取操作。</p>
+<p>更新索引在工作负载中绝大部分是读取操作时是是可行的，但这个方式并不适用于有多个索引且存在大量写的工作负载。为了减少数据更新的成本，有些实现使用主键来代替偏移量作为间接层。比如 MySQL 的 InnoDB 使用主索引并执行了两次查询：第一次在二级索引中进行，第二次则在主索引中进行。相对于在二级索引中存储偏移量的做法，这增加了对主索引进行读取的开销。</p>
+<p>Figure 1-6 展示了两种方式的区别</p>
+<ul>
+<li>a) 两种索引直接从二级索引引用数据条目</li>
+<li>b) 二级索引需要使用主索引间接的定位数据实体</li>
+</ul>
+<img src="./chapter_1_5_data_files_and_index_files.assets/image-20210220031346358.png" style="witdh: 85%">
+<p>还有另外一种混合使用数据文件偏移量跟主键的方式。首先，需要检查文件的偏移量是否有效，如果偏移量失效了则需要付出额外的开销到使用主键到主索引查询，最后在找到新的偏移量时去更新二级索引。</p>
+<h2><a class="header" href="#buffering-immutability-and-ordering" id="buffering-immutability-and-ordering">Buffering, Immutability, and Ordering</a></h2>
+<p>存储引擎都需要基于某些特定的数据结构，但是这些数据结构并没有对缓存、状态回复、事务这些存储引擎底层的组件有明确的语义定义。</p>
+<p>在下一章节中，我们会开始讨论 B-Tree 以及试着理解为什么会有这么多的 B-Tree 变种，以及为什么一直持续不断的有新的数据存储结构出现。</p>
+<p>存储数据结构有三个通用的变量：他们会使用 <code>buffering</code> 缓冲 <em>(或避免使用)</em>，使用 <code>immutable</code> 不可变 <em>(或 mutable 可变)</em> 的文件，按照 <code>order</code> 顺序来存储数据 <em>(或不按顺序)</em>。大部分的存储数据结构的区别跟优化都跟这三点相关。</p>
+<ul>
+<li>
+<p><em>Buffering</em></p>
+<p>这部分定义了存储数据结构需不需要将在写入磁盘前某些数据缓冲在内存里。当然，每个基于磁盘的数据结构都会需要某种级别的缓冲，因为磁盘进行读写所传输的最小单元是块，这个级别描述了如何尽量写入完整的块。在这里，我们还要谈论避免缓冲，有些存储引擎的实现就是这样做的。我们在本书讨论的第一个优化是为 B-Tree 添加内存的缓冲来分摊 I/O 开销。<em>(在 Lazy B-Tree 中)</em>。但是这并不是唯一应用缓冲的地方，比如 two-component LSM Tree，尽管跟 B-Tree 有点类似，但他使用了不同的方式来使用缓冲，并最终将缓冲合并成不可变的。</p>
+</li>
+<li>
+<p><em>Mutability</em> (or <em>immutability</em>)</p>
+<p>这部分定义了存储数据结构要不要实现：从文件中读取数据，更新这部分数据，然后将更新后的结果写入到文件的同一个位置。不可变的数据结构是 <code>append-only</code> 的：在写入之后，文件的内容不会再进行更改，相反的，所有的修改会以添加的信息写到文件的末端。还有其他的方式来实现不可变性，其中一个是使用 <code>copy-on-write</code> 写时复制技术，被修改的页面保存了修改后的版本，然后将它写到文件中的新的位置，而不是写到原来的位置。我们常听到 LSM 跟 B-Tree 的区别被描述成不变性跟就地更新之间的差异，但也有一些其他的数据结构 <em>(如 Bw-Tree)</em> 是从 B-Tree 启发而来但却是不可变的。</p>
+</li>
+<li>
+<p><em>Ordering</em></p>
+<p>这部分定义了数据记录记录到磁盘时需不需要跟他的 Key 保持相同的顺序。换句话说，连续的 Key 在磁盘是连续存储的。Ordering 通常定义了能不能高效的对记录进行区间扫描，而不只是用来定位独立的数据记录。数据存储时如果是乱序的 <em>(比如按照插入的顺序)</em> 有时也为写入时间的优化提供了可能性。比如 Bitcask 跟 WiscKey 存储数据的方式是通过直接附加到文件末尾。</p>
+</li>
+</ul>
+<p>当然，对这三个概念的粗略讨论是无法展示他们的能力的，我们将会继续在本书后续的章节中对其进行讨论。</p>
+<h2><a class="header" href="#summary" id="summary">Summary</a></h2>
+<p>在本章我们讨论了数据库管理系统的架构以及主要的几个组件。</p>
+<p>还重点讨论了基于磁盘的数据结构的重要性，以及他跟基于内存的数据结构的区别。对此我们总结基于磁盘的数据结构对两种类型的存储都是非常重要的，只是他们会用来达成不同的目标。</p>
+<p>为了理解访问模式对数据库系统设计的影响，我们讨论了基于行跟基于列的数据库管理系统以及导致他们之间有所区别的因素。还从数据文件跟索引文件作为起点，开始了对数据是如何进行存储的讨论。</p>
+<p>最后我们介绍了三个核心的概念：<em>Buffering</em> 、<em>Immutability</em> 跟 <em>Ordering</em>。我们使用他们来贯穿整本书的核心属性跟使用他们的存储引擎。</p>
+<h3><a class="header" href="#更多的阅读" id="更多的阅读">更多的阅读</a></h3>
+<p>如果你想对我们本章中讨论的概念有更多的了解，可以通过下面的引用获取相关信息</p>
+<ul>
+<li>
+<p>Database architecture</p>
+<p>Hellerstein, Joseph M., Michael Stonebraker, and James Hamilton. 2007. “Archi‐ tecture of a Database System.” Foundations and Trends in Databases 1, no. 2 (Feb‐ ruary): 141-259. https://doi.org/10.1561/1900000002.</p>
+</li>
+<li>
+<p>Column-oriented DBMS</p>
+<p>Abadi, Daniel, Peter Boncz, Stavros Harizopoulos, Stratos Idreaos, and Samuel Madden. 2013. The Design and Implementation of Modern Column-Oriented Database Systems. Hanover, MA: Now Publishers Inc.</p>
+</li>
+<li>
+<p>In-memory DBMS</p>
+<p>Faerber, Frans, Alfons Kemper, and Per-Åke Alfons. 2017. Main Memory Data‐ base Systems. Hanover, MA: Now Publishers Inc.</p>
+</li>
+</ul>
+<h1><a class="header" href="#chapter-2" id="chapter-2">Chapter 2</a></h1>
+<h2><a class="header" href="#b-tree-basics" id="b-tree-basics">B-Tree Basics</a></h2>
+<p>在前面的章节我们将存储的数据结构分成了类：<em>mutable</em> 可变的跟 <em>immutable</em> 不可变的，并且确认了不可变性是其中一个会影响到具体设计与实现的核心概念。大部分的可变数据存储结构都使用了就地更新的机制。在发生插入、删除或更新操作时，数据记录会在目标文件的原位置上直接更新。</p>
+<p>存储引擎通常允许在数据库中存在一条数据记录的多个版本；比如在使用了 <em>Multiversion Concurrency Control</em> <em>(MVCC 多版本并发控制)</em> 或 <em>Slotted Page</em> 组织时。为了简化的目的，现在我们先假定每个 Key 只会关联到唯一的一条数据记录，并且只有一个唯一的位置信息。</p>
+<p>现在最流程的存储数据结构之一就是 B-Tree。许多开源的数据库都是基于 B-Tree 的，并且经过了多年的验证，他确实适用于大部分的场景。</p>
+<p>B-Tree 并不是近期才发明的：他在 1971 年时已经被 Rudolph Bayer 及 Edward M. McCreight 进行了介绍并一直流行到现在。在 1979 年时已经出现了不少 B-Tree 的变种。Douglas Comer 在 <a href="https://lwn.net/Articles/752063">Douglas Comer</a> 中对其进行了系统性的整理。</p>
+<p>在深入 B-Tree 之前，先来讨论为什么我们要用他来替代传统的搜索树，比如 <code>Binary search tree</code> 二叉搜索树、2-3-Trees 跟 <code>AVL Tree</code> 平衡搜索树。现在我们先来回顾下什么是二叉搜索树。</p>
+<h2><a class="header" href="#binary-search-trees" id="binary-search-trees">Binary Search Trees</a></h2>
+<p>二叉搜索树 <em>(BST)</em> 是有序的内存数据结构，被用来提供高效的基于键值对的查找。BST 包含了许多的节点，每个树的节点都呈现为一个 Key 及跟该 Key 相关联的数据，每个节点有两个子节点 <em>(因此取名二叉)</em>。BST 从一个单独的名为 <em>root</em> 的节点开始，并且一棵树只允许有一个 <em>root</em> 节点。Figure 2-1 中我们展示了个二叉搜索树的例子</p>
+<img src="./chapter_2_1_btree_basic.assets/image-20210220152913396.png" style="width: 85%">
+<p>每个节点将搜索空间分割为左子树 <code>subtrees</code> 跟右子树，正如 Figure 2-2 展示的，一个节点的 Key 会大于其左子树的所有节点，并且会小于其右子树的所有节点。</p>
+<img src="./chapter_2_1_btree_basic.assets/image-20210220153157215.png" style="width:85%">
+<p>从 root 开始沿着左子树一直遍历到最左的叶子节点 <em>(叶子意味着他不具有子节点)</em> 就能定位到树中最小的 Key 以及其关联的数据。同样的，沿着右子树一直遍历到最右的叶子节点能够定位到树中最大的 Key 及其关联的数据。关联的数据允许存储在树中的任意节点中，然后查找会从 root 节点开始，但可能会在非叶子节点就被中断或返回，比如已经在较高的层级中找到了对应的 Key。</p>
+<h3><a class="header" href="#tree-balancing" id="tree-balancing">Tree Balancing</a></h3>
+<p>插入的操作并不会遵循哪种指定的方式，元素的插入可能会导致树失去平衡 <em>(比如其中一个分支比其他的分支要长)</em>。在 Figure 2-3 中展示了最严重的场景，其中展示了一颗看起来更像是链表的病态的树，作为一个设计目标是对数复杂度的树 <em>(如 Figure 2-3 )</em>，最后演变成了线性复杂度。</p>
+<img src="./chapter_2_1_btree_basic.assets/image-20210220161914899.png" style="width:85%">
+<p>这个例子可能将问题描述的略微极端了，但他说明了为什么树需要平衡性: 尽管不是所有的节点最后都会往一边倾斜，但毫无疑问的是这种情形会显著的降低查询效率。</p>
+<p>一个平衡的树的高度是被定义为了 Log2N，N 是指树中所有节点的总数，并且左右两颗子树的高度只差不会超过一。在失去平衡时，我们会失去二叉搜索树的结构给我们的性能优势，并且插入跟删除操作也会影响树的形状 <em>(平衡)</em>。</p>
+<p>在一颗平衡的树中，在平均情况下每次进入左子树或右子树都能够减少一半的查找空间，所以查找的复杂度为 O(log2 N)。如果树是失衡的，最差的情况下复杂度会增长为 O(N)，因为我们最终可能会遇到树的所有节点都在同一侧的情况。</p>
+<p>为了不产生在添加新元素后其中一侧分支越来越长，另一侧却还是空的情况 <em>(如 Figure 2-3 (b))</em>，让树继续保持平衡。可以通过重新组织树的节点来降低树的高度，并让两侧分支的差距保持一定的边界。后</p>
+<p>其中一种保持树平衡的方法是在添加或删除树的节点对其进行翻转。如果插入的操作导致让当前分支失衡 <em>(分支里两个连续的节点只有一个子节点)</em>，我们就可以 <em>rorate</em> 旋转中间的节点，如 Figure 2-4 中展示的，对 <code>node(3)</code> 进行旋转，我们称它为 <em>pivot</em> 节点，旋转后将它提高几个层级，并且将它的父节点设为右子节点。</p>
+<img src="./chapter_2_1_btree_basic.assets/image-20210220170923443.png" style="width:85%">
+<h3><a class="header" href="#trees-for-disk-based-storage" id="trees-for-disk-based-storage">Trees for Disk-Based Storage</a></h3>
+<p>如前面提到的，失衡的树有着糟糕的 O(N) 的复杂度。平衡树给我们的平均复杂度应该是 O(log2 N)。在这个时候下，由于扇出量很低 <em>(扇出量是我们允许的节点所能拥有的最大子节点数)</em>，我们需要频繁的去维持树的平衡，旋转节点，并更新对应的指针等信息。高昂的管理成本让 BST 作为基于磁盘的数据结构成了不现实的选择。</p>
+<p>如果我们希望在磁盘中管理 BST，需要面对几个问题。其中一个是局部性：数据是以随机的顺序添加的，没办法保证新增的节点会写到其父节点附近，这意味着节点的子节点可能会在多个磁盘页中保存。我们可以通过调整树的布局跟使用基于页的二叉树来改善这种情况。</p>
+<p>另外一个问题跟子节点也是紧密相关的，就是树的高度。因为二叉树的扇出量只有二，因此高度是树节点总数的以二为底的对数，因此我们需要花费 O(log2 N) 次寻址来定位需要查找的元素，并导致相同次数的磁盘数据传输。2-3-Tree 跟其他扇出量低的树都具有相同的限制：他们可以高效的在内存中使用，但较少的节点数意味着将他们应用到外部存储器时变得不现实。</p>
+<p>一个拙劣的基于磁盘的 BST 实现需要许多的磁盘寻址来做比较，因为他没有建立起局部性的概念。这让我们踏上了寻找具有这种特性的数据结构的路。</p>
+<p>考虑到这些因素，一个能够适配磁盘的树的实现需要满足下面两个特性：</p>
+<ul>
+<li><em>Hight fanout</em> 高扇出能够提高邻接节点的局部性</li>
+<li><em>Low height</em> 低高度能够减少查找过程所需的次数</li>
+</ul>
+<blockquote>
+<p>扇出跟高度有着一个相反的关系：更高的扇出量意味着更低的高度。如果扇出很高，每个节点能够持有的子节点数会更多，这减少了整体的节点数，因此也会产生更低的高度。</p>
+</blockquote>
+<h2><a class="header" href="#disk-based-structures" id="disk-based-structures">Disk-Based Structures</a></h2>
+<p>我们已经在比较通用的层面上讨论过基于内存及基于磁盘的存储了。现在可以来具体的描绘一下具体数据结构之间的差异：有一些适合使用在磁盘，有一些则更适合使用于内存中。</p>
+<p>就像我们讨论过的，不是所有满足空间跟复杂度的数据结构都能够高效的应用在基于磁盘的存储上。数据库中的数据结构需要能够适配持久化介质所带来的限制。</p>
+<p>保存在磁盘中的数据结构通常用于处理那些数据量巨大，没办法将整个数据集存放到内存的情形。只有一部分的数据能够缓存在内存中，然后其他的则以能够高效访问的形式存储在磁盘中。</p>
+<h3><a class="header" href="#hard-disk-drives" id="hard-disk-drives">Hard Disk Drives</a></h3>
+<p>大部分传统的算法都是在流行以机械硬盘作为持久化存储介质时期开发的，他们的设计深受那个时代的影响。在之后新的存储介质被开发出来了，如闪存，这又启发了一系列新的算法的产生，也促使旧的算法进行了很多的调整，来适配这些新的硬件。到了现在，又出现了许多新的、优化来支持新的非易失性、字节寻址的存储设备的数据结构。<em>(比如 XIA17 跟 KANNAN18)</em></p>
+<p>对于机械硬盘来说，随机读取会因为寻址而提高性能开销，因为他们需要硬盘进行转动好让机械磁头能够移动到对应的位置来进行读写。然而，在这部分昂贵的操作完成之后，进行的顺序读取跟写入相对来说都是开销比较小的。</p>
+<p>在机械硬盘中最小的传输单位是 <em>sector</em> 扇区，所以当对其进行操作时，最少会对一个扇区进行读或者写。扇区的尺寸一般会在 512 个字节跟 4Kb 之间。</p>
+<p>磁头的定位是 HDD 硬盘操作中最为昂贵的一步。这也是为什么我们一直听到 <em>Sequential I/O</em> 顺序性 I/O 操作更好的原因: 连续性的从磁盘读取跟写入数据。</p>
+<h3><a class="header" href="#solid-state-drives" id="solid-state-drives">Solid State Drives</a></h3>
+<p>固态硬盘 <em>(SSD)</em> 没有需要移动的部分: 那里没有磁盘的转动，也没有磁头需要因为读取产生的定位操作。通常的 SSD 是使用 <em>memory cells</em> 内存单元组成的，他们连接成 <em>strings</em> <em>(通常是 32 到 64 个内存单元构成一个 string)</em>，<em>strings</em> 又会组成 <em>arrays</em> 数组，数组再组成 <code>pages</code> 页面，最后由页面组成 <em>blocks</em> 块。</p>
+<p>取决于具体使用的技术，一个内存单元可以存储一个或多个位的数据。设备之间的页面大小也可能是不同的，但一般来说他们的大小都会在 2 到 16Kb 之间，块则通常包含 64 到 512 个页面。块会组成 <em>planes</em> 平面，然后最后平面会被存放在 <em>die</em> 中。一个 SSD 可以有一个或多个的 die。Figure 2-5 展示了他们之间的层次关系</p>
+<img src="./chapter_2_3_disk_based_structures.assets/image-20210220192545745.png" style="width: 85%">
+<p>在 SSD 中进行读写的最小单位是页。但是，我们只能改变空的内存单元 <em>(比如在写之前要先清除某个区域)</em>。最小 <em>erase</em> 清除的单位不是页，而是包含了多个页的块，所以经常会将其称为 <em>erase block</em> 清除块。在一个空的块中可以对其页面进行顺序的写入。</p>
+<p>其中有个内存控制器负责将页 ID 映射为物理位置，跟踪空白的区域，写入跟丢弃页面，这个控制器称为 <em>Flash Translation Layer</em> <em>(FTL)</em> 闪存翻译层。当 FTL 发现一个块可以安全的清除时，他还会负责进行垃圾回收的工作。有些块可能会有部分存活的页，在这种情况下，他会将这些块中存活的页面分配到新的位置，然后为他的页 ID 重新进行映射到新的位置。在这之后，他会清除那些现在已经没在使用的块，让他们可以支持后续新的写入操作。</p>
+<p>因为两种设备类型 <em>(HDD 跟 SSD)</em> 都是使用地址来操作大块的数据，而不是操作独立的字节 <em>(比如按块来访问数据)</em>，所以当今大部分的操作系统都为基于块设备进行了抽象。他们隐藏了内部的磁盘结构跟缓冲 I/O 操作，所以当我们从基于块的设备中读取单个 <em>word</em> 字时，其实整个块都会被包含在当次读取中。这是一个我们在使用磁盘数据结构是需要时刻考虑的限制。</p>
+<p>在使用 SSD 时我们不需要像使用 HDD 一样将随机 I/O 跟 顺序 I/O 的区别看得那么重，因为随机跟顺序的读取延迟并没有太大的差别。但其中仍有一些由预读取、读取连续页面跟内部并行性引起的区别。</p>
+<p>尽管垃圾回收通常在后台运行，但他仍然可能会对写操作造成负面的影响，特别是处理随机跟未对齐的写负载。</p>
+<p>写入只会按照整个块来进行，并会将连续的写操作合并写到同一个块，这能够减少所需的 I/O 操作。我们会在后续的章节中讨论使用缓冲跟不变性会用来达到这个目标。</p>
+<h3><a class="header" href="#on-disk-structures" id="on-disk-structures">On-Disk Structures</a></h3>
+<p>除了磁盘访问本身的代价之外，构建高效的基于磁盘的数据结构的主要限制跟设计的条件主要来自于对磁盘的最小操作单位是块。要根据指针定位到具体某个块中的位置，我们需要将整个块都读出来。因为无论如何我们都需要这样做，因此可以通过调整数据结构的布局来利用这个特性。</p>
+<p>我们已经在之前的章节中数次提到过指针，但这个词在基于磁盘的数据结构中的语义与之前稍有不同。在磁盘中，大部分时间我们都需要手动管理数据的布局 <em>(除了使用 Memory Mapped File 技术时不需要)</em>。这依然跟普通的指针操作类似，但我们需要自己来计算目标指针的地址并显式的跟随指针。</p>
+<p>大部分时间磁盘上的偏移量是预先计算好的 *(避免指针所指向的区域在指针被写入磁盘之后还未写入磁盘)*又或者会缓存在内存中直到指向的区域都被写入磁盘。创建一个有长依赖链条的磁盘数据结构会大幅提高代码跟数据结构本身的复杂度，因此会倾向于将指针的数量跟其指向的范围控制到最小。</p>
+<p>总而言之，基于磁盘的数据结构的设计会考虑其目标存储的细节，并将磁盘的访问次数优化到最少。我们可以通过提高局部性、优化数据结构内部的表现形式跟减少页外指针的数量来得到优化效果。</p>
+<p>在 <em>Binary Search Trees</em> 一节中，我们总结出了高扇出跟低高度是设计基于磁盘的数据结构时达成优化的重要属性。我们还额外的空间开支来自于指针，以及为了保持树平衡而带来的管理这些指针的开支。B-Trees 组合了这些想法：提高节点的扇出量，降低树的高度、节点的指针数以及维持树平衡操作的频率。</p>
+<blockquote>
+<h4><a class="header" href="#paged-binary-trees" id="paged-binary-trees">Paged Binary Trees</a></h4>
+<p>下图我们将二叉树的布局调整为将多个节点组合到同一个页上，如 Figure 2-6 所示，提高了数据的局部性。在需要查找下一个节点时，只需要在已经读取到内存的页中查找即可。但是任由一些额外的开销来自于节点跟指针之间。对存储在磁盘上的数据结构进行管理不是容易的事情，尤其是在 Key 跟 Value 不是以有序的方式添加的。平衡需要对页进行重建，这也会导致需要更新指针的信息。</p>
+</blockquote>
+<img src="./chapter_2_3_disk_based_structures.assets/image-20210221012142506.png" style="width:85%"><h2><a class="header" href="#ubiquitous-b-trees" id="ubiquitous-b-trees">Ubiquitous B-Trees</a></h2>
+<p>可以将 B-Trees 想象成一个图书馆中的巨大目录：首先你要找到正确的陈列柜，然后在这个柜上找到正确的书架，然后在这个书架上找到正确的抽屉，然后在抽屉中找到你正在寻找的那个卡片。类似的， B-Tree 构建了一个帮助使用者快速定位他想找的数据的层次结构。</p>
+<p>如我们之前讨论过的二叉查找树，B-Tree 构建为一个平衡搜索树，但跟普通的搜索树的区别在于具有更大的扇出量 <em>(拥有更多的子节点)</em> 跟更小的高度。</p>
+<p>在大部分的介绍里面，二叉树的节点都被描绘为一个圆。因为每个节点唯一的职责就是保存对应的键跟将对应的区间分为两部分，这个细节水平基本是很直观的。而 B-Tree 的节点一般会被描绘为一个矩形，还重点指出了指针块来描述子节点跟分隔键之间的关系。Figure 2-7 依次展示了二叉树、2-3-Tree 跟 B-Tree 的节点，这能够帮助我们了解他们之间的相同点及差别</p>
+<p><img src="./chapter_2_4_ubiquitous_btrees.assets/image-20210222004759987.png" alt="image-20210222004759987" /></p>
+<p>没有什么能够阻止我们以相同的方式画出二叉树。这些数据结构都具有类似的使用指针的语义，他们的区别则是从如果管理其中的平衡开始。Figure 2-8 展示了 BST 跟 B-Tree 之间的类似的点：Key 会将树分裂成子树，并会用他来作为搜索目标的导航，你可以将它跟 Figure 2-1 做一下比较。</p>
+<img src="./chapter_2_4_ubiquitous_btrees.assets/image-20210222005314854.png" style="width:85">
+<p>B-Tree 是有序的：在 B-Tree 中的 Key 都会按照顺序来存储。因此为了定位到需要查找的 Key 我们可以使用类似二分查找的算法。这同时也暗示了 B-Tree 的查找具有对数级别的复杂度。举例来说，为了在 40 亿个元素中查找某个目标需要进行 32 次比较，如果每次比较都需要在磁盘中进行寻址的话，会明显的拖慢整个过程，但因为 B-Tree 的节点存储了成打或上百个元素，我们可以只在每个层级上只执行一次磁盘寻址。查找算法更具体的细节会在本章的后面详细讨论。</p>
+<p>使用 B-Tre，我们可以高效的执行点跟区间的查询。点查一般在查询语言中使用相等表达式表示，用来定义单条记录。另一种区间查询在查询语言中则一般使用比较表达式 <em>(如 &lt;、&gt;、≤、≥)</em> 来按查询一批有序的数据。</p>
+<h3><a class="header" href="#b-tree-hierarchy" id="b-tree-hierarchy">B-Tree Hierarchy</a></h3>
+<p>B-Tree 由许多的节点组成，每个节点或保存最多 N 个 Key 跟 N+1 个指向子节点的指针。这些节点在逻辑上我们可以将他们分成三组：</p>
+<ul>
+<li>
+<p><em>Root node</em></p>
+<p>没有父节点、位于树顶端的节点</p>
+</li>
+<li>
+<p><em>Leaf nodes</em></p>
+<p>位于树的底端、没有子节点的节点</p>
+</li>
+<li>
+<p><em>Internal nodes</em></p>
+<p>除了以上两种节点，剩下的就只有这种节点了，通过他们将树的根及叶子连接起来。这类节点一般会存在多个不同的级别 <em>(深度)</em> 中。</p>
+</li>
+</ul>
+<p>这个层级关系展示在 Figure 2-9 中</p>
+<img src="./chapter_2_4_ubiquitous_btrees.assets/image-20210222010938444.png" style="width: 85" >
+<p>因为 B-Tree 是按照 <em>页</em> 来进行组织的 <em>(他们通常使用固定大小的页面尺寸)</em>，因此我们将 节点跟页 作为相同的概念交替着使用。</p>
+<p>节点的 <em>capacity</em> 容量跟其中真实存储的 Key 的数量的关系我们称之为 <em>occupancy</em> 使用率。</p>
+<p>B-Tree 的特点是他的扇出量: 即每个节点存储的 Key 的数量。更高的扇出量让节点中存储的 Key 跟指针能够集中保存在单个块或多个连续的块中，因此能够分摊为了保持树平衡所所需对做的修改成本以及减少对磁盘的访问量。保持平衡的操作 <em>(称为 splits 分裂跟 merges 合并)</em> 会在节点写满或接近空时触发。</p>
+<blockquote>
+<h3><a class="header" href="#b-trees" id="b-trees">B^+^-Trees</a></h3>
+<p>我们介绍具有类似属性的树时都使用了 B-Tree 这个词。在前面所介绍的数据结构的更具体的名字其实是 B^+^-Tree。[KNUTH98] 将具有高扇出的树称为多路树进行了介绍。</p>
+<p>B-Tree 允许在树中任意层级的节点中存储数据：包括根、内部节点跟叶子节点。B^+^-Tree 则只允许将数据存储在叶子节点中。内部节点只存储了 <em>separator keys</em> 分裂键，他用来告诉查询算法对应的键会出现在哪个叶子中。</p>
+<p>因为 B^+^-Tree 只会在叶子节点存储数据，所有的操作 <em>(插入、更新、删除跟查找)</em> 都只会对叶子节点产生修改，并在需要进行分裂跟合并时传播到更高的层级。</p>
+<p>B^+^-Tree 使用的非常广，我们跟其他的介绍一样将它称为 B-Tree，比如 [GRAEEE11] 中将 B^+^-Tree 作为默认的设计，在 MySQL 的 InnoDB 实现的 B^+^-Tree 也被称为 B-Tree。</p>
+</blockquote>
+<h3><a class="header" href="#separator-keys" id="separator-keys">Separator Keys</a></h3>
+<p>保存在 B-Tree 节点中的 Key 一般称为 <em>index entries</em> 索引实体、<em>separator keys</em> 分裂键或 <em>divider cells</em> 分隔单元。他们将树分裂成了对应区间的多个子树 <em>(也成为 branches 分支或 subrange 子区间)</em>。这些 Key 会被有序的保存，因此能够对其使用二分查找。通过高层级的节点的 Key 及对应的指针能够找到对应的子树。</p>
+<p>在节点中的第一个指针指向小于其第一个 Key 的子树，节点中的最后一个指针指向大于等于其最后一个 Key 的子树。其他指针所指向的子树中的 Key 都表达式 K~i-1~ ≤ K~S~ &lt; K~i~ ，其中 K 是指所有 Key 的集合， K~S~ 在其子树中的 Key 集合。Figure 2-10 描述了这些特性</p>
+<img src="./chapter_2_4_ubiquitous_btrees.assets/image-20210222015419480.png" style="width:85%">
+<p>有一些 B-Tree 还保存了指向相邻节点的指针，不过他们一般存在于叶子节点，用于简化区间扫描操作。这些指针能够避免通过父节点来才能找到其相邻节点。有一些实现还使用了类似双向链表的两个指针来指向其前后两个相邻节点，这让他们可以实现对叶子节点进行反向的迭代。</p>
+<p>让 B-Tree 与别不同的还有，不同于自顶向下 <em>(如二叉查找树)</em> 来构建树，他使用了另外一种自底向上的方式。当叶子节点增长时才会导致内部节点跟树的高度增高。</p>
+<p>因为 B-Tree 为每个节点申请了额外的空间来供以后的插入跟更新使用，树的存储利用度可能会低于 50%，不过大部分情况下利用度会高得多。而更高的利用度并不用对 B-Tree 的性能产生负面的影响。</p>
+<h3><a class="header" href="#b-tree-lookup-complexity" id="b-tree-lookup-complexity">B-Tree Lookup Complexity</a></h3>
+<p>B-Tree 查找的复杂度能从两个角度来观察：查找过程中发生的传输块的次数及比较的次数。</p>
+<p>传输次数是以 N 为基础的对数 <em>(N 即每个节点的 Key 的个数)</em>。每个新的级别都会有 K 倍的子节点数，而因此往子节点继续查找时能减少的检索空间会以 N 为因子减少。在查找中最多有 $Log_k M$ <em>(M 是 B-Tree 中节点的总数)</em> 个页面会被用来查找指定的 Key。从根到最后叶子节点中需要被跟随引用的子指针跟所访问的级别数是相等的，也就是树的高度。</p>
+<p>通过观察具体比较的次数，他是基数为 2 的对数，因为从节点中查找具体的 Key 是使用二分查找来完成的。每个比较都会减少一半的查找控件，因此复杂度为 $Log_2 M$。</p>
+<p>了解查找磁盘的次数跟比较的次数的差别，能够帮助我们从两个方面更直观的理解查找是如何进行的，以及查找具体的复杂度。</p>
+<p>在一些书跟文章中， B-Tree 查找的的复杂度常常被描述为 $Log M$。对数的基数通常不会在复杂度的分析中提起，因为更改这个基数只会改变其常量因子，而对常量因子所作的乘法并不会改变其复杂度。比如给一个非零的常量因子 C, $O(|C|\times n)$ == $O(n)$</p>
+<h3><a class="header" href="#b-tree-lookup-algorithm" id="b-tree-lookup-algorithm">B-Tree Lookup Algorithm</a></h3>
+<p>现在开始我们会讨论到 B-Tree 的数据结构及其内部组织。我们会定义用来查找、插入以及删除的算法。为了从 B-Tree 中找到指定的元素，我们会沿着根到叶子执行一次查找，这次查找的目标是找到我们所需的 Key 或者是其前驱。找到指定 Key 是用来实现点查；而找到前驱对区间扫描跟插入都非常有帮助。</p>
+<p>算法将从根及二分查找开始，将目标 Key 跟根中所存储的 Key 进行比较直到找到第一个大于该目标 Key 的分隔键，这样就能定位到下一个要查找的子树。就如我们之前讨论的，分隔键将树分裂成多颗由两个邻接键表示其边界的子树。当我们找到对应的子树时，我们跟着其指针对应的子树，然后继续执行相同的处理 <em>(定位分隔键，跟随指针找到子树)</em> 直到叶子层，在这一层我们可以找到目标 Key 或是根据其前驱来确认该 Key 不存在。</p>
+<p>在每一个层级，我们都能获得关于该树更详细的信息：我们从最粗粒度的级别 <em>(树的根)</em> 沿着树的节点进入下一个键值区间更加明确的层级，直到达到能够用来定位具体数据的叶子层。</p>
+<p>在执行点查时，查找会在找到或者没找到目标 Key 时终止。在执行区间查询时，迭代从最找到的最接近的键值对开始，然后沿着兄弟节点的指针一直前行直到区间指定的终点或是区间的检查失效。</p>
+<h3><a class="header" href="#counting-keys" id="counting-keys">Counting Keys</a></h3>
+<p>在许多的文献中，你可以找到许多不同的描述键跟子节点偏移量计数的方式。[BAYER72] 提到针对具体设备的最佳的页面尺寸 $K$。在本例中的页能够保存 K 到 2K 个 Key，跟能够持有至少 K+1 到 2K+1 个指向子节点的指针。在后面还提到了使用 $l$  来表示定义每个非叶子的页能保存 $l + 1$ 个 Key。</p>
+<p>在其他的资料中，如 [GRAEFE11]，提到了节点能够保存最多 N 个分裂键及 N+1 个指针，跟我们提到的语义及数量是类似的。</p>
+<p>这些方式都实现了同一个目标，其中各个文献的差异主要在于具体数值的定义不同，为了清晰起见，在本书中我们坚持使用 $N$ 来表示 Key <em>(或键值对)</em> 的数量。</p>
+<h3><a class="header" href="#b-tree-node-splits" id="b-tree-node-splits">B-Tree Node Splits</a></h3>
+<p>为了往 B-Tree 中插入一个值，我们首先要定位到目标的叶子及具体可以插入的位置。为了达到这个目的，我们使用在上一个小节中描述的算法，定位到对应的叶子后将新的 Key 跟 Value 添加到他最后的位置。在 B-Tree 中进行更新的操作则是一样使用查找算法先定位到目标的叶子节点，然后将新的数据关联到现存的 Key 上。</p>
+<p>如果目标的节点没有足够的空间，我们称该节点已经 <em>overflowed</em> 溢出并需要分裂成两部分来存放新的数据。更确切的说，节点在满足下面的条件时就会分裂：</p>
+<ul>
+<li>对于叶子节点：如果节点能够保存最多 N 个键值对，插入新的节点会导致其超过了定义的最大容量 N</li>
+<li>对于非叶子节点：如果节点能够保存最多 N + 1 个指针，插入新的指针会导致其超过其定义的最大容量 N + 1</li>
+</ul>
+<p>节点的分裂通过下列操作完成，创建一个新的节点，从原有节点转移一半的元素到新节点，然后将其第一个 Key 跟指针添加到父节点中，这种情况我们称之为 Key 被提升了。导致这次分裂产生的索引位置称为 <em>split point</em> 分裂点 <em>(也被称为 midpoint 中点)</em>。所有在分裂点之后 <em>(如果是非叶子节点的分裂则包括分裂点本身)</em> 的元素被转移到新创建的邻接节点，其他的元素则依然保存在原节点中。</p>
+<p>如果父节点已经满了，导致没有多余的空间来保存刚刚被提升的 Key 跟指针，那他也会进行分裂。这个操作会不断的往上传播直到根节点。</p>
+<p>当树也增长到了其最高容量时 <em>(即分裂已经往上传播到了根节点)</em> 我们就需要将根节点也进行分裂，当根节点分裂后，新的根会保存导致分裂的分隔键。然后原本的根 <em>(现在保存了之前一半的元素)</em> 被降为下一级的节点，并紧随着其新创建的邻接节点，然后将树的高度提升了一级。树的高度会在根节点发生了分裂跟创建新的根时，或当两个节点被合并成一个新的根时发生改变。在叶子节点跟内部节点的级别内，树只会水平扩展。</p>
+<p>Figure 2-11 展示了在叶子节点已经满的情况下插入新的 11 元素的情形。我们在满节点的中间画了一条线，把其中的一般元素留下，把另一半的元素移动到了新的节点。产生的分裂点则放到了原本节点的父节点上，作为分隔键。</p>
+<p><img src="./chapter_2_4_ubiquitous_btrees.assets/image-20210222155806142.png" alt="image-20210222155806142" /></p>
+<p>Figure 2-12 展示了在插入元素 11 时造成非叶子节点上的分裂处理。为了处理分裂，我们创建了个新的节点，然后将其中索引从 $N/2+1$ 开始的元素都移过去。分隔点的键则上升到了父节点。</p>
+<p><img src="./chapter_2_4_ubiquitous_btrees.assets/image-20210222160135085.png" alt="image-20210222160135085" /></p>
+<p>非叶子节点的分裂往往是因为其下级节点的分裂导致的，因为我们需要为其存储多一个指针 <em>(即下一级别中新创建的节点)</em>。如果父节点这个时候也没有足够的空间，则他也会同样发生分裂。</p>
+<p>不管是叶子还是非叶子节点分裂都是正常的 <em>(区别只是说该节点包含了 Key 跟对应的 Value 还是只有 Key)</em>，如果是叶子节点分裂了，Key 会跟他相关联的 Value 一起被移到新的节点中。</p>
+<p>当分裂完成后，我们有了两个节点，因此需要从中选择正确的那个来继续完成插入操作。所以我们要使用分裂键的不变式，如果插入的 Key 小于被提升的那个，我们将其插入到被分裂的那个节点中，否则的话，我们将他插入到新创建的那个节点。</p>
+<p>作为总结，节点的分裂被由以下四步操作完成：</p>
+<ol>
+<li>创建一个新的节点</li>
+<li>从原有节点中复制一半元素到新的节点</li>
+<li>将新的元素放置到对应的节点中</li>
+<li>在原有节点的父节点中添加一个分裂键跟指针指向新的节点</li>
+</ol>
+<h3><a class="header" href="#b-tree-node-merges" id="b-tree-node-merges">B-Tree Node Merges</a></h3>
+<p>删除操作首先由定位到目标叶子开始，当目标叶子成功定位后，对应的 Key 跟其关联的 Value 将会被删除。</p>
+<p>如果被删除节点的邻接节点只有少量的元素 <em>(比如他的使用率小于某个指定的阈值)</em>，则邻接的节点会被合并。这种状况称之为 <em>underflow</em> 下溢。来介绍两个下溢的场景：如果两个相邻的节点属于同一个父节点并且他们的内容能够放到一个节点中，则他们应该被合并；如果他们的内容不能够放到一个节点中，则他们的 Key 会被重新分布，以实现重新平衡。更确切地说，两个节点在满足下面条件时被合并：</p>
+<ul>
+<li>对于叶子节点：如果节点最多能够保存 N 个键值对，且与相邻节点的键值对个数之和小于等于 N</li>
+<li>对于非叶子节点：如果节点最多能保存 N + 1 个指针，并且与相邻节点的指针之和小于等于 N + 1</li>
+</ul>
+<p>Figure 2-13 展示了在删除元素 16 时发生的合并操作。我们将元素从其中一个邻接节点移到另一个，更一般来说，元素从右邻接节点移到其左边那个，但如果他们的 Key 是预生成的话，也可以使用其他的方法。</p>
+<p><img src="./chapter_2_4_ubiquitous_btrees.assets/image-20210222163510953.png" alt="image-20210222163510953" /></p>
+<p>Figure 2-14 展示了在删除元素 10 时两个非叶子节点的合并操作。如果合并后的元素后只需要使用一个节点就可容纳，那我们就只需保留一个节点。在合并非叶子节点时，我们需要从他的父节点中把对应的分裂键拉下来一层。由较低层级节点的删除操作传播上来的的合并操作，可能会导致页被删除，所以对应的指针数会减少一个。跟分裂一样，合并也会往上传播知道根节点。</p>
+<p><img src="./chapter_2_4_ubiquitous_btrees.assets/image-20210222164345470.png" alt="image-20210222164345470" /></p>
+<p>作为总结，节点的合并由下面三步操作完成，这里我们假设对应的元素已被删除：</p>
+<ol>
+<li>复制所有右相邻节点的元素到左的节点</li>
+<li>删除右节点在父节点中中的指针 <em>(在非叶子节点合并时则是下降)</em></li>
+<li>删除右节点</li>
+</ol>
+<p>在分裂跟合并后有一个需要实现的技术点称为 <em>rebalancing</em> 重平衡，我们会在后续对应的章节讨论。</p>
+<h3><a class="header" href="#summary-1" id="summary-1">Summary</a></h3>
+<p>在本章中，我们为基于磁盘的存储创建了一个特定的数据结构。二叉查找树跟其有类似的特点，仍有扇出量低、大量分配及更新指针等问题导致其不适合在磁盘中使用。B-Tree 通过增加每个节点的子节点数 <em>(搞扇出)</em> 跟更少平衡操作来解决这些问题。</p>
+<p>之后，我们讨论了 B-Tree 内部的数据结构以及查找、插入、删除操作算法的轮廓。分裂跟合并操作帮助我们在新增及删除元素后能够重新构建树以保持其平衡。我们保持了树的高度尽量的低并在仍有空闲空间时将元素添加到已存在的节点中。</p>
+<p>我们也可以使用这些方法来创建基于内存的 B-Tree。创建基于磁盘的数据结构，我们需要深入到细节中去了解 B-Tree 在磁盘上的布局，并将数据以基于磁盘的编码格式进行组合。</p>
+<blockquote>
+<h3><a class="header" href="#futher-reading" id="futher-reading">Futher Reading</a></h3>
+<p>你可以从下面的资源来了解更多跟本章概念相关的东西，</p>
+<ul>
+<li>
+<p>Binary search trees</p>
+<p>Sedgewick, Robert and Kevin Wayne. 2011. Algorithms (4th Ed.). Boston: Pearson.</p>
+<p>Knuth, Donald E. 1997. The Art of Computer Programming, Volume 2 (3rd Ed.): Seminumerical Algorithms. Boston: Addison-Wesley Longman.</p>
+</li>
+<li>
+<p>Algorithms for splits and merges in B-Trees</p>
+<p>Elmasri, Ramez and Shamkant Navathe. 2011. Fundamentals of Database Systems (6th Ed.). Boston: Pearson.</p>
+<p>Silberschatz, Abraham, Henry F. Korth, and S. Sudarshan. 2010. Database Sys‐ tems Concepts (6th Ed.). New York: McGraw-Hill.</p>
+</li>
+</ul>
+</blockquote>
+<h1><a class="header" href="#chapter-1-1" id="chapter-1-1">Chapter 1</a></h1>
+<h2><a class="header" href="#file-format" id="file-format">File Format</a></h2>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+        
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+        
+        
+
+    </body>
+</html>
