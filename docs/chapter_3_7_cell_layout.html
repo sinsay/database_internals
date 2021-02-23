@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>File Format - Database Internals</title>
+        <title>Cell Layout - Database Internals</title>
         
         
 
@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="part_1_storage_engine.html"><strong aria-hidden="true">1.</strong> Storage Engine</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_1_introduction_and_overview.html"><strong aria-hidden="true">1.1.</strong> Introduction and Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_2_dbms_architecture.html"><strong aria-hidden="true">1.1.1.</strong> DBMS Architecture</a></li><li class="chapter-item expanded "><a href="chapter_1_3_memory_disk_base_dbms.html"><strong aria-hidden="true">1.1.2.</strong> Memory- Versus Disk-Based DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_4_column_row_oriented.html"><strong aria-hidden="true">1.1.3.</strong> Column- Versus Row-Oriented DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_5_data_files_and_index_files.html"><strong aria-hidden="true">1.1.4.</strong> Data Files and Index Files</a></li><li class="chapter-item expanded "><a href="chapter_1_6_buffering_immutability_and_ordering.html"><strong aria-hidden="true">1.1.5.</strong> Buffering Immutability and Ordering</a></li><li class="chapter-item expanded "><a href="chapter_1_7_summary.html"><strong aria-hidden="true">1.1.6.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2_1_btree_basic.html"><strong aria-hidden="true">1.2.</strong> BTree Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_2_2_binary_search_trees.html"><strong aria-hidden="true">1.2.1.</strong> Binary Search Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_3_disk_based_structures.html"><strong aria-hidden="true">1.2.2.</strong> Disk Based Structures</a></li><li class="chapter-item expanded "><a href="chapter_2_4_ubiquitous_btrees.html"><strong aria-hidden="true">1.2.3.</strong> Ubiquitous B-Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_5_summary.html"><strong aria-hidden="true">1.2.4.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3_1_file_format.html" class="active"><strong aria-hidden="true">1.3.</strong> File Format</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_3_2_motivation.html"><strong aria-hidden="true">1.3.1.</strong> Motivation</a></li><li class="chapter-item expanded "><a href="chapter_3_3_binary_encoding.html"><strong aria-hidden="true">1.3.2.</strong> Binary Encoding</a></li><li class="chapter-item expanded "><a href="chapter_3_4_general_principles.html"><strong aria-hidden="true">1.3.3.</strong> General Principles</a></li><li class="chapter-item expanded "><a href="chapter_3_5_page_structure.html"><strong aria-hidden="true">1.3.4.</strong> Page Structure</a></li><li class="chapter-item expanded "><a href="chapter_3_6_slotted_pages.html"><strong aria-hidden="true">1.3.5.</strong> Slotted Pages</a></li><li class="chapter-item expanded "><a href="chapter_3_7_cell_layout.html"><strong aria-hidden="true">1.3.6.</strong> Cell Layout</a></li><li class="chapter-item expanded "><a href="chapter_3_8_combining_cell_into_slotted_pages.html"><strong aria-hidden="true">1.3.7.</strong> Combining Cell into Slotted Pages</a></li><li class="chapter-item expanded "><a href="chapter_3_9_managing_variable_size_data.html"><strong aria-hidden="true">1.3.8.</strong> Managing Variable Size Data</a></li><li class="chapter-item expanded "><a href="chapter_3_10_versioning.html"><strong aria-hidden="true">1.3.9.</strong> Versioning</a></li><li class="chapter-item expanded "><a href="chapter_3_11_checksumming.html"><strong aria-hidden="true">1.3.10.</strong> Checksumming</a></li><li class="chapter-item expanded "><a href="chapter_3_12_summary.html"><strong aria-hidden="true">1.3.11.</strong> Summary</a></li></ol></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="part_1_storage_engine.html"><strong aria-hidden="true">1.</strong> Storage Engine</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_1_introduction_and_overview.html"><strong aria-hidden="true">1.1.</strong> Introduction and Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_2_dbms_architecture.html"><strong aria-hidden="true">1.1.1.</strong> DBMS Architecture</a></li><li class="chapter-item expanded "><a href="chapter_1_3_memory_disk_base_dbms.html"><strong aria-hidden="true">1.1.2.</strong> Memory- Versus Disk-Based DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_4_column_row_oriented.html"><strong aria-hidden="true">1.1.3.</strong> Column- Versus Row-Oriented DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_5_data_files_and_index_files.html"><strong aria-hidden="true">1.1.4.</strong> Data Files and Index Files</a></li><li class="chapter-item expanded "><a href="chapter_1_6_buffering_immutability_and_ordering.html"><strong aria-hidden="true">1.1.5.</strong> Buffering Immutability and Ordering</a></li><li class="chapter-item expanded "><a href="chapter_1_7_summary.html"><strong aria-hidden="true">1.1.6.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2_1_btree_basic.html"><strong aria-hidden="true">1.2.</strong> BTree Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_2_2_binary_search_trees.html"><strong aria-hidden="true">1.2.1.</strong> Binary Search Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_3_disk_based_structures.html"><strong aria-hidden="true">1.2.2.</strong> Disk Based Structures</a></li><li class="chapter-item expanded "><a href="chapter_2_4_ubiquitous_btrees.html"><strong aria-hidden="true">1.2.3.</strong> Ubiquitous B-Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_5_summary.html"><strong aria-hidden="true">1.2.4.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3_1_file_format.html"><strong aria-hidden="true">1.3.</strong> File Format</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_3_2_motivation.html"><strong aria-hidden="true">1.3.1.</strong> Motivation</a></li><li class="chapter-item expanded "><a href="chapter_3_3_binary_encoding.html"><strong aria-hidden="true">1.3.2.</strong> Binary Encoding</a></li><li class="chapter-item expanded "><a href="chapter_3_4_general_principles.html"><strong aria-hidden="true">1.3.3.</strong> General Principles</a></li><li class="chapter-item expanded "><a href="chapter_3_5_page_structure.html"><strong aria-hidden="true">1.3.4.</strong> Page Structure</a></li><li class="chapter-item expanded "><a href="chapter_3_6_slotted_pages.html"><strong aria-hidden="true">1.3.5.</strong> Slotted Pages</a></li><li class="chapter-item expanded "><a href="chapter_3_7_cell_layout.html" class="active"><strong aria-hidden="true">1.3.6.</strong> Cell Layout</a></li><li class="chapter-item expanded "><a href="chapter_3_8_combining_cell_into_slotted_pages.html"><strong aria-hidden="true">1.3.7.</strong> Combining Cell into Slotted Pages</a></li><li class="chapter-item expanded "><a href="chapter_3_9_managing_variable_size_data.html"><strong aria-hidden="true">1.3.8.</strong> Managing Variable Size Data</a></li><li class="chapter-item expanded "><a href="chapter_3_10_versioning.html"><strong aria-hidden="true">1.3.9.</strong> Versioning</a></li><li class="chapter-item expanded "><a href="chapter_3_11_checksumming.html"><strong aria-hidden="true">1.3.10.</strong> Checksumming</a></li><li class="chapter-item expanded "><a href="chapter_3_12_summary.html"><strong aria-hidden="true">1.3.11.</strong> Summary</a></li></ol></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -163,26 +163,56 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#chapter-2" id="chapter-2">Chapter 2</a></h1>
-<h2><a class="header" href="#file-format" id="file-format">File Format</a></h2>
-<p>在涵盖 B-Tree 的基本语义后，我们现在已经就绪来探讨 B-Tree 跟其他的一些数据结构是如何基于磁盘实现的。访问磁盘的方式跟访问内存是有巨大差异的: 从一个开发人员的角度，内存访问几乎是透明的，得益于虚拟内存的帮助我们无需手动去管理内存的偏移量。磁盘的访问则是使用系统调用的，我们一般需要明确的提供目标文件的偏移量，然后将磁盘上的数据解释为可以用内存访问的形式。</p>
-<p>这意味着需要对这个差异了然于胸才能设计出高效的基于磁盘的数据结构。因此，我们首先从容易构建的文件格式开始，然后再修改、再理解。在本章，我们会讨论通用的原则跟实践方式来帮助我们设计所有的基于磁盘的数据结构，而不仅是 B-Tree。</p>
-<p>有许多种可能的方式来实现 B-Tree，这里我们还将讨论几个有用的技术。他们的细节可能在实现中会差异很大，但通用的原则基本是一样的。理解 B-Tree 基础的机制，如分裂跟合并是非常重要的，不过只有他们是不足以来做出真正的实现的。这其中还有许多其他的东西需要整合到一起，才能得到我们最终的结果。</p>
-<p>基于磁盘的指针管理跟内存中的指针是有很大的区别的，要常常想着把基于磁盘的 B-Tree 当成管理页的机器：算法需要去组合跟导向页。页跟指向他的指针需要进行计算后才能得到其相应的位置。</p>
-<p>因为 B-Tree 中大部分复杂的点都来自于其变异性，我们讨论的具体细节就集中在了 <em>page layouts</em> 页面布局、<em>splitting</em> 分裂、<em>relocations</em> 重分配跟其他一些适用于数据结构可变性的概念。在这之后我们会讨论 LSM Trees，我们会专注于排序跟维护因为他们是 LSM 复杂性的来源。</p>
+                        <h2><a class="header" href="#cell-layout" id="cell-layout">Cell Layout</a></h2>
+<p>通过 <em>flags</em>  标志、<em>enums</em> 枚举跟基础类型我们就可以开始设计 <em>Cell</em> 的布局了，然后再使用 <em>Cell</em> 来构建页，最后用页来组成整棵树。在 <em>Cell</em> 级别，我们将它分成 Key 跟 Key-Value 两种 <em>Cell</em>。Key Cell 保存 Key 跟指向页面内对应位置的指针。Key-Value Cell 则保存了 Key 与其关联的数据记录。</p>
+<p>我们假设页面内的 Cell 都是均匀的 <em>(举例来说，所有的 Cell 都能够同时保存 Key 或者是同时保存  Key 跟 Value；类似的，所有的 Cell 都可以保存固定长度跟可变长度的数据，但不能同时保存两种)</em>。这意味着我们可以在页的级别上存储描述 Cell 的元数据，而不是记录在每个 Cell 中。</p>
+<p>为了构造一个 Key Cell，我们需要知道下面这些信息</p>
+<ul>
+<li>Cell 类型 <em>(可以通过页的元数据得到)</em></li>
+<li>Key 的大小</li>
+<li>该 Cell 所指向的子页的 ID</li>
+<li>Key 字节数据</li>
+</ul>
+<p>可变长度的 Key Cell 的布局看起来应该像这样 <em>(固定长度的则不需要在 Cell 级别上保存长度信息)</em></p>
+<pre><code>0               4              8
++---------------+--------------+------------+
+|[int] key_size |[int] page_id |[bytes] key |
++---------------+--------------+------------+
+</code></pre>
+<p>我们将固定长度的数据字段整合到了一起，然后后面再附加 key_size 个字节。严格意义上来说并不是一定要这样处理，但这样可以帮助我们简化偏移量的计算，因为所有固定长度的字段可以使用静态的、预先算好的偏移量来访问，唯一需要计算偏移量的就只有可变长度部分的数据了。</p>
+<p>Key-Value Cell 的话，除了不保存页的 ID，而是换成保存具体的数据记录之外，其他的部分都是类似的</p>
+<ul>
+<li>Cell 类型 <em>(可以通过页的元数据得到)</em></li>
+<li>Key 的尺寸</li>
+<li>Value 的尺寸</li>
+<li>Key 字节数据</li>
+<li>数据记录的字节记录</li>
+</ul>
+<pre><code>0            1              5                9           .. +key_size
++------------+--------------+----------------+-----------+-------------------+
+|[byte]flags |[int]key_size |[int]value_size |[bytes]key |[bytes]data_record |
++------------+--------------+----------------+-----------+-------------------+
+</code></pre>
+<p>你应该注意到了其中偏移量跟页面 ID 的区别。因为页都是固定尺寸并且通过页缓存进行管理的，我们只需要存储页的 ID，在之后就可以通过这个 ID 从查询表中找到真实的偏移量。Cell 的偏移量都是相对于当前页面的起始地址：这让我们可以使用更小的数值来表示偏移量，以此保持结构更紧凑。</p>
+<blockquote>
+<h3><a class="header" href="#variable-size-data" id="variable-size-data">Variable-Size Data</a></h3>
+<p>在 Cell 中使用固定大小的 Key 跟 Value 并不是必须的。Key 跟 Value 都可以有可变的长度。因为可以依据页的头部大小来算出他们的具体偏移量。</p>
+<p>我们可以通过跳过头部然后读取 <em>key_size</em> 个字节来定位 Key，类似的，我们可以通过跳过头部然后再跳过 key_size 个字节后再读取 value_size 个字节来定位 Value。</p>
+<p>还有许多其他的方法可以达到一样的目标，比如，通过存储整体大小然后通过减法来计算出 Value 的大小。只要我们有足够的信息来记录对 Cell 的切分，就能够重新构建出所需的数据。</p>
+</blockquote>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="chapter_2_5_summary.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="chapter_3_6_slotted_pages.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="chapter_3_2_motivation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="chapter_3_8_combining_cell_into_slotted_pages.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -194,13 +224,13 @@
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="chapter_2_5_summary.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="chapter_3_6_slotted_pages.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a rel="next" href="chapter_3_2_motivation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="chapter_3_8_combining_cell_into_slotted_pages.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
