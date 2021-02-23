@@ -13,3 +13,8 @@
     - [Disk Based Structures](./chapter_2_3_disk_based_structures.md)
     - [Ubiquitous B-Trees](./chapter_2_4_ubiquitous_btrees.md)
   - [File Format](./chapter_3_1_file_format.md)
+    - [Motivation](./chapter_3_2_motivation.md)
+    - [Binary Encoding](./chapter_3_3_binary_encoding.md)
+    - [General Principles](./chapter_3_4_general_principles.md)
+    - [Page Structure](./chapter_3_5_page_structure.md)
+    - [Slotted Pages](./chapter_3_6_slotted_pages.md)
