@@ -15,13 +15,13 @@ chinese translation of database internals, now the progress is
     - [x] Ubiquitous B-Trees
   - [ ] Chapter 3 - FIle Format
     - [x] Motivation
-    - [ ] Binary Encoding
-    - [ ] General Principles
-    - [ ] Page Structure
-    - [ ] Slotted Pages
-    - [ ] Cell Layout
-    - [ ] Combining Cells into Slotted Pages
-    - [ ] Managing Variable-Size Data
+    - [x] Binary Encoding
+    - [x] General Principles
+    - [x] Page Structure
+    - [x] Slotted Pages
+    - [x] Cell Layout
+    - [x] Combining Cells into Slotted Pages
+    - [x] Managing Variable-Size Data
     - [ ] Versioning
     - [ ] Checksumming
     - [ ] Summary
