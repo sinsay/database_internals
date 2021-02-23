@@ -13,7 +13,7 @@ chinese translation of database internals, now the progress is
     - [x] Binary Search Trees
     - [x] Disk Based Structures
     - [x] Ubiquitous B-Trees
-  - [ ] Chapter 3 - FIle Format
+  - [x] Chapter 3 - FIle Format
     - [x] Motivation
     - [x] Binary Encoding
     - [x] General Principles
@@ -22,9 +22,9 @@ chinese translation of database internals, now the progress is
     - [x] Cell Layout
     - [x] Combining Cells into Slotted Pages
     - [x] Managing Variable-Size Data
-    - [ ] Versioning
-    - [ ] Checksumming
-    - [ ] Summary
+    - [x] Versioning
+    - [x] Checksumming
+    - [x] Summary
   - [ ] Chapter 4 - Implement B-Trees
     - [ ] Page Header
     - [ ] Binary Search
