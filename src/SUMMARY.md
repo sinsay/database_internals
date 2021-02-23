@@ -12,6 +12,7 @@
     - [Binary Search Trees](./chapter_2_2_binary_search_trees.md)
     - [Disk Based Structures](./chapter_2_3_disk_based_structures.md)
     - [Ubiquitous B-Trees](./chapter_2_4_ubiquitous_btrees.md)
+    - [Summary](./chapter_2_5_summary.md)
   - [File Format](./chapter_3_1_file_format.md)
     - [Motivation](./chapter_3_2_motivation.md)
     - [Binary Encoding](./chapter_3_3_binary_encoding.md)
