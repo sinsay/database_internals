@@ -1,0 +1,296 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Binary Encoding - Database Internals</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="part_1_storage_engine.html"><strong aria-hidden="true">1.</strong> Storage Engine</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_1_introduction_and_overview.html"><strong aria-hidden="true">1.1.</strong> Introduction and Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_2_dbms_architecture.html"><strong aria-hidden="true">1.1.1.</strong> DBMS Architecture</a></li><li class="chapter-item expanded "><a href="chapter_1_3_memory_disk_base_dbms.html"><strong aria-hidden="true">1.1.2.</strong> Memory- Versus Disk-Based DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_4_column_row_oriented.html"><strong aria-hidden="true">1.1.3.</strong> Column- Versus Row-Oriented DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_5_data_files_and_index_files.html"><strong aria-hidden="true">1.1.4.</strong> Data Files and Index Files</a></li><li class="chapter-item expanded "><a href="chapter_1_6_buffering_immutability_and_ordering.html"><strong aria-hidden="true">1.1.5.</strong> Buffering Immutability and Ordering</a></li><li class="chapter-item expanded "><a href="chapter_1_7_summary.html"><strong aria-hidden="true">1.1.6.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2_1_btree_basic.html"><strong aria-hidden="true">1.2.</strong> BTree Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_2_2_binary_search_trees.html"><strong aria-hidden="true">1.2.1.</strong> Binary Search Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_3_disk_based_structures.html"><strong aria-hidden="true">1.2.2.</strong> Disk Based Structures</a></li><li class="chapter-item expanded "><a href="chapter_2_4_ubiquitous_btrees.html"><strong aria-hidden="true">1.2.3.</strong> Ubiquitous B-Trees</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3_1_file_format.html"><strong aria-hidden="true">1.3.</strong> File Format</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_3_2_motivation.html"><strong aria-hidden="true">1.3.1.</strong> Motivation</a></li><li class="chapter-item expanded "><a href="chapter_3_3_binary_encoding.html" class="active"><strong aria-hidden="true">1.3.2.</strong> Binary Encoding</a></li><li class="chapter-item expanded "><a href="chapter_3_4_general_principles.html"><strong aria-hidden="true">1.3.3.</strong> General Principles</a></li><li class="chapter-item expanded "><a href="chapter_3_5_page_structure.html"><strong aria-hidden="true">1.3.4.</strong> Page Structure</a></li><li class="chapter-item expanded "><a href="chapter_3_6_slotted_pages.html"><strong aria-hidden="true">1.3.5.</strong> Slotted Pages</a></li></ol></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Database Internals</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2><a class="header" href="#binary-encoding" id="binary-encoding">Binary Encoding</a></h2>
+<p>为了能在磁盘中高效的存储数据，需要以紧凑的易于序列化跟反序列化的格式进行编码。在讨论二进制格式时可能会经常提到 <em>layout</em> 布局这个词。因为我们没有原始的 <code>malloc</code> 跟 <code>free</code> ，只有 <code>read</code> 跟 <code>write</code>，我们需要考虑以不同的方式来访问跟准备相应的数据。</p>
+<p>在这里我们将讨论创建高效页布局的主要原则，这些原则适用于任意的二进制格式：你可以使用类似的指南去创建文件跟序列化格式或者是通信协议。</p>
+<p>在我们开始将数据记录组织为页之前，需要先理解如何使用二进制模式来表示对应的 Key 跟数据记录，如果将多个值合并成一个复杂的数据结构，以及如何实现可变长度的类型跟数组。</p>
+<h3><a class="header" href="#primitive-types" id="primitive-types">Primitive Types</a></h3>
+<p>Key 跟 Value 都具有指定的类型，比如 <em>integer</em> 整形、<em>date</em> 日期、<em>string</em> 字符串，这些类型都可以表示为 <em>(序列化或者反序列化)</em> 原始的二进制格式。</p>
+<p>大部分的数值数据类型都是以固定长度的值来表示的。在处理多需要用多个字节来表示的数值时，要使用同一种 <em>byte-order</em> 字节序来进行编码跟解码。字节序决定了字节的顺序:</p>
+<ul>
+<li>
+<p><em>Big-endian</em></p>
+<p>大端序从最高位的字节开始，然后依次是越来越低位的字节，话句话说，大端具有最小地址。</p>
+</li>
+<li>
+<p><em>Little-endian</em></p>
+<p>小端序从较低位的字节开始，然后是越来越高位的的字节。</p>
+</li>
+</ul>
+<p>Figure 3-1 的插图描绘了这个概念，这个16 进制的 32位 整数 <code>0xAABBCCDD</code>，<code>AA</code> 是他的最高位，在下面分别以大端跟小端的顺序展示了出来</p>
+<p><img src="./chapter_3_3_binary_encoding.assets/image-20210223000052818.png" alt="image-20210223000052818" /></p>
+<p>举个例子，为了使用对应的字节顺序来重组一个 64 位的整数，RocksDB 为特定平台定义了目标平台字节序。如果目标平台的字节序不跟值的字节序不匹配 *(``EncodeFixed64WithEndian<code>函数通过比较对应值跟</code>kLittleEndian<code>的大小)*，他就会使用</code>EndianTransform` 来对字节进行反转，他能够以相反的顺序读取字节数据并将他们添加到结果中。</p>
+<p>数据记录由一些基础类型如数字、字符串、布尔值，以及这些值的组合组成。但是，在通过网络传输数据或者将其存储到磁盘时，我们只能将其看为字节的序列。这意味着，为了发送或写入数据记录，我们需要对其进行序列化 <em>(将其转换成可解释的字节序列)</em>，然后在我们接受跟读取数据时，需要将其进行反序列化 <em>(从字节序列转换为原始的数据记录)</em>。</p>
+<p>在二进制数据格式中，我们基本都是从用来构建复杂数据结构的基本元素开始。不同的数值类型有不同的尺寸，字节类型是 8 位，短整形是 2 个字节 <em>(16位)</em>，整形是 4 个字节 <em>(32位)</em>，长整形是 8 个字节 (64位)。</p>
+<p>浮点型数值 <em>(如 flat 跟 double)</em> 使用 <em>sign</em> 符号位、<em>fraction</em> 分数跟 <em>exponent</em> 指数 来表示。IEEE Standard for Binary Floating-Point Arithmetic <em>(IEEE 754)</em> 标准描述了被广泛接受的浮点数表现形式。一个 32 位的浮点数表示一个精确的数值。举例来说，一个浮点数 $0.15652$ 的二进制表示，我们将它展示在了 Figure 3-2 中。前 23 位表示分数，后续的 8 位表示指数，最后的一位则表示符号位 <em>(即该数值是正数还是负数)</em>。</p>
+<p><img src="./chapter_3_3_binary_encoding.assets/image-20210223002808010.png" alt="image-20210223002808010" /></p>
+<p>因为浮点数的值是需要通过分数计算出来的，因此该数值表示的数值只是个近似值。完整讨论该算法已经超出了本书的范围，因此我们只会覆盖了其中基础的部分。</p>
+<p><em>double</em> 能够表示双精度的浮点数。大部分的编程语言都在其标准库中实现了对浮点数的二进制进行编码跟解码。</p>
+<h3><a class="header" href="#strings-and-variable-size-data" id="strings-and-variable-size-data">Strings and Variable-Size Data</a></h3>
+<p>所有的基础数值类型都是固定大小的。将他们组合成更复杂结构的方式跟 C 里面的结构体很想。你可以将基础类型组合成结构体并用固定尺寸的数组或指向其他内存区域的指针。</p>
+<p>字符串和其他的可变长数据类型 <em>(如固定长度类型的数组)</em> 能够序列化为数值，表示这个数组或字符串的偿付，在该数字之后则是其具体的真实数据。举个字符串的例子，下面的这个表示方式一般称为 <em>UCSD String</em> 或 <em>Pascal String</em>，这个名字来源于一个流行的 Pascal 编程语言的实现，我们可以使用类似下面的伪代码来表示:</p>
+<pre><code>String {
+	size uint_16
+	data byte[size]
+}
+</code></pre>
+<p>一个用来替代 Pascal String 的方法是使用 <code>null-terminated strings</code> 以空字符终结的字符串，对字符串的读取是按照逐个字节进行的，直到最终遇到 <code>end-of-string</code> 字符串结束的符号。Pascal String 的方式有几个有点: 他允许我们用常数时间得到字符串的长度，而无需遍历整个字符串的内容，在具体的编程语言中可以使用传递字节切片及其大小来重新构建字符串。</p>
+<h3><a class="header" href="#bit-packed-data-booleans-enums-and-flags" id="bit-packed-data-booleans-enums-and-flags">Bit-Packed Data: Booleans, Enums, and Flags</a></h3>
+<p>布尔型可以使用一个单独的字节来表示，也可以使用 1 跟 0 的编码来表示 <code>true</code> 跟 <code>false</code> 。因为布尔类型只会有两种值，因此使用整个字节来表示是比较浪费的，因此开发人员通常会按照 8 的倍数来将多个布尔类型的值打包到一起。每个布尔值只需要使用其中的一位。每一位都能够用来表示来表示该值是否被设置了 <em>(1)</em> 或是未设置或为空 <em>0</em>。</p>
+<p>枚举是 <em>enumerated type</em> 枚举类型的简称，他可以用整数来表示并常常以二进制的格式在传输协议中使用。枚举一般用较低的基数来表示，比如使用枚举来编码 B-Tree 的节点类型：</p>
+<pre><code class="language-c++">enum NodeType {
+  ROOT,      // 0x00h
+  INTERNAL,  // 0x01h
+  LEAF       // 0x02h
+}
+</code></pre>
+<p>另一种类似的概念是 <em>flags</em> 标记，一种用来组合跟打包布尔值跟枚举的类型。标记可以用来表示非互斥的命名布尔参数。比如，我们可以使用标记来表示页面是否包含值的单元，该值是固定长度的还是可变长度的，表示一个页面是否有关联的节点。因为每个位都可以表示一个标记的值，我们可以只使用 2 的倍数作为掩码 <em>(因为 2 的倍数只会有一个位是被设置为 1 的，如 $2^3 == 8 == 1000b, 2^4 == 16 == 0001 0000b$)</em>。</p>
+<pre><code class="language-c">int IS_LEAF_MASK         = 0x01h;  // bit #1
+int VARIABLE_SIZE_VALUES = 0x02h; // bit #2
+int HAS_OVERFLOW_PAGES   = 0x04h;  // bit #3
+</code></pre>
+<p>就像打包后的布尔值，标志使用 <em>bitmasks</em> 位的掩码跟位操作符来执行读取跟写入操作。比如为了打开某个位的设置，我们会使用位操作 OR <em>(|)</em> 跟位掩码来进行操作。也可以使用 <em>bitshift</em> <em>(&lt;&lt;)</em> 移位操作来实现。为了取消某个位，我们可以使用位操作 AND <em>(&amp;)</em> 跟位的取反操作符 <em>(~)</em>。为了测试某个位是否被设置了，我们还可以在指定位跟 0 来执行比较位操作 AND 。</p>
+<pre><code class="language-c">// Set the bit
+flags |= HAS_OVERFLOW_PAGES;
+flags |= (1 &lt;&lt; 2);
+
+// unset the bit
+flasg &amp;= ~HAS_OVERFLOW_PAGES;
+flasg &amp;= ~(1 &lt;&lt; 2);
+
+// Test weather or not the bit is set
+is_set = (flags &amp; HAS_OVERFLOW_PAGES) != 0;
+is_set = (flags &amp; (1 &lt;&lt; 2)) != 0;
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="chapter_3_2_motivation.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="chapter_3_4_general_principles.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="chapter_3_2_motivation.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="chapter_3_4_general_principles.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
