@@ -25,3 +25,5 @@
     - [Versioning](./chapter_3_10_versioning.md)
     - [Checksumming](./chapter_3_11_checksumming.md)
     - [Summary](./chapter_3_12_summary.md)
+  - [Implementing BTrees](./chapter_4_1_implementing_btrees.md)
+    - [Page Header](./chapter_4_2_page_header.md)
