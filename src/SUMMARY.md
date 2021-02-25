@@ -27,3 +27,5 @@
     - [Summary](./chapter_3_12_summary.md)
   - [Implementing BTrees](./chapter_4_1_implementing_btrees.md)
     - [Page Header](./chapter_4_2_page_header.md)
+    - [Binary Search](./chapter_4_3_binary_search.md)
+    - [Propagating Splits and Merges](./chapter_4_4_propagating_spits_and_merges.md)
