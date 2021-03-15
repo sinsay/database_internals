@@ -25,20 +25,20 @@ chinese translation of database internals, now the progress is
     - [x] Versioning
     - [x] Checksumming
     - [x] Summary
-  - [ ] Chapter 4 - Implement B-Trees
-    - [ ] Page Header
-    - [ ] Binary Search
-    - [ ] Propagating Splits and Merges
-    - [ ] Rebalancing
-    - [ ] Right-Only Appends
-    - [ ] Compression
-    - [ ] Veccum and Maintenance
-    - [ ] Summary
-  - [ ] Chapter 5 - Transaction Processing and Recory
-    - [ ] Buffer Management
-    - [ ] Recovery
-    - [ ] Concurrency Control
-    - [ ] Summary
+  - [x] Chapter 4 - Implement B-Trees
+    - [x] Page Header
+    - [x] Binary Search
+    - [x] Propagating Splits and Merges
+    - [x] Rebalancing
+    - [x] Right-Only Appends
+    - [x] Compression
+    - [x] Veccum and Maintenance
+    - [x] Summary
+  - [x] Chapter 5 - Transaction Processing and Recory
+    - [x] Buffer Management
+    - [x] Recovery
+    - [x] Concurrency Control
+    - [x] Summary
   - [ ] Chapter 6 - B-Tree Variants
     - [ ] Copy-on-Write
     - [ ] Abstracting Node Updates
