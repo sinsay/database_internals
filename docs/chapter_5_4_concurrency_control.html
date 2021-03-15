@@ -1,0 +1,428 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Concurrenty Control - Database Internals</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="part_1_storage_engine.html"><strong aria-hidden="true">1.</strong> Storage Engine</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_1_introduction_and_overview.html"><strong aria-hidden="true">1.1.</strong> Introduction and Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_2_dbms_architecture.html"><strong aria-hidden="true">1.1.1.</strong> DBMS Architecture</a></li><li class="chapter-item expanded "><a href="chapter_1_3_memory_disk_base_dbms.html"><strong aria-hidden="true">1.1.2.</strong> Memory- Versus Disk-Based DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_4_column_row_oriented.html"><strong aria-hidden="true">1.1.3.</strong> Column- Versus Row-Oriented DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_5_data_files_and_index_files.html"><strong aria-hidden="true">1.1.4.</strong> Data Files and Index Files</a></li><li class="chapter-item expanded "><a href="chapter_1_6_buffering_immutability_and_ordering.html"><strong aria-hidden="true">1.1.5.</strong> Buffering Immutability and Ordering</a></li><li class="chapter-item expanded "><a href="chapter_1_7_summary.html"><strong aria-hidden="true">1.1.6.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2_1_btree_basic.html"><strong aria-hidden="true">1.2.</strong> BTree Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_2_2_binary_search_trees.html"><strong aria-hidden="true">1.2.1.</strong> Binary Search Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_3_disk_based_structures.html"><strong aria-hidden="true">1.2.2.</strong> Disk Based Structures</a></li><li class="chapter-item expanded "><a href="chapter_2_4_ubiquitous_btrees.html"><strong aria-hidden="true">1.2.3.</strong> Ubiquitous B-Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_5_summary.html"><strong aria-hidden="true">1.2.4.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3_1_file_format.html"><strong aria-hidden="true">1.3.</strong> File Format</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_3_2_motivation.html"><strong aria-hidden="true">1.3.1.</strong> Motivation</a></li><li class="chapter-item expanded "><a href="chapter_3_3_binary_encoding.html"><strong aria-hidden="true">1.3.2.</strong> Binary Encoding</a></li><li class="chapter-item expanded "><a href="chapter_3_4_general_principles.html"><strong aria-hidden="true">1.3.3.</strong> General Principles</a></li><li class="chapter-item expanded "><a href="chapter_3_5_page_structure.html"><strong aria-hidden="true">1.3.4.</strong> Page Structure</a></li><li class="chapter-item expanded "><a href="chapter_3_6_slotted_pages.html"><strong aria-hidden="true">1.3.5.</strong> Slotted Pages</a></li><li class="chapter-item expanded "><a href="chapter_3_7_cell_layout.html"><strong aria-hidden="true">1.3.6.</strong> Cell Layout</a></li><li class="chapter-item expanded "><a href="chapter_3_8_combining_cell_into_slotted_pages.html"><strong aria-hidden="true">1.3.7.</strong> Combining Cell into Slotted Pages</a></li><li class="chapter-item expanded "><a href="chapter_3_9_managing_variable_size_data.html"><strong aria-hidden="true">1.3.8.</strong> Managing Variable Size Data</a></li><li class="chapter-item expanded "><a href="chapter_3_10_versioning.html"><strong aria-hidden="true">1.3.9.</strong> Versioning</a></li><li class="chapter-item expanded "><a href="chapter_3_11_checksumming.html"><strong aria-hidden="true">1.3.10.</strong> Checksumming</a></li><li class="chapter-item expanded "><a href="chapter_3_12_summary.html"><strong aria-hidden="true">1.3.11.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_4_1_implementing_btrees.html"><strong aria-hidden="true">1.4.</strong> Implementing BTrees</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_4_2_page_header.html"><strong aria-hidden="true">1.4.1.</strong> Page Header</a></li><li class="chapter-item expanded "><a href="chapter_4_3_binary_search.html"><strong aria-hidden="true">1.4.2.</strong> Binary Search</a></li><li class="chapter-item expanded "><a href="chapter_4_4_propagating_spits_and_merges.html"><strong aria-hidden="true">1.4.3.</strong> Propagating Splits and Merges</a></li><li class="chapter-item expanded "><a href="chapter_4_5_rebalacing.html"><strong aria-hidden="true">1.4.4.</strong> Rebalacing</a></li><li class="chapter-item expanded "><a href="chapter_4_6_right_only_appends.html"><strong aria-hidden="true">1.4.5.</strong> Right-Only Appends</a></li><li class="chapter-item expanded "><a href="chapter_4_7_compression.html"><strong aria-hidden="true">1.4.6.</strong> Compression</a></li><li class="chapter-item expanded "><a href="chapter_4_8_vacuum_and_maintenance.html"><strong aria-hidden="true">1.4.7.</strong> Vacuum and Maintenance</a></li><li class="chapter-item expanded "><a href="chapter_4_9_summary.html"><strong aria-hidden="true">1.4.8.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_5_1_transaction_processing_and_recovery.html"><strong aria-hidden="true">1.5.</strong> Transaction Processing and Recovery</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_5_2_buffer_management.html"><strong aria-hidden="true">1.5.1.</strong> Buffer Management</a></li><li class="chapter-item expanded "><a href="chapter_5_3_recovery.html"><strong aria-hidden="true">1.5.2.</strong> Recovery</a></li><li class="chapter-item expanded "><a href="chapter_5_4_concurrency_control.html" class="active"><strong aria-hidden="true">1.5.3.</strong> Concurrenty Control</a></li></ol></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Database Internals</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2><a class="header" href="#concurrenty-control" id="concurrenty-control">Concurrenty Control</a></h2>
+<p>在讨论数据库管理系统的架构时，我们提到事务管理器跟锁管理器会一起来处理 <em>concurrenty control</em> 并发控制。并发控制是一系列用来处理并发执行事务的技术，这些技术可以粗略的归为下面的几个分类：</p>
+<ul>
+<li>
+<p><em>Optimistic concurrency control (OCC)</em></p>
+<p>允许事务能够并发的执行读取跟写入操作，并确认他们合并执行的结果是否能够序列化。换个说法就是，事务之间不会互相堵塞，管理事务的操作日志，并在日志提交之前检查这些操作是否会产生冲突。如果执行的结果有冲突，其中一个冲突的日志则会被终止。</p>
+</li>
+<li>
+<p><em>Multiversion concurrency control (MVCC)</em></p>
+<p>通过支持记录拥有多个版本来确保在某个时刻里，数据库能够保持该视图的一致性。<em>MVCC</em> 能够使用验证的方式来实现，允许其中一个更新或事务的提交成功执行，同样他也可以使用类似有序时间戳的无锁的技术来实现，或者使用类似 <em>two-phase-locking</em> 的基于锁的技术来实现。</p>
+</li>
+<li>
+<p><em>Pessimistic (also known as conservative) concurrency control (PCC)</em></p>
+<p>有基于锁跟非锁定的保守方法，他之间的区别在于如何管理及授权共享的资源。基于锁的方法需要事务在数据库的记录上管理锁，在事务释放他的锁之前，防止其他的事务去修改被锁定的记录以及访问修改中的记录。非锁定的方法根据对未完成的事务的调度来管理读取跟写入的操作列表并限制他们的执行。悲观的调度会在多个事务互相等待对方的资源时产生死锁。</p>
+</li>
+</ul>
+<p>在本章中，我们关注节点本地的并发控制技术。在 Chapter 13 中，则会找到关于分布式事务的信息以及实现的方式。</p>
+<p>在我们更深入的讨论并发控制前，我们需要定义一系列我们尝试去解决的问题，以及讨论事务的操作的重叠性跟重叠产生时的后果。</p>
+<h3><a class="header" href="#serializability" id="serializability">Serializability</a></h3>
+<p>事务由对数据库状态的读取及写入操作以及业务逻辑*(对读取内容所做的转换)*组成。从数据库的角度看，计划是执行一组事务所需的一系列操作 <em>(就是跟数据库状态有交互的操作，比如读取、写入跟事务的提交跟中断)</em> 。在此之外其他的所有操作都被假设是不会产生副作用的 <em>换句话说就是不会对数据库的状态产生影响</em>。</p>
+<p>计划在他所包含的来自所有事务的操作都完成后就可以视为成功了，一个正确执行的计划在逻辑上应该等同于原始的操作列表，但是出于优化的目的，他们可能被并行的执行，或是顺序会被重新排列。只要他们不会违反 <em>ACID</em> 属性以及能够得到与单独执行时相同的正确结果。</p>
+<p>当计划中所有事务的执行都是独立的并且不会产生交叉执行的情况，我们称这个计划是串行的，即事务不会在他的上一个事务还未完成之前启动。跟多个事务交叉执行对比，串行的执行很容易去推测，但是只一个接一个的执行事务对系统的吞吐量跟性能都会有很大的影响。</p>
+<p>我们需要找到一个跟串行执行一样能够保持正确性及简易性的并发执行事务操作的方法。我们将通过 <em>serializable</em> 可序列化的计划来达到这个目标，一个可序列化的计划跟串行计划处理相同事务集合需要产生相同的结果。换句话说，就是在同一个事务集合中，他产生的结果跟逐个执行这些事务的结果必须一样。Figure 5-4 展示了三个并行事务的六种可能的执行顺序。</p>
+<p><img src="./chapter_5_4_concurrency_control.assets/image-20210304120400507.png" alt="image-20210304120400507" /></p>
+<h3><a class="header" href="#transaction-isolation" id="transaction-isolation">Transaction Isolation</a></h3>
+<p>事务型数据库系统允许多种不同的隔离级别，隔离级别定义了不同的事务之间如何以及什么时候是可见的。换句话说，隔离级别描述了不同并行事务之间的隔离程度，以及在执行中会遇到的各种类型的问题。</p>
+<p>实现隔离性是有代价的：为了防止事务边界内的不完全执行或部分写入，我们需要额外的协调跟同步机制，这会对性能带来负面的冲击。</p>
+<h3><a class="header" href="#read-and-write-anomalies" id="read-and-write-anomalies">Read and Write Anomalies</a></h3>
+<p>数据库标准描述了在多个事务并发执行时可能会带来的 <em>read anomalies</em> 读取问题：<em>dirty</em> 脏读、<em>nonrepeatable</em> 不可重复读、<em>phantom</em> 幻读。</p>
+<p><em>dirty read</em> 脏读是指事务能够读取到其他事务还未提交的数据，比如说，事务 T~1~ 更新了用户记录的地址字段，事务 T~2~ 在 T~1~ 提交前就读取到了新的地址。事务 T~1~ 之后终止跟回滚了他执行的结果，但是 T~2~ 已经读取到了这个新的、不会被提交的新的地址。</p>
+<p><em>nonrepeatable read</em> 不可重复读是指事务在对同一条记录进行多次读取会得到不同的结果。比如，事务 T~1~ 读取了一行记录，然后事务 T~2~ 修改并提交了这个记录，如果 T~1~ 这个时候再次读取了这个记录，那他就会得到更前一次读取不同的结果。</p>
+<p>如果我们在事务中使用了区间读取 <em>(比如不是读取单条记录，而是读取某个区间内的记录)</em>，我们可能会遇到 <em>phantom records</em> 幻觉记录。<em>phantom read</em> 幻读就是当事务对同一区间的数据多次读取时，得到不同的结果，他跟不可重复读有点类似，但他是在区间查询的时候出现的。</p>
+<p>同样的， <em>write anomalies</em> 写入问题也有类似的语义：<em>lost update</em> 更新丢失、<em>dirty write</em> 脏写、<em>write skew</em> 写倾斜。</p>
+<p><em>lost update</em> 更新丢失发生在事务 T~1~ 跟 T~2~ 同时更新同一个值 V 时。T~1~ 跟 T~2~  读取 V 的值，T~1~ 更新了 V 之后提交， 然后 T~2~ 更新了 V 之后提交。因为两个事务都不知道对方的存在，如果两个提交都被允许，那 T~1~ 提交的结果将被 T~2~ 的结果覆盖了，也就是 T~1~ 的更新丢失了。</p>
+<p><em>dirty write</em> 脏写发生在一个事务读取到了一个未提交的记录 <em>(比如，在脏读中所读取的记录)</em> 后，对他进行修改，然后提交。换种说法就是当事务的结果依赖于不会提交的记录时，就会发生脏写。</p>
+<p><em>write skew</em> 写倾斜发生的情形是，每个独立的事务都满足不变量，但当他们组合在一起的时候会破坏不变量。举例来说，事务 T~1~ 跟 T~2~ 修改两个账户记录 A~1~ 跟 A~2~ ，A~1~ 一开始有 100 美元，A~2~ 一开始有 150 美元，只要两个账户的总和不为负数，就能允许其中一个账户是负数，即 $A_1 + A_2 &gt;= 0$ 。现在 T~1~ 跟 T~2~ 都尝试从 A~1~ 跟 A~2~ 中提取 250 美元，250 美元是满足总金额这个要求的，因此每个事务都假设自己满足当前不变量可以进行提交。在提交后 A~1~ 变成了 -100 美元，A~2~ 则变成了 -50 美元，这时就很明显的违反了保持账户总额不能为负数的这个要求。</p>
+<h3><a class="header" href="#isolation-levels" id="isolation-levels">Isolation Levels</a></h3>
+<p>隔离级别中级别最低 <em>(隔离性最弱)</em> 的是 <em>read uncommitted</em> <strong>读未提</strong>交，在这个隔离级别中，事务系统允许事务观察到其他事务所作的但未提交的修改，换句话说就是允许出现脏读。</p>
+<p>我们是可以避免部分的异常的，比如说我们可以保证事务中的每个读取操作都只能读到已经提交的更改。但是，这并不能保证这个事务在稍后重新读取这个值的时候还能够读取到同样的值。如果在这两次读取之间有其他的事务做了修改，那同一个事务中的两次读取就会得到两个不同的结果。换句话说就是不允许脏读，但是允许幻读跟不可重复读。这个隔离级别称为 <em>read committed</em> <strong>读已提交</strong>。如果我们需要把不可重复读也禁止，那就是另外一个称为 <em>repeatable read</em> <strong>可重复读</strong>的隔离级别了。</p>
+<p>最强的隔离级别叫做 <em>serializability</em> <strong>可序列化</strong>，跟我们在之前已经讨论的一样，他保证了事务执行的会以他们启动的顺序逐个产生，只是禁止事务并发执行会对数据库的性能带来较大的负面影响。事务可以在位置其内部不变量的前提下进行重排序，但他们的结果一样需要以串行一样的顺序出现。</p>
+<p>Figure 5-5 展示了隔离级别以及他们允许出现的问题</p>
+<p><img src="./chapter_5_4_concurrency_control.assets/image-20210304173557344.png" alt="image-20210304173557344" /></p>
+<p>没有任何依赖的事务可以以任意的顺序来执行，因为他们所产生的结果也是完全独立。不像 <em>linearizability</em>  <em>(我们会在分布式系统中讨论)</em>，<em>serializability</em> 可序列化属性表示允许多个操作以任意的顺序来执行，他不隐含或尝试去限制执行中的事务以特定的顺序执行。<em>ACID</em> 中的 <em>Isolation</em> 隔离性就表示了可序列化。但是要实现可序列化就意味着需要进行协调，换句话说，并行执行需要通过协调来保证他们的不变量以及为有冲突的的操作保持其执行顺序。</p>
+<p>有些数据库也会使用 <em>snapshot isolation</em> 快照隔离，在快照隔离中，事务能够观察到从他开始执行那一刻起，所有其他已提交事务的变更状态，每个事务都会以这个快照的数据为基础去执行自己的查询，并且这个快照在事务执行的过程中是不能够改变的。最后事务只会在他所修改的值没有被其他事务修改时才能够提交，否则的话他会被终止并且回滚。</p>
+<p>如果有两个事务尝试去修改同一个值，那只有其中一个是允许提交的，这就能够排除掉 <em>lost update</em> 更新丢失的问题了。比如，事务 T~1~ 跟 T~2~ 都尝试去修改 V，他们会先去从所有在他启动之前已经提交的事务里去读取 V 现在的值，然后只要有一个事务首先执行了提交，那他就会提交成功，并且所有其他的事务都会被中断。这时其他失败的事务不会覆盖掉这个值，而是会重新进行尝试。</p>
+<p><em>write skew</em> 写倾斜的问题在快照隔离级别中依然可能存在，因为事务可以读取本地的状态，然后修改独立的数据记录，保持他局部的不变量，这样他们就都能够成功提交。在后续的分布式事务章节中我们会在继续讨论快照隔离的更多细节。</p>
+<h3><a class="header" href="#optimistic-concurrency-control" id="optimistic-concurrency-control">Optimistic Concurrency Control</a></h3>
+<p>乐观的并发控制假设事务的冲突是很少见的，并且不会使用锁跟堵塞事务的执行，我们可以通过对并行执行的事务进行检验来防止他们产生读或写的冲突，只要在事务提交之前确保他们是可序列化的。通常来说，事务会被分成三个步骤</p>
+<ul>
+<li>
+<p><em>Read phase</em></p>
+<p>事务执行他内部上下文中的步骤，而无需去关注其他事务的可见性，在这之后，事务的依赖信息 <em>(读取集合)</em> 是可以确认的，以及事务所产生的副作用 <em>(写入集合)</em> 也是可以确认的</p>
+</li>
+<li>
+<p><em>Validation phase</em></p>
+<p>通过对并行事务的读取集合跟写入集合进行检查就可以知道他们之间是否违反了可序列化性质。如果其中某些事务所读取的某些数据已经过期，或者在他的读取步骤中这些数据会被其他已提交的事务修改，那他的内部上下文会被清空并且他的读取步骤会被重新执行。换句话说，检查步骤确认事务是否会违反 <em>ACID</em> 属性</p>
+</li>
+<li>
+<p><em>Write phase</em></p>
+<p>如果验证步骤确认了不存在冲突，则事务可以将他内部上下文中的写入集合提交到数据库中。</p>
+</li>
+</ul>
+<p>检验可以通过检查已提交事务之间 <em>(反向的检查)</em> 或是处于检验步骤之间  <em>(正向的检查)</em> 事务的冲突来完成。不同事务的检验跟写入步骤应该是原子性的。在对其他事务进行检验时不允许任何事务的提交，因为检验跟写入步骤对比读取步骤来说通常耗时是非常短的，因此这点是可以接受的。</p>
+<p>反向的并发控制确保任意一对事务 T~1~ 跟 T~2~ 能够保持下面的属性</p>
+<ul>
+<li>T~1~ 在 T~2~ 的读取步骤之前提交，则 T~2~ 可以提交</li>
+<li>T~1~ 在 T~2~ 的写入步骤提交了，并且 T~1~ 的写入集合跟 T~2~ 的读取集合没有交集，换句话说， T~1~ 没有写入任何 T~2~ 需要看到的值</li>
+<li>T~1~ 的读取步骤在 T~2~ 的读取步骤之前完成，并且 T~2~ 的写入集合跟 T~1~ 的读取集合没有交集。换句话说，事务之间没有对共同的数据进行操作，则两个事务都可以提交</li>
+</ul>
+<p>这种方式在验证成功率较高、事务无需进行重试的情况下是高效的，因为重试对性能会造成较大的负面影响。当然，乐观的并发还有一个 <em>critical section</em> 关键部分，就是在同一个时刻只有一个事务进行。另一种允许执行一些非排他性操作的方式是使用 <em>readers-writer locks</em> 读写锁 <em>(即并发读取访问)</em> 跟 <em>upgradeable locks</em> 可升级锁 <em>(为了允许将共享锁升级为排他锁)</em>。</p>
+<h3><a class="header" href="#multiversion-concurrency-control" id="multiversion-concurrency-control">Multiversion Concurrency Control</a></h3>
+<p><em>Multiversion concurrency control</em> 多版本并发控制允许数据记录有多个版本并使用单调递增的事务 ID 或时间戳来标识版本，并以此来实现数据库管理系统的事务一致性。这允许读跟写在存储级别只需要最小化的协调，因为在新版本被提交之后仍然可以读取到之前的旧值。</p>
+<p><em>MVCC</em> 将 <em>committed</em> 已提交跟 <em>uncommitted</em> 未提交的版本区分开来，这能为已经提交跟未提交的事务找到对应的值。该值最后提交的版本被假定为 <em>current</em> 当前版本。通常，事务管理器的目标是保证在同一个时刻最多只有一个未提交的值。</p>
+<p>数据库系统隔离级别的实现，决定了读操作能够或不能够去访问一个未提交的值，可以使用锁、调度跟冲突解决技术 <em>(比如 two-phase locking)</em> 或时间戳排序来实现多版本并发。<em>MVCC</em> 的其中一个主要使用案例就是用来实现快照隔离。</p>
+<h3><a class="header" href="#pesimistic-concurrency-control" id="pesimistic-concurrency-control">Pesimistic Concurrency Control</a></h3>
+<p>悲观的并发控制方案比乐观的要保守的多，这些方案在加锁在事务执行的时候检查冲突并阻止或中断事务的运行。</p>
+<p>其中一个简单的悲观 <em>(lock-free)</em> 并发控制方案是使用 <em>stimestamp ordering</em> 时间戳顺序，他让每个事务都持有一个时间戳，然后事务中的操作能否继续执行则是取决于当前是否已经有持有更早时间戳的事务已经被提交了。为了实现这个方案，事务管理器需要独立维护 <em>max_read_timestamp</em> 跟 <em>max_write_timestamp</em> ，他们描述了并发事务中当前已经执行的读取跟写入操作。</p>
+<p>当有事务尝试使用小于 <em>max_read_timestamp</em> 的时间戳去执行读取操作会导致该事务被中断，因为这里已经有比他还新的值存在了，这时允许他继续执行的话会违反了事务的执行顺序。</p>
+<p>类似的，当有事务使用小于 <em>max_read_timestamp</em> 的时间戳去执行写入操作时会跟当前的读产生冲突。但是使用小于 <em>max_write_timestamp</em> 的时间戳去执行写入操作是允许的，因为我们可以安全的忽略已经写入的过期的值。这个推测的方式被称为 <em>Thomas Write Rule</em>。在读取跟写入操作执行的同时，他们对应的最大时间戳会被更新，接着被中断的事务会带着更新后的时间戳进行重试，否则的话他们也只会被再次中断。</p>
+<h3><a class="header" href="#lock-based-concurrency-control" id="lock-based-concurrency-control">Lock-Based Concurrency Control</a></h3>
+<p>基于锁的并发控制方式是悲观并发控制的一种，他在数据库对象上使用明确的锁，而不是通过使用类似时间戳排序等机制来解决调度问题，但是使用锁的方式也会带来竞争跟扩展性的问题。</p>
+<p>其中一个使用得最广泛的基于锁的技术是 <em>two-phase locking</em> 两阶段加锁，他将锁的管理拆分成两个步骤：</p>
+<ul>
+<li><em>growing phase</em> 增长阶段 <em>(也叫做 expanding phase 扩展阶段)</em> 收集以及对所有事务所需的锁进行加锁，并且不会释放任何一个锁</li>
+<li><em>shrinking phase</em> 收缩阶段，释放所有在增长阶段收集到的锁。</li>
+</ul>
+<p>根据上面两个定义能够得到一个规则，就是事务一旦释放了一个锁，就无法在获得其他的任何锁了。一个务必要记住的事情是 2PL 在上述的任何一个阶段中都不会排除事务的执行，但是有一些 2PL 的变种 <em>(比如 conservative 保守的 2PL)</em> 会强制执行这个限制。</p>
+<blockquote>
+<p>尽管有着类似的名字 <em>two-phase locking</em> 跟 <em>two-phase commit</em> 的锁定概念是完全不同的。<em>Two-phase commit</em> 是一个用在分布式的多个分区事务的协议。而 <em>Two-phase locking</em> 是一个用来实现可序列化的并发控制机制。</p>
+</blockquote>
+<h4><a class="header" href="#deadlocks" id="deadlocks">Deadlocks</a></h4>
+<p>在锁定协议中，事务会尝试去获取数据库对象上的锁，并在没办法获取到锁时会一直等待直到锁被释放。这里有一种情况，有两个事务为了能够继续执行，会尝试去获取他们所需的锁，最后他们互相在等着对方释放他们所持有的锁，这种情况我们称为 <em>deadlock</em> 死锁。</p>
+<p><em>Figure 5-6</em> 展示了一个死锁的例子，T~1~ 持有锁 L~1~ 并在等待锁 L~2~ ，事务 T~2~ 只有锁 L~2~ 并在等待锁 L~1~。</p>
+<img src="./chapter_5_4_concurrency_control.assets/image-20210305182043409.png" alt="image-20210305182043409" style="zoom:80%;" />
+<p>处理死锁最简单的方式是给一个超时时间，并假设那些运行了较长时间的事务是因为遇到死锁。另一个策略是使用 <em>Conservative 2PL</em> 保守的二阶段锁，他要求事务在他们执行自己的任何操作前先获取所有的锁，并在获取不到的时候中断。然而这些方法极大的限制了系统的并发性，数据库系统大部分会使用事务管理器来检测跟避免死锁的发生。</p>
+<p>对死锁的检测一般会通过 <em>waits-for graph</em> 等待图，他被用来跟踪正在执行的事务之间的关系，然后在等待图中建立他们的连接。</p>
+<p>在图中产生了环就说明这些事务之间会产生死锁：比如事务 T~1~ 等待着  T~2~ ，同时 T~2~  也在等待着 T~1~。死锁可以通过周期性 <em>(定时)</em> 的或持续性 <em>(每次图更新时)</em> 对等待图进行检查来发现，然后其中的一个事务 <em>(通常是那个正在尝试加锁的)</em> 会被中断。</p>
+<p>为了避免死锁跟让获取锁的操作不会导致出现死锁，事务管理器可以使用事务的时间戳来确定他们之间的优先级。更低的时间戳通常来说会具有更高的优先级。</p>
+<p>如果事务 T~1~ 尝试去获取一个现在被事务 T~2~ 持有的锁，并且 T~1~ 具有更好的优先级 <em>(即他在 T~2~ 之前启动)</em> ，我们可以使用下面的限制来避免死锁：</p>
+<ul>
+<li>
+<p><em>Wait-die</em></p>
+<p>T~1~ 允许堵塞跟等待对应的锁，否则， T~1~ 会被中断然后重启。话句话说，一个事务只有具有较大的时间戳的事务才可以被堵塞</p>
+</li>
+<li>
+<p><em>Wound-wait</em></p>
+<p>T~2~ 被中断然后重启 <em>(T~1~ 伤害了 T~2~)</em> ，否则 <em>(如果 T~2~ 在 T~1~ 之前启动)</em>  T~1~ 会被允许进行等待。换句话说，事务只有在具有较低的时间戳时才可以被堵塞。</p>
+</li>
+</ul>
+<p>事务的执行需要调度器来处理死锁的情况，与此同时 ,<em>latches</em> 锁存器则依赖编程人员来确保不会发生死锁，并且不会依赖于用于避免死锁的机制。</p>
+<h4><a class="header" href="#locks" id="locks">Locks</a></h4>
+<p>如果两个事务被并发的提交了，他们之间修改的数据有重叠的部分，那他们两个都不应该观察到另一个事务的部分结果，从而保持逻辑上的一致性。类似的，在同一个事务中的两个线程需要能够观察到同样的数据内容，并且能够访问到对方的数据。</p>
+<p>在事务的执行中，数据逻辑上的一致性跟物理上的一致性是具有不同语义的，有两个负责逻辑跟物理一致性的对应的概念分别是 <em>locks</em> 锁跟 <em>laches</em> 锁存器。他的命名让人有点失望，因为着这里我们称为锁存器的东西在系统编程中通常称为锁，但我们会在这一节来说清楚他们之间的区别跟暗示。</p>
+<p>锁被用来实现隔离性、调度重叠的事务跟管理数据库内容，但不会用于内部的存储结构，最后会使用对应的 Key 来获取。锁可以用来保护指定的 Key <em>(不管是存在还是不存在)</em> 跟区间范围的 Key。锁通常会在树的实现之外跟表示更高层级的概念，他会有数据库锁管理器来进行管理。</p>
+<p>锁相对于锁存器会比较重量级一些，并且他会在整个事务的执行过程中被持有。</p>
+<h4><a class="header" href="#latches" id="latches">Latches</a></h4>
+<p>另一个角度，锁存器用来保护树在物理上的表现形式：叶子节点的内容会在插入、更新或删除操作中被修改；非叶子节点的内容跟树的结构会在导致叶子节点因为上溢或下溢导致的分裂跟合并的操作时被修改。锁存器在这些操作发生时获取页的层级，来保护树的物理表现形式 <em>(页的内容跟树的结构)</em> 。任何页都需要通过上锁上来保证能够进行安全的并发访问。无锁的并发控制技术都会用到锁存器。</p>
+<p>因为在 B-Tree 叶子层级的单个修改可能会传递到更高的层级，所以可能需要同时在多个层级获取锁存器。执行查询不能够读取到页的不一致状态，比如因为部分写入或者部分节点的分裂时，数据可能会同时存在源页或目标页中，或是数据还未被传递到父节点。</p>
+<p>我们用同样的规则来应用父节点或是邻接节点的更新，其中最通用的规则就是要最小化页被读取或更新时对应锁存器的持有时间，来提高并发能力。</p>
+<p>并发操作之间的互相干扰大致可以分成下面三类：</p>
+<ul>
+<li><em>Concurrent reads</em> 并发读，多个线程同时访问同一个页，并且不会对其做出修改</li>
+<li><em>Concurrent updates</em> 并发写，多个线程尝试对同一个页进行修改</li>
+<li><em>Reading while writing</em>  读取时写入，有一个线程在尝试修改某个页的同时，另一个线程尝试去读取该页</li>
+</ul>
+<p>这些场景也适用于数据库管理系统对数据进行维护时的重叠访问 *(比如在 Vacuum and Maintenance 中的后台处理器) *。</p>
+<h4><a class="header" href="#readers-writer-lock" id="readers-writer-lock">Readers-writer lock</a></h4>
+<p>最简单的锁存器实现是为每个请求的线程的给予排他的读取或写入权限。但是，在大部分情况下，我们不需要将所有的操作都互相隔离开，比如并发的读取页并不会造成任何问题，因此我们需要保证的是多个并发的 <em>writers</em> 写入之间不会产生重叠，以及 <em>readers</em> 读取跟写入之间也不会产生重叠。为了实现这个级别的保障，我们可以使用 <em>readers-writer lock</em> 读取者-写入者锁或是 <em>RW lock</em> 读写锁。</p>
+<p>读写锁允许多个并发的读取访问，以及只有一个写入 <em>(一般是少量的)</em> 会能够排他的访问目标对象。Figure 5-7 展示了完整的读写锁信息：只有读取能够共享该锁的所有权，其他的读取跟写入的组合都会产生排他性。</p>
+<p><img src="chapter_5_4_concurrency_control.assets/image-20210315021353527.png" alt="image-20210315021353527" /></p>
+<p>在 Figure 5-8 (a) 中，我们有多个读取者访问目标对象，这次写入者将会进行等待，并且在读取者访问期间他不能够修改该页的内容。在 Figure 5-8 (b) 中，写入者 1 持有了目标对象上的排他锁，因此其他的写入者跟三个读取者都需要进行等待。</p>
+<p><img src="chapter_5_4_concurrency_control.assets/image-20210315021613646.png" alt="image-20210315021613646" /></p>
+<p>因为两个重叠的读取同一个页的操作不需要同步，只需要防止页缓存多次尝试从磁盘中将它读取到内存即可。因此读取操作可以安全的以共享模式被并发的访问。只有当写入操作发生时，我们才需要将他与其他并发的读取跟其他的写入进行隔离。</p>
+<blockquote>
+<h4><a class="header" href="#busy-wait-and-queueing-techniques" id="busy-wait-and-queueing-techniques">Busy-Wait and Queueing Techniques</a></h4>
+<p>为了对页的共享访问进行管理，我们可以使用基于堵塞的算法，如当可以继续推进操作时唤醒等待的线程；也可以使用基于 <em>busy-wait</em> 忙等算法，忙等算法允许线程进行短暂的等待，而不是直接把控制权交回给调度器。</p>
+<p>队列通常会使用 <em>compare-and-swap</em> 指令来实现，他能够保证锁的获取跟队列的更新的原子性。如果队列是空的，则当前线程能够直接对他进行访问，否则的话，线程将自己加入等待的队列中,然后在某个只能由当前正在处理队列线程处理的变量上进行自旋。这种方式能够减少 CPU 在加锁跟释放锁上的开销。</p>
+</blockquote>
+<h4><a class="header" href="#latch-crabbing" id="latch-crabbing">Latch crabbing</a></h4>
+<p>实现 Latch 最直接的方式就是在为从树的根一直下降到叶子路径上的所有节点都加上锁。但这会对并发产生瓶颈，但是在大部分的情形中这是可以避免的，我们要尽量最小化持有 Latch 的时间。其中有一种优化的方式称为 latch crabbing。</p>
+<p><em>Latch crabbing</em> 是一种相当简单的方式，他能够减少持有 <em>Latch</em> 的时间，并在所执行的操作不需要 <em>Latch</em> 时尽可能快的对其进行释放。在读取路径中，在一个节点的子节点定位成功时，其父节点所持有的 <em>Latch</em> 就会马上被释放。</p>
+<p>在插入时，只要确认当前节点的操作不会造成树的结构产生影响就可以马上释放其父节点的 <em>Latch</em>，换句话说，父节点的 <em>Latch</em> 在其子节点不满时就能够释放。</p>
+<p>类似的，在删除时，如果子节点仍持有足够的元素，而不会导致节点合并发生的话，父节点的 <em>Latch</em> 也可以被释放。</p>
+<p>Figure 5-9 展示了插入时从根到叶子节点的传递过程</p>
+<ul>
+<li>a) 写操作会对根节点进行加锁</li>
+<li>b) 下一级的节点被定位后，他的 <em>Latch</em> 也会被获取，然后检查该节点是否有可能发生结构性的变化，即该节点是非满的，那他的父节点就能够被释放了</li>
+<li>c) 操作下降到下一个层级，写入的 <em>Latch</em> 会被获取，检查目标的叶子节点是否有可能发生结构性的变化，没有的话就释放其父节点的锁</li>
+</ul>
+<p>这个一种乐观的实现方式：假设大部分的插入跟删除操作不会导致数据结构的变更传播到多个层级。事实上，在越高的层级中结构发生变更的概率就月底。大部分的操作只需要获取目标节点的 Latch，同时需要保存期父节点 Latch 的情形相对较少。</p>
+<p>如果子页还未被页缓存读取，我们也可以对即将被加载的页先加锁，或者释放父节点的锁，在该页被加载进内存后再从根节点重新下降来减少竟态条件。重新启动从根节点到叶子节点的下降过程听起来很昂贵，但事实上我们很少会执行这样的操作，而且也可以使用其他的检测机制，实现在访问更高层级节点就知道哪些结构会发生改变。</p>
+<img src="chapter_5_4_concurrency_control.assets/image-20210315182827467.png" alt="image-20210315182827467" style="zoom:50%;" />
+<blockquote>
+<p>Latch Upgrading and Pointer Chasing</p>
+<p>相对于在遍历的过程中马上对节点进行加锁，而是对 Latch 进行升级的方式实现。这种方式需要所在查找路径时能够共享，并在需要的时候能够升级为排他的。</p>
+<p>写入操作首先只会在叶子级别获取排他锁，如果叶子需要进行分裂或合并，则该算法会沿着树的节点向上遍历并尝试将父节点持有的共享锁升级为排他锁来保护树的结构 <em>(也就是父节点也可能会因为该操作导致分裂或合并)</em>。因为多个线程可能会同时在高层级的同一个节点上尝试升级锁，当冲突产生时他们其中的一些操作需要进行等待或是重启。</p>
+<p>你也许发现了这个机制所有对 Latch 的获取都是从根节点开始的，所有的请求都会通过根节点，因此他很快会称为瓶颈。与此同时，根节点总是最后才会被分裂的，因为他所有的子节点需要都被填满先，这意味着根节点总是可以以乐观的方式对待，因为重试的代价是很小的。</p>
+</blockquote>
+<h4><a class="header" href="#blink-trees" id="blink-trees">Blink-Trees</a></h4>
+<p>B^link^-Trees 在 B^*^-Trees 之上添加了 <em>hight keys</em> 跟 <em>sibling link</em> 指针。<em>High key</em> 指明了子树中的最大的 Key，B^link^-Tree 中除了根以外的节点都有两个指针：父节点用于指向子节点的指针及左节点指向其下一个同级节点的指针。</p>
+<p>B^link^-Tree 允许一种称为 <em>half-split</em> 的状态，他指一个节点被他相邻的节点引用了，但没有父节点是指向他的。<em>Half-split</em> 可以通过 <em>high key</em> 来进行识别，如果查找的 <em>key</em> 超过了该节点的 <em>high key</em> <em>(这表示违反了 high key 的不变形)</em>，查找算法就能够推断出该结构已经被并发的进行了修改，然后继续在他的下一个相邻节点中进行查找。</p>
+<p>为了得到最佳的性能，指针需要能够快速的被添加到他的父节点中，但查找的过程不会因此被中断跟中期，因为此时树中所有的元素依然能够进行访问。这种方式的优点是在访问子节点时无需持有父节点的锁，尽管子节点可能马上会被分裂：我们可以创建一个新的节点并将其链接到兄弟节点中，并在不影响正确性的前提下惰性的更新其父节点的指针。</p>
+<p>这种方式相对于直接从父节点访问会有轻微的性能影响，因为他需要访问额外的页，同时也导致在根到叶子节点的遍历保持正确性的前提下简化了并发的访问。因为分裂相对来说是比较少见的，并且 B-Tree 也很少会进行收缩，因此这是一个例外的场景并且他的代价也是非常微小的。这种方式也有一些优点：他减少了锁的竞争，避免在分裂时持有父节点的锁，减少了树结构在发生变化时所需的锁的数量。最重要的是，他允许在树结构发生变化的同时进行并发的读取，还能够防止并发的修改中因为操作上升到同一个父节点产生的死锁。</p>
+<h3><a class="header" href="#summary" id="summary">Summary</a></h3>
+<p>在这章中我们讨论了存储引擎组件在事务处理跟恢复的职责。在实现事务处理中，我们遇到了两个问题：</p>
+<ul>
+<li>为了提高效率，我们需要允许并发的事务执行</li>
+<li>为了保证正确性，我们需要确保并发执行的事务符合  ACID 属性</li>
+</ul>
+<p>并发事务的执行会导致各种不同类型的读写异常，可以通过实现不同的隔离级别来限制或允许这些异常的存在。并发的控制方式取决于了事务的调度跟执行方式。</p>
+<p>页缓存被用于减少对磁盘的访问：他将页缓存到内存中，并允许对其进行读取跟写入操作。当缓存触及到他容量上限时，页会被驱逐出缓存并写入磁盘。为了保证未写入磁盘的变更在节点崩溃时不会丢失，及支持事务的回滚，我们使用了预写日志 <em>Write-ahead logs</em>。使用 force 跟 steal 策略来管理页缓存跟预写日志，保证了事务可以在不牺牲持久性的前提下高效的执行跟回滚。</p>
+<blockquote>
+<h4><a class="header" href="#further-reading" id="further-reading">Further Reading</a></h4>
+<p>If you’d like to learn more about the concepts mentioned in this chapter, you can refer to the following sources:</p>
+<ul>
+<li>
+<p>Transaction processing and recovery, generally</p>
+<p>​	Weikum, Gerhard, and Gottfried Vossen. 2001. Transactional Information Sys‐ tems: 	Theory, Algorithms, and the Practice of Concurrency Control and Recovery. San Francisco: Morgan Kaufmann Publishers Inc.</p>
+<p>Bernstein, Philip A. and Eric Newcomer. 2009. Principles of Transaction Process‐ ing. San Francisco: Morgan Kaufmann.</p>
+<p>Graefe, Goetz, Guy, Wey &amp; Sauer, Caetano. 2016. “Instant Recovery with Write- Ahead Logging: Page Repair, System Restart, Media Restore, and System Failover, (2nd Ed.)” in Synthesis Lectures on Data Management 8, 1-113. 10.2200/ S00710ED2V01Y201603DTM044.</p>
+<p>Mohan, C., Don Haderle, Bruce Lindsay, Hamid Pirahesh, and Peter Schwarz. 1992. “ARIES: a transaction recovery method supporting fine-granularity locking and partial rollbacks using write-ahead logging.” Transactions on Database Sys‐ tems 17, no. 1 (March): 94-162. https://doi.org/10.1145/128765.128770.</p>
+</li>
+<li>
+<p>Concurrency control in B-Trees</p>
+<p>Wang, Paul. 1991. “An In-Depth Analysis of Concurrent B-Tree Algorithms.” MIT Technical Report. https://apps.dtic.mil/dtic/tr/fulltext/u2/a232287.pdf.</p>
+<p>Goetz Graefe. 2010. A survey of B-tree locking techniques. ACM Trans. Database Syst. 35, 3, Article 16 (July 2010), 26 pages.</p>
+</li>
+<li>
+<p>Parallel and concurrent data structures</p>
+<p>McKenney, Paul E. 2012. “Is Parallel Programming Hard, And, If So,What Can You Do About It?” https://arxiv.org/abs/1701.00854.</p>
+<p>Herlihy, Maurice and Nir Shavit. 2012. The Art of Multiprocessor Programming, Revised Reprint (1st Ed.). San Francisco: Morgan Kaufmann.</p>
+</li>
+<li>
+<p>Chronological developments in the field of transaction processing</p>
+<p>Diaconu, Cristian, Craig Freedman, Erik Ismert, Per-Åke Larson, Pravin Mittal, Ryan Stonecipher, Nitin Verma, and Mike Zwilling. 2013. “Hekaton: SQL Server’s Memory-Optimized OLTP Engine.” In Proceedings of the 2013 ACM SIGMOD International Conference on Management of Data (SIGMOD ’13), 1243-1254. New York: Association for Computing Machinery. https://doi.org/ 10.1145/2463676.2463710.</p>
+<p>Kimura, Hideaki. 2015. “FOEDUS: OLTP Engine for a Thousand Cores and NVRAM.” In Proceedings of the 2015 ACM SIGMOD International Conference on Summary | 109Management of Data (SIGMOD ’15), 691-706. https://doi.org/ 10.1145/2723372.2746480.</p>
+<p>Yu, Xiangyao, Andrew Pavlo, Daniel Sanchez, and Srinivas Devadas. 2016. “Tic‐ Toc: Time Traveling Optimistic Concurrency Control.” In Proceedings of the 2016 International Conference on Management of Data (SIGMOD ’16), 1629-1642. https://doi.org/10.1145/2882903.2882935.</p>
+<p>Kim, Kangnyeon, Tianzheng Wang, Ryan Johnson, and Ippokratis Pandis. 2016. “ERMIA: Fast Memory-Optimized Database System for Heterogeneous Work‐ loads.” In Proceedings of the 2016 International Conference on Management of Data (SIGMOD ’16), 1675-1687. https://doi.org/10.1145/2882903.2882905.</p>
+<p>Lim, Hyeontaek, Michael Kaminsky, and David G. Andersen. 2017. “Cicada: Dependably Fast Multi-Core In-Memory Transactions.” In Proceedings of the 2017 ACM International Conference on Management of Data (SIGMOD ’17), 21-35. https://doi.org/10.1145/3035918.3064015.</p>
+</li>
+</ul>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="chapter_5_3_recovery.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="chapter_5_3_recovery.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

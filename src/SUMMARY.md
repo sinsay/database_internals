@@ -37,3 +37,4 @@
   - [Transaction Processing and Recovery](./chapter_5_1_transaction_processing_and_recovery.md)
     - [Buffer Management](./chapter_5_2_buffer_management.md)
     - [Recovery](./chapter_5_3_recovery.md)
+    - [Concurrenty Control](./chapter_5_4_concurrency_control.md)
