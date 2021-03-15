@@ -1,0 +1,241 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Rebalacing - Database Internals</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="part_1_storage_engine.html"><strong aria-hidden="true">1.</strong> Storage Engine</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_1_introduction_and_overview.html"><strong aria-hidden="true">1.1.</strong> Introduction and Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_2_dbms_architecture.html"><strong aria-hidden="true">1.1.1.</strong> DBMS Architecture</a></li><li class="chapter-item expanded "><a href="chapter_1_3_memory_disk_base_dbms.html"><strong aria-hidden="true">1.1.2.</strong> Memory- Versus Disk-Based DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_4_column_row_oriented.html"><strong aria-hidden="true">1.1.3.</strong> Column- Versus Row-Oriented DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_5_data_files_and_index_files.html"><strong aria-hidden="true">1.1.4.</strong> Data Files and Index Files</a></li><li class="chapter-item expanded "><a href="chapter_1_6_buffering_immutability_and_ordering.html"><strong aria-hidden="true">1.1.5.</strong> Buffering Immutability and Ordering</a></li><li class="chapter-item expanded "><a href="chapter_1_7_summary.html"><strong aria-hidden="true">1.1.6.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2_1_btree_basic.html"><strong aria-hidden="true">1.2.</strong> BTree Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_2_2_binary_search_trees.html"><strong aria-hidden="true">1.2.1.</strong> Binary Search Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_3_disk_based_structures.html"><strong aria-hidden="true">1.2.2.</strong> Disk Based Structures</a></li><li class="chapter-item expanded "><a href="chapter_2_4_ubiquitous_btrees.html"><strong aria-hidden="true">1.2.3.</strong> Ubiquitous B-Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_5_summary.html"><strong aria-hidden="true">1.2.4.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3_1_file_format.html"><strong aria-hidden="true">1.3.</strong> File Format</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_3_2_motivation.html"><strong aria-hidden="true">1.3.1.</strong> Motivation</a></li><li class="chapter-item expanded "><a href="chapter_3_3_binary_encoding.html"><strong aria-hidden="true">1.3.2.</strong> Binary Encoding</a></li><li class="chapter-item expanded "><a href="chapter_3_4_general_principles.html"><strong aria-hidden="true">1.3.3.</strong> General Principles</a></li><li class="chapter-item expanded "><a href="chapter_3_5_page_structure.html"><strong aria-hidden="true">1.3.4.</strong> Page Structure</a></li><li class="chapter-item expanded "><a href="chapter_3_6_slotted_pages.html"><strong aria-hidden="true">1.3.5.</strong> Slotted Pages</a></li><li class="chapter-item expanded "><a href="chapter_3_7_cell_layout.html"><strong aria-hidden="true">1.3.6.</strong> Cell Layout</a></li><li class="chapter-item expanded "><a href="chapter_3_8_combining_cell_into_slotted_pages.html"><strong aria-hidden="true">1.3.7.</strong> Combining Cell into Slotted Pages</a></li><li class="chapter-item expanded "><a href="chapter_3_9_managing_variable_size_data.html"><strong aria-hidden="true">1.3.8.</strong> Managing Variable Size Data</a></li><li class="chapter-item expanded "><a href="chapter_3_10_versioning.html"><strong aria-hidden="true">1.3.9.</strong> Versioning</a></li><li class="chapter-item expanded "><a href="chapter_3_11_checksumming.html"><strong aria-hidden="true">1.3.10.</strong> Checksumming</a></li><li class="chapter-item expanded "><a href="chapter_3_12_summary.html"><strong aria-hidden="true">1.3.11.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_4_1_implementing_btrees.html"><strong aria-hidden="true">1.4.</strong> Implementing BTrees</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_4_2_page_header.html"><strong aria-hidden="true">1.4.1.</strong> Page Header</a></li><li class="chapter-item expanded "><a href="chapter_4_3_binary_search.html"><strong aria-hidden="true">1.4.2.</strong> Binary Search</a></li><li class="chapter-item expanded "><a href="chapter_4_4_propagating_spits_and_merges.html"><strong aria-hidden="true">1.4.3.</strong> Propagating Splits and Merges</a></li><li class="chapter-item expanded "><a href="chapter_4_5_rebalacing.html" class="active"><strong aria-hidden="true">1.4.4.</strong> Rebalacing</a></li><li class="chapter-item expanded "><a href="chapter_4_6_right_only_appends.html"><strong aria-hidden="true">1.4.5.</strong> Right-Only Appends</a></li><li class="chapter-item expanded "><a href="chapter_4_7_compression.html"><strong aria-hidden="true">1.4.6.</strong> Compression</a></li><li class="chapter-item expanded "><a href="chapter_4_8_vacuum_and_maintenance.html"><strong aria-hidden="true">1.4.7.</strong> Vacuum and Maintenance</a></li><li class="chapter-item expanded "><a href="chapter_4_9_summary.html"><strong aria-hidden="true">1.4.8.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_5_1_transaction_processing_and_recovery.html"><strong aria-hidden="true">1.5.</strong> Transaction Processing and Recovery</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_5_2_buffer_management.html"><strong aria-hidden="true">1.5.1.</strong> Buffer Management</a></li><li class="chapter-item expanded "><a href="chapter_5_3_recovery.html"><strong aria-hidden="true">1.5.2.</strong> Recovery</a></li><li class="chapter-item expanded "><a href="chapter_5_4_concurrency_control.html"><strong aria-hidden="true">1.5.3.</strong> Concurrenty Control</a></li></ol></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Database Internals</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2><a class="header" href="#rebalancing" id="rebalancing">Rebalancing</a></h2>
+<p>有些 B-Tree 的实现会在执行分裂或者合并前，尝试通过 <em>rebalacing</em> 重平衡层级内的元素或者将使用率高的节点中的元素移动到使用率低的节点中来分摊分裂跟合并操作的成本。这有助于提高节点的使用率，并使用有可能花费更高管理成本的重平衡来降低树的高度。</p>
+<p>插入以及删除的操作中也有机会来维持树的负载平衡。为了提高空间使用率，在节点溢出的时候，不会马上将节点分裂，我们会将节点中的部分元素移动到相邻的节点，以此来为插入提供空间。同样的，在删除时，与其马上对节点进行分裂，我们可以选择移动部分相邻节点中的元素到当前节点，来保证当前节点起码是半满的状态。</p>
+<p>$B^\star-Tree$ 会保持数据分布在相邻的节点直到相邻的节点都填满，接着他不是将节点分裂成两个半满的节点，而是将两个节点分裂成三个节点，这三个节点都保持了 $\frac{2}{3}$ 的使用率，SQLite 就使用了这种方式。这种方式提高了平均使用率，因此降低了分裂的可能性，但同时也带来了额外的跟踪及维持平衡的逻辑。更高的使用率同时也意味着更高效的查找，因为这样能保持树有尽量低的高度，跟查询到叶子时能够遍历尽可能少的页。</p>
+<p>Figure 4-9 展示了数据在邻接节点的分布，当左节点的元素数量比右节点要多时，元素会从使用率较高的节点移动到使用率较低的节点。因为在相邻的节点中最大最小不变式在平衡中会改变，所以我们还要去更新父节点相关的 Key来保证其正确性。</p>
+<img src="./chapter_4_5_rebalacing.assets/image-20210225203647540.png" alt="image-20210225203647540" style="zoom:80%;" />
+<p>负载均衡是一种已经在很多数据库实现中使用的技术，举例来说，SQLite 实现了跟我们刚刚讨论的非常类似的 <em>balance-siblings algorithm</em> 算法。保持均衡可能会为代码带来一些复杂度，但是因为他的场景是独立的，所以可以在后续的阶段作为优化来实现。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="chapter_4_4_propagating_spits_and_merges.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="chapter_4_6_right_only_appends.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="chapter_4_4_propagating_spits_and_merges.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="chapter_4_6_right_only_appends.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

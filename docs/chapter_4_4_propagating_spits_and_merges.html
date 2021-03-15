@@ -1,0 +1,247 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Propagating Splits and Merges - Database Internals</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="part_1_storage_engine.html"><strong aria-hidden="true">1.</strong> Storage Engine</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_1_introduction_and_overview.html"><strong aria-hidden="true">1.1.</strong> Introduction and Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_2_dbms_architecture.html"><strong aria-hidden="true">1.1.1.</strong> DBMS Architecture</a></li><li class="chapter-item expanded "><a href="chapter_1_3_memory_disk_base_dbms.html"><strong aria-hidden="true">1.1.2.</strong> Memory- Versus Disk-Based DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_4_column_row_oriented.html"><strong aria-hidden="true">1.1.3.</strong> Column- Versus Row-Oriented DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_5_data_files_and_index_files.html"><strong aria-hidden="true">1.1.4.</strong> Data Files and Index Files</a></li><li class="chapter-item expanded "><a href="chapter_1_6_buffering_immutability_and_ordering.html"><strong aria-hidden="true">1.1.5.</strong> Buffering Immutability and Ordering</a></li><li class="chapter-item expanded "><a href="chapter_1_7_summary.html"><strong aria-hidden="true">1.1.6.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2_1_btree_basic.html"><strong aria-hidden="true">1.2.</strong> BTree Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_2_2_binary_search_trees.html"><strong aria-hidden="true">1.2.1.</strong> Binary Search Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_3_disk_based_structures.html"><strong aria-hidden="true">1.2.2.</strong> Disk Based Structures</a></li><li class="chapter-item expanded "><a href="chapter_2_4_ubiquitous_btrees.html"><strong aria-hidden="true">1.2.3.</strong> Ubiquitous B-Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_5_summary.html"><strong aria-hidden="true">1.2.4.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3_1_file_format.html"><strong aria-hidden="true">1.3.</strong> File Format</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_3_2_motivation.html"><strong aria-hidden="true">1.3.1.</strong> Motivation</a></li><li class="chapter-item expanded "><a href="chapter_3_3_binary_encoding.html"><strong aria-hidden="true">1.3.2.</strong> Binary Encoding</a></li><li class="chapter-item expanded "><a href="chapter_3_4_general_principles.html"><strong aria-hidden="true">1.3.3.</strong> General Principles</a></li><li class="chapter-item expanded "><a href="chapter_3_5_page_structure.html"><strong aria-hidden="true">1.3.4.</strong> Page Structure</a></li><li class="chapter-item expanded "><a href="chapter_3_6_slotted_pages.html"><strong aria-hidden="true">1.3.5.</strong> Slotted Pages</a></li><li class="chapter-item expanded "><a href="chapter_3_7_cell_layout.html"><strong aria-hidden="true">1.3.6.</strong> Cell Layout</a></li><li class="chapter-item expanded "><a href="chapter_3_8_combining_cell_into_slotted_pages.html"><strong aria-hidden="true">1.3.7.</strong> Combining Cell into Slotted Pages</a></li><li class="chapter-item expanded "><a href="chapter_3_9_managing_variable_size_data.html"><strong aria-hidden="true">1.3.8.</strong> Managing Variable Size Data</a></li><li class="chapter-item expanded "><a href="chapter_3_10_versioning.html"><strong aria-hidden="true">1.3.9.</strong> Versioning</a></li><li class="chapter-item expanded "><a href="chapter_3_11_checksumming.html"><strong aria-hidden="true">1.3.10.</strong> Checksumming</a></li><li class="chapter-item expanded "><a href="chapter_3_12_summary.html"><strong aria-hidden="true">1.3.11.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_4_1_implementing_btrees.html"><strong aria-hidden="true">1.4.</strong> Implementing BTrees</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_4_2_page_header.html"><strong aria-hidden="true">1.4.1.</strong> Page Header</a></li><li class="chapter-item expanded "><a href="chapter_4_3_binary_search.html"><strong aria-hidden="true">1.4.2.</strong> Binary Search</a></li><li class="chapter-item expanded "><a href="chapter_4_4_propagating_spits_and_merges.html" class="active"><strong aria-hidden="true">1.4.3.</strong> Propagating Splits and Merges</a></li><li class="chapter-item expanded "><a href="chapter_4_5_rebalacing.html"><strong aria-hidden="true">1.4.4.</strong> Rebalacing</a></li><li class="chapter-item expanded "><a href="chapter_4_6_right_only_appends.html"><strong aria-hidden="true">1.4.5.</strong> Right-Only Appends</a></li><li class="chapter-item expanded "><a href="chapter_4_7_compression.html"><strong aria-hidden="true">1.4.6.</strong> Compression</a></li><li class="chapter-item expanded "><a href="chapter_4_8_vacuum_and_maintenance.html"><strong aria-hidden="true">1.4.7.</strong> Vacuum and Maintenance</a></li><li class="chapter-item expanded "><a href="chapter_4_9_summary.html"><strong aria-hidden="true">1.4.8.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_5_1_transaction_processing_and_recovery.html"><strong aria-hidden="true">1.5.</strong> Transaction Processing and Recovery</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_5_2_buffer_management.html"><strong aria-hidden="true">1.5.1.</strong> Buffer Management</a></li><li class="chapter-item expanded "><a href="chapter_5_3_recovery.html"><strong aria-hidden="true">1.5.2.</strong> Recovery</a></li><li class="chapter-item expanded "><a href="chapter_5_4_concurrency_control.html"><strong aria-hidden="true">1.5.3.</strong> Concurrenty Control</a></li></ol></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Database Internals</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2><a class="header" href="#propagating-splits-and-merges" id="propagating-splits-and-merges">Propagating Splits and Merges</a></h2>
+<p>正如我们在前面的章节中讨论的，B-Tree 的分裂跟合并会被上升到更高的层级。为此我们需要能够从分裂的叶子或合并的节点中一直上升到根节点。</p>
+<p>B-Tree 的节点可以包含指向父节点的指针，但因为较低层级的页总是从较高的层级的引用中被加载的，因此没有将该信息持久化到磁盘的必要。</p>
+<p>如邻接节点的指针，父节点的指针也需要在父节点发生变化时进行更新。这种情况会发生在具有页面标识的分隔键被转移时发生：如父节点分裂、合并或重平衡了。</p>
+<p>有一些实现 <em>(如 WiredTiger)</em> 使用父节点的指针用于遍历叶子来避免在使用邻接节点指针时可能发生的死锁。因为使用了父节点指针而不是邻接节点指针来遍历叶子节点，遍历的过程看起来更接近与 Figure 4-1。</p>
+<p>为了定位邻接节点，我们可以跟随父节点的指针上升后再递归的下降到较低的层级。当我们遍历到父节点的最后一个邻接节点后，查找会继续递归的上升，直到回到根节点，然后再继续下降到叶子层级。</p>
+<h3><a class="header" href="#breadcrumbs" id="breadcrumbs">Breadcrumbs</a></h3>
+<p>相对于在节点中保存跟管理父节点的指针，我们可以记录找到叶子节点过程中所遍历的节点列表，然后在插入导致分裂或删除导致合并时，能够按照节点列表的相反顺序来得到所需父节点。</p>
+<p>在可能导致 B-Tree 的结构产生变化的操作中 <em>(插入或删除)</em> ，我们首先会从根节点开始遍历直到找到目标的叶子节点跟所需的插入位置，因为我们并不知道执行的操作何时会导致分裂或者合并 <em>(至少在定位到目标叶子节点前是不知道的)</em>，所以需要收集这些 <em>breadcrumbs</em> 导航信息。</p>
+<p>导航信息包含了在分裂或合并发生时，从当前叶子节点上升到根节点所需的引用信息。跟这个信息最匹配的数据结构是 <em>stack</em> 栈，比如 PostgreSQL 就使用了栈，在其内部则称为 <em>BTStack</em>。</p>
+<p>如果节点需要分裂或合并，导航信息可以用来找到 Key 上升到父节点所需的插入位置，以及在需要时可以用来找到需要继续上升的更高层级的节点。这个栈是在内存中进行管理的。</p>
+<p>Figure 4-8 展示了一个从根节点遍历到叶子节点的例子，收集的导航信息包含了遍历中遇到的节点跟其 Cell 的索引。如果目标的叶子节点分裂了，则栈顶的元素会被弹出用于定位叶子节点的父节点。如果父节点有足够的空间，则新的 Cell 会被添加到该栈顶元素保存的插入位置 <em>(假设该索引位置是有效的)</em> 中；否则父节点也会触发分裂。这个处理的过程会持续递归直到导航信息的栈为空，此时说明我们已经到了根节点了，又或者遇到了无需分裂的上级节点。</p>
+<p><img src="./chapter_4_4_propagating_spits_and_merges.assets/image-20210225193144664.png" alt="image-20210225193144664" /></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="chapter_4_3_binary_search.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="chapter_4_5_rebalacing.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="chapter_4_3_binary_search.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="chapter_4_5_rebalacing.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

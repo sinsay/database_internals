@@ -1,0 +1,282 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Recovery - Database Internals</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="part_1_storage_engine.html"><strong aria-hidden="true">1.</strong> Storage Engine</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_1_introduction_and_overview.html"><strong aria-hidden="true">1.1.</strong> Introduction and Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_2_dbms_architecture.html"><strong aria-hidden="true">1.1.1.</strong> DBMS Architecture</a></li><li class="chapter-item expanded "><a href="chapter_1_3_memory_disk_base_dbms.html"><strong aria-hidden="true">1.1.2.</strong> Memory- Versus Disk-Based DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_4_column_row_oriented.html"><strong aria-hidden="true">1.1.3.</strong> Column- Versus Row-Oriented DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_5_data_files_and_index_files.html"><strong aria-hidden="true">1.1.4.</strong> Data Files and Index Files</a></li><li class="chapter-item expanded "><a href="chapter_1_6_buffering_immutability_and_ordering.html"><strong aria-hidden="true">1.1.5.</strong> Buffering Immutability and Ordering</a></li><li class="chapter-item expanded "><a href="chapter_1_7_summary.html"><strong aria-hidden="true">1.1.6.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2_1_btree_basic.html"><strong aria-hidden="true">1.2.</strong> BTree Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_2_2_binary_search_trees.html"><strong aria-hidden="true">1.2.1.</strong> Binary Search Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_3_disk_based_structures.html"><strong aria-hidden="true">1.2.2.</strong> Disk Based Structures</a></li><li class="chapter-item expanded "><a href="chapter_2_4_ubiquitous_btrees.html"><strong aria-hidden="true">1.2.3.</strong> Ubiquitous B-Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_5_summary.html"><strong aria-hidden="true">1.2.4.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3_1_file_format.html"><strong aria-hidden="true">1.3.</strong> File Format</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_3_2_motivation.html"><strong aria-hidden="true">1.3.1.</strong> Motivation</a></li><li class="chapter-item expanded "><a href="chapter_3_3_binary_encoding.html"><strong aria-hidden="true">1.3.2.</strong> Binary Encoding</a></li><li class="chapter-item expanded "><a href="chapter_3_4_general_principles.html"><strong aria-hidden="true">1.3.3.</strong> General Principles</a></li><li class="chapter-item expanded "><a href="chapter_3_5_page_structure.html"><strong aria-hidden="true">1.3.4.</strong> Page Structure</a></li><li class="chapter-item expanded "><a href="chapter_3_6_slotted_pages.html"><strong aria-hidden="true">1.3.5.</strong> Slotted Pages</a></li><li class="chapter-item expanded "><a href="chapter_3_7_cell_layout.html"><strong aria-hidden="true">1.3.6.</strong> Cell Layout</a></li><li class="chapter-item expanded "><a href="chapter_3_8_combining_cell_into_slotted_pages.html"><strong aria-hidden="true">1.3.7.</strong> Combining Cell into Slotted Pages</a></li><li class="chapter-item expanded "><a href="chapter_3_9_managing_variable_size_data.html"><strong aria-hidden="true">1.3.8.</strong> Managing Variable Size Data</a></li><li class="chapter-item expanded "><a href="chapter_3_10_versioning.html"><strong aria-hidden="true">1.3.9.</strong> Versioning</a></li><li class="chapter-item expanded "><a href="chapter_3_11_checksumming.html"><strong aria-hidden="true">1.3.10.</strong> Checksumming</a></li><li class="chapter-item expanded "><a href="chapter_3_12_summary.html"><strong aria-hidden="true">1.3.11.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_4_1_implementing_btrees.html"><strong aria-hidden="true">1.4.</strong> Implementing BTrees</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_4_2_page_header.html"><strong aria-hidden="true">1.4.1.</strong> Page Header</a></li><li class="chapter-item expanded "><a href="chapter_4_3_binary_search.html"><strong aria-hidden="true">1.4.2.</strong> Binary Search</a></li><li class="chapter-item expanded "><a href="chapter_4_4_propagating_spits_and_merges.html"><strong aria-hidden="true">1.4.3.</strong> Propagating Splits and Merges</a></li><li class="chapter-item expanded "><a href="chapter_4_5_rebalacing.html"><strong aria-hidden="true">1.4.4.</strong> Rebalacing</a></li><li class="chapter-item expanded "><a href="chapter_4_6_right_only_appends.html"><strong aria-hidden="true">1.4.5.</strong> Right-Only Appends</a></li><li class="chapter-item expanded "><a href="chapter_4_7_compression.html"><strong aria-hidden="true">1.4.6.</strong> Compression</a></li><li class="chapter-item expanded "><a href="chapter_4_8_vacuum_and_maintenance.html"><strong aria-hidden="true">1.4.7.</strong> Vacuum and Maintenance</a></li><li class="chapter-item expanded "><a href="chapter_4_9_summary.html"><strong aria-hidden="true">1.4.8.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_5_1_transaction_processing_and_recovery.html"><strong aria-hidden="true">1.5.</strong> Transaction Processing and Recovery</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_5_2_buffer_management.html"><strong aria-hidden="true">1.5.1.</strong> Buffer Management</a></li><li class="chapter-item expanded "><a href="chapter_5_3_recovery.html" class="active"><strong aria-hidden="true">1.5.2.</strong> Recovery</a></li><li class="chapter-item expanded "><a href="chapter_5_4_concurrency_control.html"><strong aria-hidden="true">1.5.3.</strong> Concurrenty Control</a></li></ol></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Database Internals</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2><a class="header" href="#recovery" id="recovery">Recovery</a></h2>
+<p>数据库系统构建在许多的硬件跟软件上，他们也会有自身的稳定性跟可靠性等问题。数据库系统、底层的软件跟硬件的组件，同样也有可能会失效。数据库的开发人员需要去考虑这些失效的场景来确保数据需要按照所承诺的一般被写入磁盘。</p>
+<p><em>Write-ahead log</em> 预写日志 <em>(缩写为 WAL，也被广泛称为 commit log 提交日志)</em> 是一种只允许添加的基于磁盘的数据结构，他被用来从奔溃或事务中恢复数据库。页缓存允许页内容的更改缓存到内存中。在缓存的内容被写到磁盘之前，唯一的数据操作记录副本会被保存在基于磁盘的 WAL 中。许多的数据库都使用了 <em>append-only write-ahead log</em> 只进行附加的预写日志，比如 PostgreSQL 跟 MySQL。</p>
+<p>预写日志的主要功能可以总结如下：</p>
+<ul>
+<li>允许页缓存缓冲更新的操作，直到能在较大的上下文中确保数据库的持久化语义</li>
+<li>持久化所有的操作到磁盘，直到缓存中被这些操作影响的页被安全的同步到磁盘。每个对数据库状态造成修改的操作都需要在这些操作关联的页被修改前记录到磁盘的日志中。</li>
+<li>在奔溃后所丢失的内存中的修改，能够通过操作日志进行重建</li>
+</ul>
+<p>除了这些功能之外，预写日志在事务的处理中也扮演者非常重要的角色，不得不夸张的说 WAL 有多么的重要，他被用来保证就算在崩溃的情形中，数据也最终肯定会被记录到持久化存储中，未被提交的数据也能够从日志中进行重建，让数据库能够回复到奔溃之前的状态。在本节中，我们会经常引用 <em>ARIES</em> <em>(Algorithm for Recovery and Isolation Exploiting Semantics 基于语义的恢复与隔离算法)</em>，一种先进并被广泛应用的算法。</p>
+<blockquote>
+<h4><a class="header" href="#postgresql-versus-fsync" id="postgresql-versus-fsync">PostgreSQL Versus fsync()</a></h4>
+<p>PostgreSQL 使用 <em>checkpoints</em> 检查点来确保更新后的索引跟数据文件的全部信息，跟日志中的具体的记录能够保持一致。刷新所有的脏页的操作是由定期执行的检查点操作来完成的。同步脏页的的内容到磁盘则是通过内核的 <em>fsync()</em> 调用来实现，他支持将在脏页同步到磁盘，并将内核中的页的 <em>dirty</em> 脏标记清除。就像你所期望的， <em>fsync</em> 在刷新数据页到磁盘出错时会返回错误信息。</p>
+<p>在 Linux 跟一些其他的操作系统中， <em>fsync</em> 就算在产生错误未能成功的刷新页时也会清除其脏页标志。另外，错误只会被提交到当时所打开的文件描述符上，所以 <em>fsync</em> 不会返回任何在该描述符打开之前所产生的错误。</p>
+<p>因为检查点并不会保存任何时间点中所有打开文件的信息，因此可能会丢失一些错误的提醒。因为脏页标志被清除了，检查点会假定数据已经被成功的记录到了磁盘，但事实上，他可能还未被成功写入。</p>
+<p>在某些潜在的恢复失败中，这些行为的组合可能会成功数据丢失或者数据库出错时的来源。这些操作很难被检查出来，因此有一些产生的状态可能是没办法恢复的。有时触发这些行为的操作可能是不平凡的，当使用在一个 Recovery 恢复机制中，我们需要始终关注并思考、每种可能的错误场景。</p>
+</blockquote>
+<h3><a class="header" href="#log-semantics" id="log-semantics">Log Semantics</a></h3>
+<p><em>Write-ahead log</em> 预写日志只能执行添加操作并且已经写入到日志的内容是不可变的，因此对日志的写入都是顺序性的。 WAL 是一个不可变的、只添加的数据结构，因为写入部分只会在日志的尾部添加日志，因此读取部分可以安全的访问最新写入之前的内容。</p>
+<p><em>WAL</em> 由日志记录组成，每条记录都有唯一的、单调递增的 <em>log sequence number</em> 日志顺序号 <em>(LSN)</em>，一般来说 LSN 会用一个内部的计数器或者是时间戳来表示。因为日志记录并不一定会填满整个磁盘块，他们的内容会被缓存在 <em>log buffer</em> 日志缓冲然后被 <em>force</em> 强制刷到磁盘。这个强制的操作会在缓冲被填满时发生，也可以由事务管理器或页缓存触发。所有的日志记录会按照 LSN 的顺序写到磁盘。</p>
+<p>除了单独的操作记录，WAL 也会保存用来指示事务完成的记录。一个事务在其提交日志被强制写入磁盘时才能视为已提交。</p>
+<p>为了确保系统能够在进行回滚或从奔溃恢复过程的错误中恢复到正确状态，有些系统会在日志中保存 <em>compensation log records</em> 补偿日志记录 <em>CLR</em> 。</p>
+<p><em>WAL</em> 通常通过接口与主要的存储结构连接，这接口允许在达到检查点时对日志进行 <em>trimming</em> 裁减。日志对数据库如何保持其正确性来说是最重要的一部分，也是非常困难的一部分：在日志裁减跟已经写入主存储结构之间的任何细微的不一致都可能会导致数据丢失。</p>
+<p>检查点用来让日志模块知道，在该检查点之前的所有日志都已经被成功的持久化了，因此这部分日志已经不再是必须的，这能够显著的减少数据库启动时需要做的工作量。负责处理强制将脏页刷到磁盘的操作一般称为 <em>sync checkpoint</em> 同步检查点，因为他会完全同步主存储结构。</p>
+<p>将全部的内容同步刷回磁盘是不现实的，因为还需要暂停所有正在执行的操作直到完成该检查点，所以大部分的数据库都是实现了 <em>fuzzy checkpoints</em> 模糊检查点，在这种方式里，<em>last_checkpoint</em> 指针会被存储到日志的头部信息中，用来表示最后成功执行的检查点。一个模糊检查点用一条特殊的 <em>begin_checkpoing</em> 日志来表示他的起点，并用一条 <em>end_checkpoint</em> 日志来表示其完结，其中就包含了跟这个检查点相关的脏页及其内容等信息。在这个记录关联的所有页被成功写入之前，这个检查点都是处于 <em>incomplete</em> 未完成的状态。然后页会以异步的方式刷到磁盘，一旦刷新成功就会使用 <em>begin_checkpoint</em> 记录的 LSN 来更新 <em>last_checkpoint</em>，如果这时程序崩溃，则恢复处理程序下次会继续从这个位置开始执行。</p>
+<h3><a class="header" href="#operation-versus-data-log" id="operation-versus-data-log">Operation Versus Data Log</a></h3>
+<p>有一些数据库系统，比如 System R 使用了 <em>shadow paging</em> : 一种 <em>copy-on-write</em> 写时复制技术用来确保数据的持久性以及事务的原子性。新的内容被存储到新的未发布的 <em>shadow</em> 页中，之后通过反转指针来从旧页找到保存了新内容的页。</p>
+<p>任何状态的改变都可以通过 <em>before-image</em> 操作前的镜像跟 <em>after-image</em> 或者是关联的 <em>redo</em> 跟 <em>undo</em> 操作来表示。在 <em>before-image</em> 上执行 <em>redo</em> 操作将会产生 <em>after-image</em>，类似的，在 <em>after-image</em> 上执行 <em>undo</em> 操作将会产生 <em>before-image</em>。</p>
+<p>我们可以使用物理日志 <em>(保存了完整的页面信息或者是字节内容的变化)</em> 或逻辑日志 <em>(记录了需要在当前状态上执行的操作)</em> 来将数据记录或页从一个状态转移到另一个，并且是同时支持双向的转换。因此跟踪页的状态，来确认哪些物理或逻辑日志能够在他上面应用是非常重要的。</p>
+<p>物理日志记录了之前跟之后的镜像，因此需要将操作的整个页都记录到日志中。逻辑日志则说明了需要再页是哪个应用哪些操作，比如 &quot;为 Key Y 插入一条数据记录 X&quot;，以及跟他关联的 <em>undo</em> 操作如 “删除跟 Key Y 关联的数据。</p>
+<p>在实践中，大部分的数据库同时结合了这两种方式，使用逻辑日志去实现 <em>undo</em> <em>(为了并行跟性能)</em>，使用物理日志去实现 <em>redo</em> <em>(为了减少恢复的时间)</em>。</p>
+<h3><a class="header" href="#steal-and-force-policies" id="steal-and-force-policies">Steal and Force Policies</a></h3>
+<p>为了确认何时能够将内存中的变更刷新到磁盘，数据库系统定义了 <em>steal/no-steal</em> 跟 <em>force/no-force</em> 策略。这些策略主要是应用在页缓存上，但他们更适合在 <em>Recovery</em> 的上下文中讨论，因为 Recovery 会组合使用他们，因此他们对 Recovery 会造成重大的影响。</p>
+<p>允许将未提交事务中的页修改刷新到磁盘的的方式称为 <em>steal</em> 策略， <em>no-steal</em> 策略则不允许将未提交的日志内容刷新到磁盘。<em>steal</em> 窃取一个脏页在这里意味着将该页内存中的的内容刷新到磁盘中，然后从磁盘中读取其他的页到原本脏页所在的位置。</p>
+<p><em>force</em> 策略要求事务中修改的所有页都需要在事务提交之前刷新到磁盘中，这也就是说 <em>no-force</em> 策略允许事务在其相关的脏页还没刷新到磁盘前就提交。<em>force</em> 强制提交一个脏页在这里意味着必须在提交前刷新数据到磁盘。</p>
+<p>因为 <em>Steal</em> 跟 <em>Force</em> 策略对事务的 <em>redo</em> 跟 <em>undo</em> 都有关联，所以理解他们非常重要。<em>Undo</em> 为已提交事务的强制更新页执行回滚操作，<em>Redo</em> 则将已提交事务的操作应用到磁盘中。</p>
+<p>使用 <em>no-steal</em> 策略允许在实现 Recovery 时只使用 Redo 记录：旧的副本会被包含在磁盘中的页里，修改的信息则保存在日志里。使用 <em>no-force</em> 时我们可以推迟多个页的更新来实现缓冲的效果。由于此时需要将页的内容缓存在内存中，所以我们可能需要更大的页缓存。</p>
+<p>在使用 <em>force</em> 策略时，奔溃恢复无需为已提交的事务付出额外的工作，因为这些事务的页的修改已经都被写入磁盘了。使用这种方式的主要缺点是事务的提交会因为更多的 I/O 而导致需要更长的时间。</p>
+<p>一般来说，在事务提交之前，我们需要收集足够的信息来回滚他的结果。如果事务中的任意一个页被刷到磁盘，我们需要在日志中保存他的 <em>undo</em> 信息，直到他能够成功提交或者是回滚。另一方面，我们需要在日志中保存 <em>redo</em> 记录直到日志提交。在上面两种场景中，事务都只能够在他的 <em>undo</em> 跟 <em>redo</em> 记录都写到日志文件后才能提交。</p>
+<h3><a class="header" href="#aries" id="aries">ARIES</a></h3>
+<p><em>ARIES</em> 是一个 <em>steal/no-force</em> 的恢复算法。他使用物理的 <em>redo</em> 来提高恢复时的性能 <em>(因为可以快速的装载变更信息)</em> ，使用逻辑的 <em>undo</em> 来提高常见操作的并发性 <em>(因为逻辑的 undo 操作可以独立的应用到页上)</em>。他还使用了 <em>WAL</em> 记录来实现恢复时的 <em>repeating history</em> 重复历史，在执行未提交的事务的 <em>undo</em> 之前重新构建数据库，并在执行 <em>undo</em> 的时候创建响应的补偿日志。</p>
+<p>当数据库系统在崩溃后重启时，恢复操作由下面三步实现</p>
+<ol>
+<li><em>analysis</em> 分析步骤确认页缓存中的脏页以及在崩溃时处于执行中状态的事务。脏页的信息用来确定 <em>redo</em> 步骤的起始点。执行中的事务列表则被用在 <em>undo</em> 步骤中回滚未完成的事务。</li>
+<li><em>redo</em> 步骤则重新执行奔溃之前的历史操作直到数据库恢复到崩溃前的状态。这个步骤也会执行那些已经提交但还未将数据完全写入持久化存储中的事务。</li>
+<li><em>undo</em> 步骤回滚所有未完成的事务并将数据库修复到最后的一致状态。所有的操作都是按与记录时相反的顺序来执行。为了防止在恢复期间数据库再次奔溃，事务的 <em>undo</em> 操作也会被记录到日志中，用来防止重复执行回滚。</li>
+</ol>
+<p><em>ARIES</em> 使用 LSN 来作为日志的标识符，通过执行事务时的 <em>dirty page table</em> 脏页表来跟踪页的修改，使用物理的 <em>redo</em>、逻辑的 <em>undo</em> 跟 <em>fuzzy checkpointing</em> 模糊检查点。尽管该系统的论文早在 1992 年就发布了，但现今的许多概念、方法跟示例仍然跟他有许多的关系。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="chapter_5_2_buffer_management.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="chapter_5_4_concurrency_control.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="chapter_5_2_buffer_management.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="chapter_5_4_concurrency_control.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
