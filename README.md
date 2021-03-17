@@ -39,12 +39,12 @@ chinese translation of database internals, now the progress is
     - [x] Recovery
     - [x] Concurrency Control
     - [x] Summary
-  - [ ] Chapter 6 - B-Tree Variants
-    - [ ] Copy-on-Write
-    - [ ] Abstracting Node Updates
-    - [ ] Lazy B-Trees
-    - [ ] FD-Trees
-    - [ ] BW-Trees
+  - [-] Chapter 6 - B-Tree Variants
+    - [x] Copy-on-Write
+    - [x] Abstracting Node Updates
+    - [x] Lazy B-Trees
+    - [x] FD-Trees
+    - [x] BW-Trees
     - [ ] Cache-Oblivious B-Trees
   - [ ] Chapter 7 - Log-Structured Storage
     - [ ] LSM Trees
