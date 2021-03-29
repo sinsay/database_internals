@@ -164,6 +164,34 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#read-write-and-space-amplification" id="read-write-and-space-amplification">Read, Write, and Space Amplification</a></h1>
+<p>在实现一个理想的压缩策略时，我们需要考虑多个不同的因素，一个方式是回收被重复记录占用的空间来减少空间的开支，但因为这需要持续的对表进行重写，因此会导致比较高的写放大。为了避免持续的重写数据，又会导致读放大 <em>(需要在读取的时候为同一个 Key 的数据记录进行协调)</em>，跟空间放大 <em>(因为重复的记录的保存需要更长的时间)</em>。</p>
+<blockquote>
+<p>数据库社区中其中一个重大的争论是 B-Tree 跟 LSM Tree 哪个具有更低的写放大。这需要我们对两种类型的写放大的来源有很深入的理解。在 B-Tree，他来源于写回操作以及对同一个节点的持续的更新。在 LSM  Tree 中，写放大是因为压缩过程中的数据迁移。如果直接对他们进行比较可能会导致一个错误的结论。</p>
+</blockquote>
+<p>作为总结，当将数据已不可变的方式存储磁盘时，我们需要面临三个问题</p>
+<ul>
+<li>
+<p><em>Read amplification</em></p>
+<p>来源于需要从多个表中对数据进行定位</p>
+</li>
+<li>
+<p><em>Write amplification</em></p>
+<p>来源于压缩处理中持续的对数据进行了重写</p>
+</li>
+<li>
+<p><em>Space amplification</em></p>
+<p>因为我们为同一个 Key 的数据存储了多个关联的数据记录</p>
+</li>
+</ul>
+<p>我们会在后续的章节中继续讨论上面的每个问题。</p>
+<h2><a class="header" href="#rum-conjecture" id="rum-conjecture">RUM Conjecture</a></h2>
+<p>一个流行的用来考量存储数据结构的开销模型会考虑三个因素：<em>Read</em> 读取、<em>Update</em> 更新跟 <em>Memory</em> 内存的开销，这个模型被称为 <em>RUM Conjecture</em>。</p>
+<p>RUM Conjecture 指出降低其中两个因素的成本必然会导致第三个因素成本的上升，并且优化只有在提高三个参数中的其中一个的开销的前提下才能完成。我们可以比较不同的存储引擎的优化是为了这三个参数中的哪些，以及其中隐含着哪些取舍。</p>
+<p>一个理想的解决方案是提供最低的读取开销，同时维持较低的内存跟写的成本，但是在现实中，这是不可能实现的，所以我们才会提出一些权衡方法。</p>
+<p>B-Tree 是为 <em>read-optimized</em> 读取进行优化的，B-Tree 中的写入需要定位磁盘中的记录，对同一个页的持续写入也会导致需要对该页进行多次的写入操作，保留额外的控件来应对将来可能的更新跟删除也导致了空间成本的提升。</p>
+<p>LSM Tree 不需要在写操作时先定位数据记录所在的位置，也不需要为未来的写入预先分配额外的空间。但他因为允许保存重复的数据记录，还是会造成一定的空间开销。在默认的配置中，读取相对来说是更昂贵的，因为为了得到最终的结果需要访问多个表，不过我们后续讨论的优化方案可以用来缓解这个问题。</p>
+<p>如我们在其他章节看到的一样， B-Tree 可以通过许多不同的优化方案来提高这些 RUM 相关的因素。</p>
+<p>这个成本模型并不完美，并且他也没有考虑其他一些重要的指标，如 <em>Latency</em> 延迟、<em>Access Patterns</em> 访问模式、<em>Implememtation Complexity</em> 实现的复杂度、<em>Maintenance Overhead</em> 维护的成本以及 <em>Hardware-Related Specifics</em> 硬件相关的细节。还有对分布式数据来说很重要的更高层级的概念，比如隐含的一致性跟数据复制的开销，这些现在都还没有考虑进来。但是，这个模型可以作为一个粗略的规则来理解存储引擎能提供的是什么。</p>
 
                     </main>
 
