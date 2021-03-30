@@ -46,11 +46,11 @@ chinese translation of database internals, now the progress is
     - [x] FD-Trees
     - [x] BW-Trees
     - [x] Cache-Oblivious B-Trees
-  - [ ] Chapter 7 - Log-Structured Storage
-    - [ ] LSM Trees
-    - [ ] Read, Write, and Space Amplification
-    - [ ] Implemention Details
-    - [ ] Unordered LSM Storage
+  - [-] Chapter 7 - Log-Structured Storage
+    - [x] LSM Trees
+    - [x] Read, Write, and Space Amplification
+    - [x] Implemention Details
+    - [x] Unordered LSM Storage
     - [ ] Concurrency in LSM Trees
     - [ ] Log Stacking
     - [ ] LLAMA and Mindful Stacking
