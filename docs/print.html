@@ -1855,6 +1855,34 @@ A3 = [11, 16, 24, 26, 30]
 <p>在压缩期间，<em>vLog</em> 文件的内容会被顺序的读取、合并然后写入到新的位置。指针 <em>(即 LSM Tree 中 Key 对应的值)</em> 会被更新指向对应的新的位置。为了避免扫描整个 <em>vLog</em> 的内容，WiscKey 使用 <em>head</em> 跟 <em>tail</em> 指针来保存 vLog 中保存了存活 Key 的信息。</p>
 <p>因为在 <em>vLog</em> 中的数据是无序且没有保存存活相关的信息，Key 的树需要进行扫描来确定哪些值是仍然存活的。这些检查会在垃圾回收时引入额外的复杂度：传统的 LSM Tree 在压缩时处理文件内容是不需要去定位 Key 的索引信息的。</p>
 <h1><a class="header" href="#concurrency-in-lsm-trees" id="concurrency-in-lsm-trees">Concurrency in LSM Trees</a></h1>
+<p>LSM Tree 并发的主要挑战在于表视图间的切换 <em>(即驻留在内存跟磁盘的表集合的刷新跟压缩)</em> 跟日志的同步。<em>Memtables</em> 通常都是可以并发访问的 <em>(除了类似 ScyllaDB 那种 core-partitioned store)</em>，只是内存数据结构的并发访问并不在本书的范畴内。</p>
+<p>在刷新时需要遵循以下规则：</p>
+<ul>
+<li>使用新的 Memtable 来提供读取跟写入支持</li>
+<li>旧的 <em>(刷新中的)</em> Memtable 会被写入磁盘</li>
+<li>刷新后丢弃 Memtable 以及创建驻留于磁盘的表需要以原子操作来完成</li>
+<li>预写日志中包含了被刷新的 Memtable 部分的日志条目需要被丢弃</li>
+</ul>
+<p>比如说，Apache Cassandra 通过使用 <em>Operation order barriers</em> 操作顺序屏障 来解决上面的问题：所有被接受的写操作需要等待，直到他对应的前一个 Memtable 被刷新。使用这个方式负责刷新的处理器 <em>(作为消费者)</em> 就能够知道其他哪些处理者*(作为消费者)*是依赖于他的 。</p>
+<p>更通用的说，我们需要遵守下面的同步的关键点：</p>
+<ul>
+<li>
+<p><em>Memtable Switch</em></p>
+<p>在这个操作之后，所有的写入只会发生在新的 Memtable 中，让他作为主表，同时旧的表仍然会提供读取操作。</p>
+</li>
+<li>
+<p><em>Flush finalization</em></p>
+<p>在表的视图中替换旧的 Memtable 所产生的驻留磁盘的表</p>
+</li>
+<li>
+<p><em>Write-ahead log truncation</em></p>
+<p>丢弃跟被刷新的 Memtable 关联的日志段</p>
+</li>
+</ul>
+<p>以上的操作需要严格的保证其正确性。对旧的 Memtable 进行写入的话可能会导致数据的丢失，比如将信息写入到已经被刷新的 Memtable 中。类似的，如果旧的 Memtable 在驻留磁盘的表未完成前不能提供读取操作，则会导致读取得到不完整的结果。</p>
+<p>在压缩过程中，表的视图也是会发生改变的，不过这部分会稍微直观一些：旧的驻留磁盘的表会被丢弃，并使用压缩后的版本来进行替换。旧的表在新的表完全写入并准备好进行替换前，仍需要提供读取的操作。还有一种情况是需要避免的，就是不能够让同一个表同时参与到多个并行的压缩中。</p>
+<p>在 B-Tree，日志的截断需要跟从页缓存中刷新脏页进行协调，来保证数据的持久性。在 LSM Tree 中，我们有一个类似的要求：写入都会被缓存到 Memtable 中，并且他们的内容在完全刷新前是没有被持久化的，因此日志的截断需要与 Memtable 的刷新进行协调。在刷新完成的同时，日志管理器会提供最新刷新的日志段的相关信息，这时他的内容才可以被安全的丢弃。</p>
+<p>不对刷新跟日志截断进行同步也会导致数据的丢失：如果日志段在刷新完成前被丢弃，这时节点崩溃了，日志的内容就无法被拿来进行重演，因此这个段内的数据也就无法恢复了。</p>
 <h1><a class="header" href="#log-stacking" id="log-stacking">Log Stacking</a></h1>
 <h1><a class="header" href="#llama-and-mindful-stacking" id="llama-and-mindful-stacking">LLAMA and Mindful Stacking</a></h1>
 <h1><a class="header" href="#summary-7" id="summary-7">Summary</a></h1>
