@@ -1855,9 +1855,103 @@ A3 = [11, 16, 24, 26, 30]
 <p>在压缩期间，<em>vLog</em> 文件的内容会被顺序的读取、合并然后写入到新的位置。指针 <em>(即 LSM Tree 中 Key 对应的值)</em> 会被更新指向对应的新的位置。为了避免扫描整个 <em>vLog</em> 的内容，WiscKey 使用 <em>head</em> 跟 <em>tail</em> 指针来保存 vLog 中保存了存活 Key 的信息。</p>
 <p>因为在 <em>vLog</em> 中的数据是无序且没有保存存活相关的信息，Key 的树需要进行扫描来确定哪些值是仍然存活的。这些检查会在垃圾回收时引入额外的复杂度：传统的 LSM Tree 在压缩时处理文件内容是不需要去定位 Key 的索引信息的。</p>
 <h1><a class="header" href="#concurrency-in-lsm-trees" id="concurrency-in-lsm-trees">Concurrency in LSM Trees</a></h1>
+<p>LSM Tree 并发的主要挑战在于表视图间的切换 <em>(即驻留在内存跟磁盘的表集合的刷新跟压缩)</em> 跟日志的同步。<em>Memtables</em> 通常都是可以并发访问的 <em>(除了类似 ScyllaDB 那种 core-partitioned store)</em>，只是内存数据结构的并发访问并不在本书的范畴内。</p>
+<p>在刷新时需要遵循以下规则：</p>
+<ul>
+<li>使用新的 Memtable 来提供读取跟写入支持</li>
+<li>旧的 <em>(刷新中的)</em> Memtable 会被写入磁盘</li>
+<li>刷新后丢弃 Memtable 以及创建驻留于磁盘的表需要以原子操作来完成</li>
+<li>预写日志中包含了被刷新的 Memtable 部分的日志条目需要被丢弃</li>
+</ul>
+<p>比如说，Apache Cassandra 通过使用 <em>Operation order barriers</em> 操作顺序屏障 来解决上面的问题：所有被接受的写操作需要等待，直到他对应的前一个 Memtable 被刷新。使用这个方式负责刷新的处理器 <em>(作为消费者)</em> 就能够知道其他哪些处理者*(作为消费者)*是依赖于他的 。</p>
+<p>更通用的说，我们需要遵守下面的同步的关键点：</p>
+<ul>
+<li>
+<p><em>Memtable Switch</em></p>
+<p>在这个操作之后，所有的写入只会发生在新的 Memtable 中，让他作为主表，同时旧的表仍然会提供读取操作。</p>
+</li>
+<li>
+<p><em>Flush finalization</em></p>
+<p>在表的视图中替换旧的 Memtable 所产生的驻留磁盘的表</p>
+</li>
+<li>
+<p><em>Write-ahead log truncation</em></p>
+<p>丢弃跟被刷新的 Memtable 关联的日志段</p>
+</li>
+</ul>
+<p>以上的操作需要严格的保证其正确性。对旧的 Memtable 进行写入的话可能会导致数据的丢失，比如将信息写入到已经被刷新的 Memtable 中。类似的，如果旧的 Memtable 在驻留磁盘的表未完成前不能提供读取操作，则会导致读取得到不完整的结果。</p>
+<p>在压缩过程中，表的视图也是会发生改变的，不过这部分会稍微直观一些：旧的驻留磁盘的表会被丢弃，并使用压缩后的版本来进行替换。旧的表在新的表完全写入并准备好进行替换前，仍需要提供读取的操作。还有一种情况是需要避免的，就是不能够让同一个表同时参与到多个并行的压缩中。</p>
+<p>在 B-Tree，日志的截断需要跟从页缓存中刷新脏页进行协调，来保证数据的持久性。在 LSM Tree 中，我们有一个类似的要求：写入都会被缓存到 Memtable 中，并且他们的内容在完全刷新前是没有被持久化的，因此日志的截断需要与 Memtable 的刷新进行协调。在刷新完成的同时，日志管理器会提供最新刷新的日志段的相关信息，这时他的内容才可以被安全的丢弃。</p>
+<p>不对刷新跟日志截断进行同步也会导致数据的丢失：如果日志段在刷新完成前被丢弃，这时节点崩溃了，日志的内容就无法被拿来进行重演，因此这个段内的数据也就无法恢复了。</p>
 <h1><a class="header" href="#log-stacking" id="log-stacking">Log Stacking</a></h1>
+<p>许多现在的文件系统都使用了结构化日志：他们将写入的内容缓存到内存段中，然后在缓存满的时候以只添加的方式将数据写入到磁盘。SSD 也会使用结构化日志存储，用来处理随机的小写入，最小化写入的开销，来减少磁盘的损耗提高设备的有效期。</p>
+<p>结构化日志存储 <em>(LSS)</em> 系统在 SSD 变得越来越普及跟能被承担的同时流行起来。LSM Tree 跟 SSD 具有很好的匹配度，因为顺序写入的方式跟只添加的写入能够减少就地更新带来的放大问题，这一点是会对 SSD 的性能带来巨大负面影响的。</p>
+<p>如果我们将多个结构化日志日系统叠加到一起，可能会重新遇到许多我们尝试使用 LSS 去解决的问题，包括写放大、碎片化跟较弱的性能。最起码我们需要在开发的过程中时刻关注 SSD 闪存的转换层跟文件系统。</p>
+<h2><a class="header" href="#flash-translation-layer" id="flash-translation-layer">Flash Translation Layer</a></h2>
+<p>将结构化日志映射到 SSD 中有两个正向的因子：随机的小写入可以被批量写入到物理页上，这正是 SSD 使用 Program/Erase 循环的工作方式。写入也可以只写到之前删除的页中。这意味着除非页是空的 <em>(也就是说被删除的)</em> 否则他不能够被 <em>Programmed</em> <em>(也就是写入)</em> 。</p>
+<p>一个 <em>single</em> 独立的页不能够被删除，只有由多个页组成的块 <em>(通常会包含 64 到 512 个页)</em> 才能进行删除。Figure 7-13 展示了由页组成的块的表现形式。<em>Flash translation layer (FTL)</em> 将逻辑页的地址转换为物理地址并会负责跟踪这些页的状态 <em>(存活、丢弃或是空的)</em>。当 FTL 已经没有空闲的页时，他会去执行垃圾回收跟删除那些被丢弃的页。</p>
+<p><img src="chapter_7_7_log_stacking.assets/image-20210330171319104.png" alt="image-20210330171319104" /></p>
+<p>这里并不保证块中所有的页都会被擦除跟丢弃，在块可以进行擦除之前，FTL 需要将仍然存活的页重新分配到另一个包含空闲页的块中。Figure 7-14 展示了将存活页从一个块移到新位置的处理。</p>
+<p><img src="chapter_7_7_log_stacking.assets/image-20210330172732418.png" alt="image-20210330172732418" /></p>
+<p>在存活的页被重新分配之后，这个块就可以被安全的擦除，然后块中的空页才能够进行写入。因为 FTL 能够感知页的状态及其变化和其他所有必须的信息，所以他还需要负责均衡 SSD 的损耗。</p>
+<blockquote>
+<p>损耗均衡的分布在存储介质中，避免产生热点，能够防止块因为太高的 Program-Erace 循环而过早损坏。因为 Flash Memory Cell 只能经历有限的 Program-Erase 循环，因此使用均衡的使用内存 Cell 能够有效的延长设备的寿命。</p>
+</blockquote>
+<p>最后的总结是，在 SSD 中使用结构化日志存储的动机是为了通过批量执行随机的写入来分摊 I/O 的开销，这能够得到更少量的操作及减少垃圾回收触发时所需的时间。</p>
+<h2><a class="header" href="#filesystem-logging" id="filesystem-logging">Filesystem Logging</a></h2>
+<p>除此之外，我们还提到了文件系统，他们也会使用日志的技术来提供写缓存，用于降低写放大跟尽量利用底层的硬件优化机制。</p>
+<p>日志堆叠展示了一种有些不同的方式，首先每一层都需要管理自己的簿记信息，而且为了避免重复的工作，底层的日志不会公开相关的信息。</p>
+<p><em>Figure 7-15</em> 展示了高层级的日志 <em>(如应用程序的)</em> 跟低层级日志 <em>(如文件系统的)</em> 的映射导致了冗余的日志记录以及不同的垃圾回收模式。写入不对称的段会让情况变得更糟，比如丢弃高层级的日志段可能会导致邻接的段产生碎片跟需要重新分配。</p>
+<p><img src="chapter_7_7_log_stacking.assets/image-20210330184150386.png" alt="image-20210330184150386" /></p>
+<p>因为层级之间没有就 LSS-related 的调度进行沟通 <em>(比如丢弃或重分配某些段)</em>，低层级的子系统可能会对已经丢弃或即将被丢弃的数据进行重复的操作。类似的，因为没有唯一的标准的段的大小，这可能会导致高层级的段会使用多个低层级段的大小导致不对称。所有的这些开销都应该被减少会完全避免。</p>
+<p>尽管我们说结构化日志存储都是顺序的 I/O，但仍然要注意数据库系统中可能会同时有多个写入的流 <em>(比如同时进行的日志写入跟数据记录的写入)</em>。在硬件层级上进行考虑，交替的顺序性写入可能无法被转换为相同的顺序模式：块不一定要按照写入的顺序来进行排序。Figure 7-16 展示了多个流在时间线上重叠的场景，写入的数据记录并不会跟底层硬件的页大小对其。</p>
+<p><img src="chapter_7_7_log_stacking.assets/image-20210330185248205.png" alt="image-20210330185248205" /></p>
+<p>这导致了我们本来想要避免的碎片化，为了减少交替的操作，有些数据库的供应商将日志保存在独立的设备中，来隔离不同的工作负载，以保证设备中会始终使用相同的访问模式来提高性能。因此，重要的是保证分区跟底层的硬件对齐并保持写入会按照页进行对齐。</p>
 <h1><a class="header" href="#llama-and-mindful-stacking" id="llama-and-mindful-stacking">LLAMA and Mindful Stacking</a></h1>
+<p>在 Bw-Trees 中，我们讨论了称为 Bw-Tree 的不可变的 B-Tree 版本，Bw-Tree 使用的是一个分层的 <em>Latch-free</em> 无锁的、<em>Log-structured</em> 结构化日志的、<em>Access-method aware</em> 访问模式认知 <em>(LLAMA)</em> 的存储子系统。这个分层允许 Bw-Tree 能够动态的增长跟收缩，同时保持垃圾回收跟页管理之间的透明度。在这里，我们主要的兴趣点在于 <em>Access-method aware</em> 部分，他展示了软件分层所带来的好处。</p>
+<p>先简单总结，一个 Bw-Tree 的逻辑节点由物理增量节点的链表组成，链中的节点包含了最新的更新到最旧的更新，最后以原始节点结尾。逻辑节点使用的是保存在内存中的映射表，映射表指向了最新更新节点在磁盘中的位置。Key 跟 Value 会从逻辑节点上进行添加跟删除，但他们在物理上的表示则仍然是不变的。</p>
+<p>结构化日志存储缓存了节点的更新 <em>(通过增量节点)</em> 到一个 4Mb 的闪存中，当这个页被填满时，他就会被刷新到磁盘中。周期性的，垃圾回收会回收那些不再使用的增量跟基础节点，并为仍然存活的节点重新分配控件来释放碎片化的页。</p>
+<p>在不使用 <em>Access-method Awareness</em> 访问模式认知时，不同逻辑节点间交替的增量节点会按照他们的插入顺序保存。Bw-Tree 的 LLAMA 认知下，允许将多个增量节点连续的保存到物理地址中。如果两个增量节点的更新会互相抵消 <em>(比如插入之后进行删除操作)</em>，那可以为他们执行逻辑性的合并，并且只保留最后的删除操作。</p>
+<p>LSS 垃圾回收可以对合并 Bw-Tree 节点的内容提供帮助，这意味着垃圾回收不只是回收空闲的控件，还可以直观的减少物理节点中的碎片。如果垃圾回收只是重写了多个连续的增量节点，那他们仍然会占用相同大小的空间，而且读取者仍然需要将大量的增量节点应用到基础节点来得到最终结果。与此同时，更高级别的系统将节点合并并连续的写到了新的位置，则 LSS 仍然需要去回收那些旧的版本。</p>
+<p>通过对 Bw-Tree 语义的了解，在垃圾回收时，可以通过将多个增量节点应用到基础节点来将其重写为一个单独的基础节点。这减少了Bw-Tree 节点所需要使用的磁盘空间，也降低了读取操作时读取到那些已经被丢弃的页面所造成的延迟。</p>
+<p>你可以看到，在仔细考虑的前提下，层次的叠加能够带来许多的益处。并不必须总是要去构建紧凑的单层的结构。良好的 API 跟暴露正确的信息也可以显著的提高性能。</p>
+<h2><a class="header" href="#open-channel-ssds" id="open-channel-ssds">Open-Channel SSDs</a></h2>
+<p>一种替换叠加多个软件层次的方案是跳过所有的中间层直接访问硬件。比如可以通过绕开文件系统跟闪存转换层，直接使用 Open-Channel SSDs。使用这种方式我们可以避免至少两层的日志跟对损耗的均衡、垃圾回收、数据的布局跟调度有更多的控制。这种方式的其中一个实现是 LOCS <em>(LSM Tree-based KV Sotre on Open-Channel SSD)</em>。另一个使用 Open-Channel SSDs 的例子是 LightNVM，他是在 Linux 的内核中实现的。</p>
+<p>闪存转换层通常要处理数据的布局，垃圾回收跟页的重分配，Open-Channel SSDs 在不通过 FTL 的前提下，暴露出了他的内部信息、驱动管理器跟 I/O 调度信息。虽然从开发人员的角度来看会需要去关注更多的细节，但这个方式可能能带来更直观的性能提升。你可以使用 <em>O_DIRECT</em> 标志来跳过内核的页缓存从而获得更好的控制，但与此同时也意味着需要你去手动的管理页信息。</p>
+<p>Software Defined Flash <em>(SDF)</em>，一个硬件/软件签名的 Open-Channel SSDs 系统，公开了一些非对称的接口可以让我们将 SSD 的规则考虑进去。读取跟写入单元的尺寸是不同的，写入单元的尺寸对应于删除单元的尺寸 <em>(块)</em>，这可以大大的减少写放大。这个配置非常合适于结构化日志的存储，因为他只有一个用来执行垃圾回收跟页重分配的软件层级。此外，开发人员可以对 SSD 内部进行并发的访问来提高性能，因为 SDF 中的每个 Channel 都可以作为一个独立的块设备来使用。</p>
+<p>将复杂度隐藏在简单的 API 后听起来是非常好的，但在软件层具有不同的语义时也可能带来额外的复杂度。因此公开一些底层系统内部的信息可能对对集成带来更多的好处。</p>
 <h1><a class="header" href="#summary-7" id="summary-7">Summary</a></h1>
+<p>结构化日志存储现在已经随处可见了：从 <em>Flash Translation Layer</em> 闪存转换层到文件系统跟数据库系统，他通过在内存中合并随机小写入进行批量的执行，来减少写放大的问题。LSS 还会通过周期性的执行垃圾回收来回收那些已经被删除的段。</p>
+<p>LSM Tree 从 LSS 中汲取了一些想法，使用了结构化日志的方式来构建索引数据结构：批量的将内存中的数据写入到磁盘；被覆盖的数据记录在压缩的时候会被清除。</p>
+<p>有一点很重要的是许多的软件层次都使用了 LSS，要保证各层级之间的叠加是合适的，否则的话，还可以考虑完全跳过文件系统的级别来手动的直接访问硬件。</p>
+<h3><a class="header" href="#更多的阅读-5" id="更多的阅读-5">更多的阅读</a></h3>
+<p>如果你想对我们本章中讨论的概念有更多的了解，可以通过下面的引用获取相关信息</p>
+<ul>
+<li>
+<p>Overview</p>
+<p>Luo, Chen, and Michael J. Carey. 2019. “LSM-based Storage Techniques: A Sur‐ vey.” The VLDB Journal https://doi.org/10.1007/s00778-019-00555-y.</p>
+</li>
+<li>
+<p>LSM Trees</p>
+<p>O’Neil, Patrick, Edward Cheng, Dieter Gawlick, and Elizabeth O’Neil. 1996. “The log-structured merge-tree (LSM-tree).” Acta Informatica 33, no. 4: 351-385. https://doi.org/10.1007/s002360050048.</p>
+</li>
+<li>
+<p>Bitcask</p>
+<p>Justin Sheehy, David Smith. “Bitcask: A Log-Structured Hash Table for Fast Key/ Value Data.” 2010.</p>
+</li>
+<li>
+<p>WiscKey</p>
+<p>Lanyue Lu, Thanumalayan Sankaranarayana Pillai, Hariharan Gopalakrishnan, Andrea C. Arpaci-Dusseau, and Remzi H. Arpaci-Dusseau. 2017. “WiscKey: Sep‐ arating Keys from Values in SSD-Conscious Storage.” ACM Trans. Storage 13, 1, Article 5 (March 2017), 28 pages.</p>
+</li>
+<li>
+<p>LOCS</p>
+<p>Peng Wang, Guangyu Sun, Song Jiang, Jian Ouyang, Shiding Lin, Chen Zhang, and Jason Cong. 2014. “An efficient design and implementation of LSM-tree based key-value store on open-channel SSD.” In Proceedings of the Ninth Euro‐ pean Conference on Computer Systems (EuroSys ’14). ACM, New York, NY, USA, Article 16, 14 pages.</p>
+</li>
+<li>
+<p>LLAMA</p>
+<p>Justin Levandoski, David Lomet, and Sudipta Sengupta. 2013. “LLAMA: a cache/ storage subsystem for modern hardware.” Proc. VLDB Endow. 6, 10 (August 2013), 877-888.</p>
+</li>
+</ul>
 
                     </main>
 
