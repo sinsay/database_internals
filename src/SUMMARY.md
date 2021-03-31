@@ -55,4 +55,5 @@
     - [Log Stacking](./chapter_7_7_log_stacking.md)
     - [LLAMA and Mindful Stacking](./chapter_7_8_llama_and_mindful_stacking.md)
     - [Summary](./chapter_7_9_summary.md)
+  - [Conclusion](./part_i_conclusion.md)
 

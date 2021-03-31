@@ -1,7 +1,43 @@
 # database_internals
 chinese translation of database internals, now the progress is
 
-- [ ] Part 1 - Storage Engine
+- [ ] Part 2 - Distributed Systems
+  - [ ] Chapter 8 - Introduction and Overview
+    - [ ] Concurrent Execution
+    - [ ] Fallacies of Distributed Conputing
+    - [ ] Distributed Systems Abstractions
+    - [ ] Two Generals' Problem
+    - [ ] System Synchrony
+    - [ ] Failure Models
+  - [ ] Chapter 9 - Failure Detection
+    - [ ] Hearbeats and Pings
+    - [ ] Phi-Accural Failure Detector
+    - [ ] Gossip and Failure Dectection
+    - [ ] Reversing Failure Detection Problem Statement
+    - [ ] Summary
+  - [ ] Chapter 10 - Leader Election
+    - [ ] Bully Algorithm
+    - [ ] Next-in-Line Failover
+    - [ ] Candidate/Ordinary Optimization
+    - [ ] Invitation Algorithm
+    - [ ] Ring Algorithm
+    - [ ] Summary
+  - [ ] Chapter 11 - Replication and Consistency
+    - [ ] Archieving Availability
+    - [ ] Infamous CAP
+    - [ ] Shared Memory
+    - [ ] Ordering
+    - [ ] Consistency Models
+    - [ ] Session Models
+    - [ ] Eventual Consistency
+    - [ ] Tunable Consistency
+    - [ ] Witness Replicas
+    - [ ] Strong Eventual Consistency and CRDTs
+    - [ ] Summary
+  - [ ] Chapter 12 - Anti-Entropy and Dissemination
+  - [ ] Chapter 13 - Distributed Transactions
+  - [ ] Chapter 14 - Consensus
+- [x] Part 1 - Storage Engine *DONE*
   - [x] Chapter 1 - Introduction and Overview
     - [x] DBMS Architecture
     - [x] Memory- Versus Disk-Based DBMS
@@ -46,13 +82,13 @@ chinese translation of database internals, now the progress is
     - [x] FD-Trees
     - [x] BW-Trees
     - [x] Cache-Oblivious B-Trees
-  - [-] Chapter 7 - Log-Structured Storage
+  - [x] Chapter 7 - Log-Structured Storage
     - [x] LSM Trees
     - [x] Read, Write, and Space Amplification
     - [x] Implemention Details
     - [x] Unordered LSM Storage
-    - [ ] Concurrency in LSM Trees
-    - [ ] Log Stacking
-    - [ ] LLAMA and Mindful Stacking
-    - [ ] Summary
-- [ ] Part 2 - Distributed Systems
+    - [x] Concurrency in LSM Trees
+    - [x] Log Stacking
+    - [x] LLAMA and Mindful Stacking
+    - [x] Summary
+  - [x] Conclusion
