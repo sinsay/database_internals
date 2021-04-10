@@ -60,3 +60,4 @@
   - [Introduction and Overview](./chapter_8_1_introduction_and_overview.md)
   - [Concurrent Execution](./chapter_8_2_concurrent_execution.md)
   - [Fallacies of Distributed Computing](./chapter_8_3_fallacies_of_distributed_computing.md)
+  - [Distributed Systems Abstriction](./chapter_8_4_distributed_systems_abstrictions.md)
