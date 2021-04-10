@@ -1,0 +1,306 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Fallacies of Distributed Computing - Database Internals</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="part_1_storage_engine.html"><strong aria-hidden="true">1.</strong> Storage Engine</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_1_introduction_and_overview.html"><strong aria-hidden="true">1.1.</strong> Introduction and Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_2_dbms_architecture.html"><strong aria-hidden="true">1.1.1.</strong> DBMS Architecture</a></li><li class="chapter-item expanded "><a href="chapter_1_3_memory_disk_base_dbms.html"><strong aria-hidden="true">1.1.2.</strong> Memory- Versus Disk-Based DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_4_column_row_oriented.html"><strong aria-hidden="true">1.1.3.</strong> Column- Versus Row-Oriented DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_5_data_files_and_index_files.html"><strong aria-hidden="true">1.1.4.</strong> Data Files and Index Files</a></li><li class="chapter-item expanded "><a href="chapter_1_6_buffering_immutability_and_ordering.html"><strong aria-hidden="true">1.1.5.</strong> Buffering Immutability and Ordering</a></li><li class="chapter-item expanded "><a href="chapter_1_7_summary.html"><strong aria-hidden="true">1.1.6.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2_1_btree_basic.html"><strong aria-hidden="true">1.2.</strong> BTree Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_2_2_binary_search_trees.html"><strong aria-hidden="true">1.2.1.</strong> Binary Search Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_3_disk_based_structures.html"><strong aria-hidden="true">1.2.2.</strong> Disk Based Structures</a></li><li class="chapter-item expanded "><a href="chapter_2_4_ubiquitous_btrees.html"><strong aria-hidden="true">1.2.3.</strong> Ubiquitous B-Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_5_summary.html"><strong aria-hidden="true">1.2.4.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3_1_file_format.html"><strong aria-hidden="true">1.3.</strong> File Format</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_3_2_motivation.html"><strong aria-hidden="true">1.3.1.</strong> Motivation</a></li><li class="chapter-item expanded "><a href="chapter_3_3_binary_encoding.html"><strong aria-hidden="true">1.3.2.</strong> Binary Encoding</a></li><li class="chapter-item expanded "><a href="chapter_3_4_general_principles.html"><strong aria-hidden="true">1.3.3.</strong> General Principles</a></li><li class="chapter-item expanded "><a href="chapter_3_5_page_structure.html"><strong aria-hidden="true">1.3.4.</strong> Page Structure</a></li><li class="chapter-item expanded "><a href="chapter_3_6_slotted_pages.html"><strong aria-hidden="true">1.3.5.</strong> Slotted Pages</a></li><li class="chapter-item expanded "><a href="chapter_3_7_cell_layout.html"><strong aria-hidden="true">1.3.6.</strong> Cell Layout</a></li><li class="chapter-item expanded "><a href="chapter_3_8_combining_cell_into_slotted_pages.html"><strong aria-hidden="true">1.3.7.</strong> Combining Cell into Slotted Pages</a></li><li class="chapter-item expanded "><a href="chapter_3_9_managing_variable_size_data.html"><strong aria-hidden="true">1.3.8.</strong> Managing Variable Size Data</a></li><li class="chapter-item expanded "><a href="chapter_3_10_versioning.html"><strong aria-hidden="true">1.3.9.</strong> Versioning</a></li><li class="chapter-item expanded "><a href="chapter_3_11_checksumming.html"><strong aria-hidden="true">1.3.10.</strong> Checksumming</a></li><li class="chapter-item expanded "><a href="chapter_3_12_summary.html"><strong aria-hidden="true">1.3.11.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_4_1_implementing_btrees.html"><strong aria-hidden="true">1.4.</strong> Implementing BTrees</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_4_2_page_header.html"><strong aria-hidden="true">1.4.1.</strong> Page Header</a></li><li class="chapter-item expanded "><a href="chapter_4_3_binary_search.html"><strong aria-hidden="true">1.4.2.</strong> Binary Search</a></li><li class="chapter-item expanded "><a href="chapter_4_4_propagating_spits_and_merges.html"><strong aria-hidden="true">1.4.3.</strong> Propagating Splits and Merges</a></li><li class="chapter-item expanded "><a href="chapter_4_5_rebalacing.html"><strong aria-hidden="true">1.4.4.</strong> Rebalacing</a></li><li class="chapter-item expanded "><a href="chapter_4_6_right_only_appends.html"><strong aria-hidden="true">1.4.5.</strong> Right-Only Appends</a></li><li class="chapter-item expanded "><a href="chapter_4_7_compression.html"><strong aria-hidden="true">1.4.6.</strong> Compression</a></li><li class="chapter-item expanded "><a href="chapter_4_8_vacuum_and_maintenance.html"><strong aria-hidden="true">1.4.7.</strong> Vacuum and Maintenance</a></li><li class="chapter-item expanded "><a href="chapter_4_9_summary.html"><strong aria-hidden="true">1.4.8.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_5_1_transaction_processing_and_recovery.html"><strong aria-hidden="true">1.5.</strong> Transaction Processing and Recovery</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_5_2_buffer_management.html"><strong aria-hidden="true">1.5.1.</strong> Buffer Management</a></li><li class="chapter-item expanded "><a href="chapter_5_3_recovery.html"><strong aria-hidden="true">1.5.2.</strong> Recovery</a></li><li class="chapter-item expanded "><a href="chapter_5_4_concurrency_control.html"><strong aria-hidden="true">1.5.3.</strong> Concurrenty Control</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_6_1_btree_variants.html"><strong aria-hidden="true">1.6.</strong> B-Trees Variant</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_6_2_copy_on_write.html"><strong aria-hidden="true">1.6.1.</strong> Copy-on-Write</a></li><li class="chapter-item expanded "><a href="chapter_6_3_abstracting_node_updates.html"><strong aria-hidden="true">1.6.2.</strong> Abstracting Node Updates</a></li><li class="chapter-item expanded "><a href="chapter_6_4_lary_btrees.html"><strong aria-hidden="true">1.6.3.</strong> Lazy B-Trees</a></li><li class="chapter-item expanded "><a href="chapter_6_5_fd_trees.html"><strong aria-hidden="true">1.6.4.</strong> FD-Trees</a></li><li class="chapter-item expanded "><a href="chapter_6_6_bw_trees.html"><strong aria-hidden="true">1.6.5.</strong> Bw-Trees</a></li><li class="chapter-item expanded "><a href="chapter_6_7_cache_oblivious_trees.html"><strong aria-hidden="true">1.6.6.</strong> Cache-Oblivious B-Trees</a></li><li class="chapter-item expanded "><a href="chapter_6_8_summary.html"><strong aria-hidden="true">1.6.7.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_7_1_log_structured_storage.html"><strong aria-hidden="true">1.7.</strong> Log-Structure Storage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_7_2_lsm_trees.html"><strong aria-hidden="true">1.7.1.</strong> LSM Trees</a></li><li class="chapter-item expanded "><a href="chapter_7_3_read_write_space_amplification.html"><strong aria-hidden="true">1.7.2.</strong> Read, Write, and Space Amplification</a></li><li class="chapter-item expanded "><a href="chapter_7_4_implementation_details.html"><strong aria-hidden="true">1.7.3.</strong> Implemetation Details</a></li><li class="chapter-item expanded "><a href="chapter_7_5_unordered_lsm_storage.html"><strong aria-hidden="true">1.7.4.</strong> Unordered LSM Storage</a></li><li class="chapter-item expanded "><a href="chapter_7_6_concurrency_in_lsm_trees.html"><strong aria-hidden="true">1.7.5.</strong> Concurrency in LSM Trees</a></li><li class="chapter-item expanded "><a href="chapter_7_7_log_stacking.html"><strong aria-hidden="true">1.7.6.</strong> Log Stacking</a></li><li class="chapter-item expanded "><a href="chapter_7_8_llama_and_mindful_stacking.html"><strong aria-hidden="true">1.7.7.</strong> LLAMA and Mindful Stacking</a></li><li class="chapter-item expanded "><a href="chapter_7_9_summary.html"><strong aria-hidden="true">1.7.8.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="part_i_conclusion.html"><strong aria-hidden="true">1.8.</strong> Conclusion</a></li></ol></li><li class="chapter-item expanded "><a href="part_ii_distributed_systems.html"><strong aria-hidden="true">2.</strong> Distributed Systems</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_8_1_introduction_and_overview.html"><strong aria-hidden="true">2.1.</strong> Introduction and Overview</a></li><li class="chapter-item expanded "><a href="chapter_8_2_concurrent_execution.html"><strong aria-hidden="true">2.2.</strong> Concurrent Execution</a></li><li class="chapter-item expanded "><a href="chapter_8_3_fallacies_of_distributed_computing.html" class="active"><strong aria-hidden="true">2.3.</strong> Fallacies of Distributed Computing</a></li><li class="chapter-item expanded "><a href="chapter_8_4_distributed_systems_abstrictions.html"><strong aria-hidden="true">2.4.</strong> Distributed Systems Abstriction</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Database Internals</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#fallacies-of-distributed-computing" id="fallacies-of-distributed-computing">Fallacies of Distributed Computing</a></h1>
+<p>在理想的情况下，两台电脑之间通过网络通信时，所有的事情都会正常的进行：一个处理器打开一个连接，发送他的数据，得到响应，皆大欢喜。假设这个操作总是能够成功执行并且不存在任何能够产生危险的错误，当某些情况出现并导致我们的假设出错时，就会很难或不可能去预测整个系统的行为了。</p>
+<p>大部分时间里，都假设网络是可靠的，至少在某种程度上是可靠的，才能保证他是有用的。我们都遇到过，在尝试建立与远程服务的网络连接时，得到了一个网络不可触达的错误 <em>(Network is Unreachable)</em> 。 但就算跟远程服务的连接成功建立后，这个成功初始化并建立的连接并不能保证他后续的可靠性，这个连接可能会在任意的时刻被中断。发送的消息也许能够成功的发送给对端，但对应的响应信息页可能会丢失，或者对方发送了响应但在消息到达前连接被中断。</p>
+<p>交换机出错、电缆断开、网络配置可能在任意时刻发生变更，我们在构建系统时需要使用合适的方式来处理这些场景。</p>
+<p>连接可以是稳定的，但我们不能指望远程的调用会跟本地的调用一样快，我们要假设调用通常是会有延迟的，并且延迟不可能为零。消息需要通过多个软件层级，以及类似光纤、电缆才能到达远程的服务，而所有的这些操作都不是能够即时完成的。</p>
+<p>Michael Lewis 在他 <em>Flash Boys</em> 这本书中讲了个故事，有一个公司花了数百万美元降低了几毫秒的延迟，从而能够比竞争对手更快访问证券交易所。这是一个使用降低延迟来提高竞争力的很好的例子，只是有一点是需要提一下的，根据一些类似如 BARTLETT16 的研究，更快的知道价格并去执行订单并不能给交易员带来更大的获利机会。</p>
+<p>在接下来的学习中，我们还会添加入重试、重新连接跟删除我们关于瞬时实行的假设，但这仍然被证明是不够的。当增加了交换信息的数量、频率跟大小或者在网络中增加了新的处理器时，我们不能够假设 <em>Bandwidth is infinite</em> 带宽是无限的。</p>
+<p>Deutsch 有一份非常详尽的分布式计算谬论列表，只是他关注的是消息在网络中从一个处理器发送另外一个处理器。这其中关注的大部分是最通用跟最底层的复杂情况，但很不幸的是，在我们后面关于分布式系统设计跟实现时还做了很多其他的假设，这些假设在执行时可能也会导致问题。</p>
+<h2><a class="header" href="#processing" id="processing">Processing</a></h2>
+<p>在远程的处理器为刚接收到的消息发送响应前，他需要在他的本地执行一些工作，因此我们不能够假设处理的过程是能够瞬时完成的。仅仅考虑网络的延迟并不足够，因为远程处理器所执行的操作也不是能够马上完成的。</p>
+<p>而且，也没有任何保证说对方会在接收到消息的同时就马上进行处理。消息可能会在远程服务的等待队列中排队，一直等到在他之前的消息都完成之后才开始处理。</p>
+<p>可以定位出节点之间距离的远近，确认他们是否有不同的 CPU 芯片、内存大小、不同的硬盘或是否以不同的配置运行在不同版本的软件上。但我们不能期望他们能够以相同的速率来处理请求，如果我们有一个任务需要等待多个远程的服务并行运行的响应，那整个执行的时间最多将会跟最慢的那个远程服务器一样。</p>
+<p>跟通常的认知相反，队列的容量并不是无限的，而且将更多的请求进行排队对系统来说没有什么好处。<em>Backpressure</em> 背压是一个允许我们处理生产者生成速度快于消费者消费速度的策略。背压是分布式系统中最不为人知的概念之一，他通常是在事后建立的，而不是在系统设计时考虑的部分。</p>
+<p>尽管提高队列的容量听起来是一个对 <em>Pipeline</em> 管道、<em>Parallelize</em> 并行化跟高效调度请求很好的想法，好像让更多的消息在队列中排队等待运行并不会带来任何影响。但增加队列的大小是可能会对延迟带来负面影响的，因为对他的变更对处理的速度没任何影响。</p>
+<p>通常来说，处理本地的队列是为了实现下面的目标：</p>
+<ul>
+<li>
+<p><em>Decoupling</em> 解耦</p>
+<p>将接收跟处理在时间上分开，并让他们独立的运行。</p>
+</li>
+<li>
+<p><em>Pipilining</em> 管道</p>
+<p>处于不同阶段的请求可以被系统中独立的部分去处理。负责接收消息的子系统并不需要等到之前的所有消息都被完全处理才能继续执行。</p>
+</li>
+<li>
+<p><em>Absorbing short-time bursts</em> 处理短期爆发</p>
+<p>系统的负载总是变化的，能够将请求到达的时间对负责处理请求并提供响应的模块隐藏起来。系统整体的延迟会因为将时间花费在排队上变得更高，但在大部分情况下相比于与返回失败跟重试来说又会更好一些。</p>
+</li>
+</ul>
+<p>队列的大小在不同的负载跟应用中是不一样的，为了得到稳定的负载，我们可以先确认任务处理所需的时间以及任务在队列中等待所需花费的平均时间，来确保在吞吐量上升的时候整体的延迟仍在可接受的范围内。在这个例子中，队列的大小会相对较小。对于无法预测的负载，当任务是以突发的方式提交时，队列大小的设置也应该将突发和高负载一同列入考虑。</p>
+<p>远程的服务器可以快速的处理请求，但这不意味着我们可以一直从中得到正面的响应，他可以响应一个失败的信息：比如无法进行写入，检索的数据没找到，也可能是因为触发了 Bug。总而言之，尽管是最乐观的场景我们也应该对他进行关注。</p>
+<h2><a class="header" href="#clocks-and-time" id="clocks-and-time">Clocks and Time</a></h2>
+<blockquote>
+<p>Time is an illusion. Lunchtime doubly so.</p>
+<p>​	-- Ford Prefect, <em>The Hitchhiker's Guide to the Galaxy</em></p>
+</blockquote>
+<p>假设远程服务器之间的时钟是同步的是一件很危险的事。结合延迟为零跟处理是即时完成的这两点，这把我们导向了一种不同的特性，特别是在时间序列跟实时数据处理中。比如在从具有不同时间认知的参与者中收集跟分析数据时，你应该了解他们之间的时间偏差跟做一些相应的时间规范，而不是依赖于时间源的时间戳信息。除非你使用专门的高精度时间源，否则的话就不应该让同步跟时序依赖于时间戳信息。当然这并不意味着我们没办法或应该完全不依赖于时间：毕竟任意的同步系统都会使用 <em>local</em> 本地的时钟来处理超时。</p>
+<p>我们需要时刻考虑不同处理器之间可能存在的时间差异以及消息送达跟处理所需的时间。比如 Spanner <em>(Distributed Transactions with Spanner 会提到)</em>  使用一种特殊的时间 API 来返回时间戳以及不确定的边界来明确事务间的时序问题。还有一些错误检测算法会依赖于时间共享的概念来保证时钟的偏差总会在能够保证正确性的边界内。</p>
+<p>除此之外，实际上很难在分布式系统中实现时钟的同步，<em>current</em> 当前时间会持续的在变化：你可以从操作系统提供的 POSIX 接口中请求到当前时间戳，然后在执行几个步骤后请求另一个当前时间戳，这会得到两个不同的值。这是一个相对直观的现象，但要理解事件源跟具体时刻所获取的时间戳是至关紧要的。</p>
+<p>了解时钟源是严格递增的 <em>(比如不会回退)</em> 跟被调度的与时间相关的操作之间的偏差可能会多大也是非常有用的。</p>
+<h2><a class="header" href="#state-consistency" id="state-consistency">State Consistency</a></h2>
+<p>我们之前所作的大部分假设属于在大多数情况下总会出错的范畴，但其中也有一些能被较好的描述为并不总是正确的：他们只是使用了简化的模型、特定的思维方式以及忽略了一些复杂的边界条件来让其更容易理解。</p>
+<p>分布式算法并不总是保证严格的状态一致性。有一些实现具有较松限制来允许不同副本之间的状态存在差异，然后依赖于 <em>Conflict resolution</em> 冲突解决 <em>(用来检测跟解决系统的差异状态)</em> 跟 <em>(read-time data repair)</em> 读取时数据修复 <em>(在读取时通过响应结果的不同将副本状态恢复到同步的机制)</em> 来解决冲突。在十二章中可以找到更多关于这些概念的信息。对多个节点之间的状态做出一致性的假设可能也会导致一些微妙的 Bug。</p>
+<p>使用了最终一致性的分布式数据库系统通过在读取时查询大多数节点来处理副本不一致的问题，并假设数据库的架构跟视图在集群中是保持了强一致性的。除非我们确保这个信息的一致性，否则对这个假设的依赖可能会导致非常严重的后果。</p>
+<p>比如说，在 Apach Cassandra 中曾经有个 Bug 就是因为架构的变更是在不同的时间传递到了不同的服务器中，如果你在一个已经更新了架构信息的服务器中进行读取，可能会导致崩溃，因为一个服务器可能使用他的架构来对结果进行编码，而另一个服务器使用了不同的架构来进行解码。</p>
+<p>另一个例子是因为 Ring 视图的差异导致的：如果一个节点假设其他的节点持有某个 Key 对应的数据记录，但另一个节点在这个集群中有着不同的视图，对这个数据的读取或者写入可能会导致获取到错误的数据记录或者是得到一个空的响应，尽管这个数据记录在另一个节点上是确实存在的。</p>
+<p>提前把可能出现的问题先做出考虑是比较好的，即使一个完整的解决方案的实施代价可能更高昂。但通过了解跟处理这些场景，你可以加入保障机制或是对设计进行调整来让整个方案更加的健壮。</p>
+<h2><a class="header" href="#local-and-remote-execution" id="local-and-remote-execution">Local and Remote Execution</a></h2>
+<p>将复杂度隐藏在 API 后面可能是很危险的，比如，如果你有一个迭代器来遍历本地的数据集，你可以合理的推测出其背后的信息，尽管存储引擎并不常见。我们要了解对远程数据集进行迭代的处理可能会带来完全不同的问题：你需要明白一致性跟送达的语义，数据的协调，分页，合并，并行访问的含义以及其他的各种东西。</p>
+<p>简单的将这些隐藏到一个接口后面，不管会带来多大的好处，都可能会产生一些误导。一些额外的 API 参数可能对于调试、配置跟观察来说都是很重要的，我们需要时刻谨记本地跟远程调用是不同的。</p>
+<p>在远程调用中最常见的问题是延迟：远程调用相对于本地调用的开销可能要大得多，因为他需要进行两次网络传输，序列化跟反序列化，还有很多其他的步骤。交错进行本地跟堵塞的远程调用可能会导致性能下降跟预料之外的副作用。</p>
+<h2><a class="header" href="#need-to-handle-faliures" id="need-to-handle-faliures">Need to Handle Faliures</a></h2>
+<p>在系统开始工作时假设所有的节点都正常启动并工作着是可以的，但在所有的时间里都保持这个假设会有些危险。在一个长时间运行的系统中，节点可能会因为维护而停止 <em>(通常会是正常的停机)</em> 或是因为其他的各种原因：软件的问题、内存溢出而被停止、运行时的问题、硬件的问题等等，都可能会造成处理器失效，而你能够做的最好的事就是准备好面对各种故障并了解故障发生时应如何进行处理。</p>
+<p>如果远程的服务器没有响应，我们并不是一直都能知道具体的原因，他可能是因为系统崩溃，网络失效、处理器或者是网络连接变得缓慢等原因造成的。一些分布式的算法会使用 <em>Heartbeat Protocols</em> 心跳协议跟 <em>Failure detectors</em> 错误检测来判断哪些参与的节点是仍然存活跟可以触达的。</p>
+<h2><a class="header" href="#network-partitions-and-partial-failures" id="network-partitions-and-partial-failures">Network Partitions and Partial Failures</a></h2>
+<p>我们把两个或多个服务器之间无法进行通信的状况称为 <em>Network Partition</em> 网络分区。在 &quot;Perspectives on the CAP Theorem&quot; 中，Seth Gilbert 跟 Nancy Lynch 描述了两个餐护着之间无法进行通信跟多个参与者的形成的组之间相互独立导致的无法交换信息跟处理的区别，并通过算法让他们可以继续执行。</p>
+<p>通常网络的不可靠 <em>(数据包的丢失、重发、延迟很难进行预测)</em> 是让人烦恼但可以接受的，而网络分区则会导致更多的问题，因为独立的分组可以继续运行然后导致有冲突的结果。网络连接也可能以非对称的方式失效：消息可以从一个处理器传递到另一个处理器，但反过来却不行。</p>
+<p>为了构建在一个或多个处理器都失效时仍能保持健壮的系统，我们需要考虑另一种称为 <em>Partial Failures</em> 部分故障的场景，以及如何在系统的部分节点不可用或产生错误结果的情况下能够继续保持运行。</p>
+<p>故障是很难检测的，而且他们没办法在系统中的不同部分以相同的方式观察到。在设计一个高可用的系统时，一个应该铭记的边界条件是：如果我们分发了数据但却没有收到反馈，应不应该进行重试？数据在已经做出反馈的节点上应不应该被读取到？</p>
+<p><em>Murphy's Law</em> 墨菲定律告诉我们故障必然会发生。编程的经验告诉我们故障会以最糟糕的形式发生，因此我们作为分布式系统的工程师要确保去减少会让事情出错的场景，以及为故障可能造成的损害做好准备。</p>
+<p>防止所有的故障是一件不可能的事，但我们依然能够构建一个具备弹性的系统，在故障发生时仍然能够保持功能的正确性。针对故障进行设计的最好方式就是对其进行测试。考虑所有可能的故障场景并预测存在多个处理者的行为几乎是不可能的。通过模拟字节的出错、增加延迟、使时钟产生偏离跟放大相关处理之间的速度差异是一个很好用来创建分区的方式。真实世界的分布式系统可能会以不同的、非常不用好或极具创造性的方式出现问题，所以测试的工作也应该尽力去覆盖尽可能多的场景。</p>
+<p>工作在分布式系统中，我们需要小心的处理容错、弹性、可能出故障的场景跟边界条件。类似 <em>Given enough eyeballs, all bugs are shallow</em>，我们说一直足够大的集群最终肯定会触发所有可能的问题。与此同时，给予足够的测试，我们最终能够找到所有存在的问题。</p>
+<h2><a class="header" href="#cascading-failures" id="cascading-failures">Cascading Failures</a></h2>
+<p>我们不能一直孤立的看待问题：在一个在高负载的环境下，一个节点的故障会增加集群中其他节点的压力，因此也会提高其他的节点发生故障的可能性。<em>Cascading failures</em> 级联的故障会从系统的一部分传播到其他的部分，从而扩大了问题的边界。</p>
+<p>有时，级联故障可能是从一个很好的情况中产生的，比如说，一个离线了一段时间导致错过了许多更新的节点，在他重新上线之后，其他的节点为了帮助他追赶上最新的状态开始发送大量该节点错失的数据给他，导致耗尽了网络资源或者导致从而导致了这个节点在上线不久又出现故障。</p>
+<p>当连接到其中一个服务的连接失效或者服务没有响应时，客户端会启动重连的循环，在这时，客户端侧密集的重试对原本已经处于超负荷并且疲于处理新连接的服务器来说没任何帮助。为了避免这个情况，我们可以使用 <em>backoff</em> 补偿的策略，相对于立即进行重试，客户端可以先等待一段时间。补偿可以通过对重试进行调度跟增大相邻连接间的时间窗口来帮助我们避免把问题放大。</p>
+<p>补偿通常会用来加大单个客户端请求之间的时间间隔，但是不同的客户端使用相同的补偿策略也会产生大量的负载，为了防止不同的客户端在补偿的间隔后同时进行重试，我们可以加上 <em>Jitter</em> 抖动，抖动通过为每个时间间隔加上一个微小的随机时间来减少客户端同时唤醒并进行重连的可能性。</p>
+<p>硬件的故障、位的腐蚀以及软件的错误导致的中断可以通过标准的送达机制来传递。举例来说，未被校验为损坏的数据记录可以被分发到多个节点中。在没有校验机制的情况下，系统会将损坏的数据传递到其他的节点，从而可能会导致重写了那些未损坏的数据。为了避免这点，我们应该使用 <em>Checksumming</em> 校验和跟合法性来确保节点间交换内容的完整性。</p>
+<p>超载跟热点的情况可以通过计划跟协调执行来避免。与其让节点间独立的执行所需的操作，我们可以使用协调者根据可用的资源跟对历史的执行情况来预测负载。</p>
+<p>作为总结，我们应该始终考虑系统某一部分的故障会导致其他部分出现问题的情况，我们要为系统准备好应对重大错误、补偿、验证跟协调机制，处理单独的小问题相对于从大型的错误中回复来说要直观的多。</p>
+<p>我们花费了一整节来讨论分布式系统中的问题跟局部故障的场景，我们应该将这个看为一个警告，而不至于将我们吓跑。</p>
+<p>明白哪些东西可能出现问题，然后小心的进行设计跟设计，来让我们的系统更加的健壮跟有弹性，仔细的处理这些问题可以帮助你在开发阶段找到部分问题的来源，并在产品中对他进行调试。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="chapter_8_2_concurrent_execution.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="chapter_8_4_distributed_systems_abstrictions.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="chapter_8_2_concurrent_execution.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="chapter_8_4_distributed_systems_abstrictions.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

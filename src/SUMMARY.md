@@ -56,4 +56,8 @@
     - [LLAMA and Mindful Stacking](./chapter_7_8_llama_and_mindful_stacking.md)
     - [Summary](./chapter_7_9_summary.md)
   - [Conclusion](./part_i_conclusion.md)
-
+- [Distributed Systems](./part_ii_distributed_systems.md)
+  - [Introduction and Overview](./chapter_8_1_introduction_and_overview.md)
+  - [Concurrent Execution](./chapter_8_2_concurrent_execution.md)
+  - [Fallacies of Distributed Computing](./chapter_8_3_fallacies_of_distributed_computing.md)
+  - [Distributed Systems Abstriction](./chapter_8_4_distributed_systems_abstrictions.md)
