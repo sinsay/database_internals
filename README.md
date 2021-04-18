@@ -3,11 +3,11 @@ chinese translation of database internals, now the progress is
 
 - [ ] Part 2 - Distributed Systems
   - [ ] Chapter 8 - Introduction and Overview
-    - [ ] Concurrent Execution
-    - [ ] Fallacies of Distributed Conputing
-    - [ ] Distributed Systems Abstractions
-    - [ ] Two Generals' Problem
-    - [ ] System Synchrony
+    - [x] Concurrent Execution
+    - [x] Fallacies of Distributed Conputing
+    - [x] Distributed Systems Abstractions
+    - [x] Two Generals' Problem
+    - [x] System Synchrony
     - [ ] Failure Models
   - [ ] Chapter 9 - Failure Detection
     - [ ] Hearbeats and Pings
