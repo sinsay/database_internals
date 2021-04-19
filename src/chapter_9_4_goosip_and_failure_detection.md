@@ -1,1 +1,0 @@
-# Goosip and Failure Detection

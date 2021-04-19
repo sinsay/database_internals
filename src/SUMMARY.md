@@ -69,7 +69,7 @@
   - [Failure Dectection](./chapter_9_1_failure_dection.md)
     - [Heartbeats and Pinga](./chapter_9_2_heartbeats_and_pings.md)
     - [Phi-Accural Failure Dector](./chapter_9_3_phi_accural_failure_detector.md)
-    - [Goosip and Failure Detection](./chapter_9_4_goosip_and_failure_detection.md)
+    - [Gossip and Failure Detection](./chapter_9_4_gossip_and_failure_detection.md)
     - [Reversing Failure Detection](./chapter_9_5_reversing_failure_detection.md)
     - [Summary](./chapter_9_6_summary.md)
   - [Leader Election](./chapter_10_1_leader_election.md)
