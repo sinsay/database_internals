@@ -10,8 +10,8 @@ chinese translation of database internals, now the progress is
     - [x] System Synchrony
     - [x] Failure Models
   - [ ] Chapter 9 - Failure Detection
-    - [ ] Hearbeats and Pings
-    - [ ] Phi-Accural Failure Detector
+    - [x] Hearbeats and Pings
+    - [x] Phi-Accural Failure Detector
     - [ ] Gossip and Failure Dectection
     - [ ] Reversing Failure Detection Problem Statement
     - [ ] Summary
