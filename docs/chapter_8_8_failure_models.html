@@ -1,0 +1,256 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Failure Models - Database Internals</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="part_1_storage_engine.html"><strong aria-hidden="true">1.</strong> Storage Engine</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_1_introduction_and_overview.html"><strong aria-hidden="true">1.1.</strong> Introduction and Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_2_dbms_architecture.html"><strong aria-hidden="true">1.1.1.</strong> DBMS Architecture</a></li><li class="chapter-item expanded "><a href="chapter_1_3_memory_disk_base_dbms.html"><strong aria-hidden="true">1.1.2.</strong> Memory- Versus Disk-Based DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_4_column_row_oriented.html"><strong aria-hidden="true">1.1.3.</strong> Column- Versus Row-Oriented DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_5_data_files_and_index_files.html"><strong aria-hidden="true">1.1.4.</strong> Data Files and Index Files</a></li><li class="chapter-item expanded "><a href="chapter_1_6_buffering_immutability_and_ordering.html"><strong aria-hidden="true">1.1.5.</strong> Buffering Immutability and Ordering</a></li><li class="chapter-item expanded "><a href="chapter_1_7_summary.html"><strong aria-hidden="true">1.1.6.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2_1_btree_basic.html"><strong aria-hidden="true">1.2.</strong> BTree Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_2_2_binary_search_trees.html"><strong aria-hidden="true">1.2.1.</strong> Binary Search Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_3_disk_based_structures.html"><strong aria-hidden="true">1.2.2.</strong> Disk Based Structures</a></li><li class="chapter-item expanded "><a href="chapter_2_4_ubiquitous_btrees.html"><strong aria-hidden="true">1.2.3.</strong> Ubiquitous B-Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_5_summary.html"><strong aria-hidden="true">1.2.4.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3_1_file_format.html"><strong aria-hidden="true">1.3.</strong> File Format</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_3_2_motivation.html"><strong aria-hidden="true">1.3.1.</strong> Motivation</a></li><li class="chapter-item expanded "><a href="chapter_3_3_binary_encoding.html"><strong aria-hidden="true">1.3.2.</strong> Binary Encoding</a></li><li class="chapter-item expanded "><a href="chapter_3_4_general_principles.html"><strong aria-hidden="true">1.3.3.</strong> General Principles</a></li><li class="chapter-item expanded "><a href="chapter_3_5_page_structure.html"><strong aria-hidden="true">1.3.4.</strong> Page Structure</a></li><li class="chapter-item expanded "><a href="chapter_3_6_slotted_pages.html"><strong aria-hidden="true">1.3.5.</strong> Slotted Pages</a></li><li class="chapter-item expanded "><a href="chapter_3_7_cell_layout.html"><strong aria-hidden="true">1.3.6.</strong> Cell Layout</a></li><li class="chapter-item expanded "><a href="chapter_3_8_combining_cell_into_slotted_pages.html"><strong aria-hidden="true">1.3.7.</strong> Combining Cell into Slotted Pages</a></li><li class="chapter-item expanded "><a href="chapter_3_9_managing_variable_size_data.html"><strong aria-hidden="true">1.3.8.</strong> Managing Variable Size Data</a></li><li class="chapter-item expanded "><a href="chapter_3_10_versioning.html"><strong aria-hidden="true">1.3.9.</strong> Versioning</a></li><li class="chapter-item expanded "><a href="chapter_3_11_checksumming.html"><strong aria-hidden="true">1.3.10.</strong> Checksumming</a></li><li class="chapter-item expanded "><a href="chapter_3_12_summary.html"><strong aria-hidden="true">1.3.11.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_4_1_implementing_btrees.html"><strong aria-hidden="true">1.4.</strong> Implementing BTrees</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_4_2_page_header.html"><strong aria-hidden="true">1.4.1.</strong> Page Header</a></li><li class="chapter-item expanded "><a href="chapter_4_3_binary_search.html"><strong aria-hidden="true">1.4.2.</strong> Binary Search</a></li><li class="chapter-item expanded "><a href="chapter_4_4_propagating_spits_and_merges.html"><strong aria-hidden="true">1.4.3.</strong> Propagating Splits and Merges</a></li><li class="chapter-item expanded "><a href="chapter_4_5_rebalacing.html"><strong aria-hidden="true">1.4.4.</strong> Rebalacing</a></li><li class="chapter-item expanded "><a href="chapter_4_6_right_only_appends.html"><strong aria-hidden="true">1.4.5.</strong> Right-Only Appends</a></li><li class="chapter-item expanded "><a href="chapter_4_7_compression.html"><strong aria-hidden="true">1.4.6.</strong> Compression</a></li><li class="chapter-item expanded "><a href="chapter_4_8_vacuum_and_maintenance.html"><strong aria-hidden="true">1.4.7.</strong> Vacuum and Maintenance</a></li><li class="chapter-item expanded "><a href="chapter_4_9_summary.html"><strong aria-hidden="true">1.4.8.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_5_1_transaction_processing_and_recovery.html"><strong aria-hidden="true">1.5.</strong> Transaction Processing and Recovery</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_5_2_buffer_management.html"><strong aria-hidden="true">1.5.1.</strong> Buffer Management</a></li><li class="chapter-item expanded "><a href="chapter_5_3_recovery.html"><strong aria-hidden="true">1.5.2.</strong> Recovery</a></li><li class="chapter-item expanded "><a href="chapter_5_4_concurrency_control.html"><strong aria-hidden="true">1.5.3.</strong> Concurrenty Control</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_6_1_btree_variants.html"><strong aria-hidden="true">1.6.</strong> B-Trees Variant</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_6_2_copy_on_write.html"><strong aria-hidden="true">1.6.1.</strong> Copy-on-Write</a></li><li class="chapter-item expanded "><a href="chapter_6_3_abstracting_node_updates.html"><strong aria-hidden="true">1.6.2.</strong> Abstracting Node Updates</a></li><li class="chapter-item expanded "><a href="chapter_6_4_lary_btrees.html"><strong aria-hidden="true">1.6.3.</strong> Lazy B-Trees</a></li><li class="chapter-item expanded "><a href="chapter_6_5_fd_trees.html"><strong aria-hidden="true">1.6.4.</strong> FD-Trees</a></li><li class="chapter-item expanded "><a href="chapter_6_6_bw_trees.html"><strong aria-hidden="true">1.6.5.</strong> Bw-Trees</a></li><li class="chapter-item expanded "><a href="chapter_6_7_cache_oblivious_trees.html"><strong aria-hidden="true">1.6.6.</strong> Cache-Oblivious B-Trees</a></li><li class="chapter-item expanded "><a href="chapter_6_8_summary.html"><strong aria-hidden="true">1.6.7.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_7_1_log_structured_storage.html"><strong aria-hidden="true">1.7.</strong> Log-Structure Storage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_7_2_lsm_trees.html"><strong aria-hidden="true">1.7.1.</strong> LSM Trees</a></li><li class="chapter-item expanded "><a href="chapter_7_3_read_write_space_amplification.html"><strong aria-hidden="true">1.7.2.</strong> Read, Write, and Space Amplification</a></li><li class="chapter-item expanded "><a href="chapter_7_4_implementation_details.html"><strong aria-hidden="true">1.7.3.</strong> Implemetation Details</a></li><li class="chapter-item expanded "><a href="chapter_7_5_unordered_lsm_storage.html"><strong aria-hidden="true">1.7.4.</strong> Unordered LSM Storage</a></li><li class="chapter-item expanded "><a href="chapter_7_6_concurrency_in_lsm_trees.html"><strong aria-hidden="true">1.7.5.</strong> Concurrency in LSM Trees</a></li><li class="chapter-item expanded "><a href="chapter_7_7_log_stacking.html"><strong aria-hidden="true">1.7.6.</strong> Log Stacking</a></li><li class="chapter-item expanded "><a href="chapter_7_8_llama_and_mindful_stacking.html"><strong aria-hidden="true">1.7.7.</strong> LLAMA and Mindful Stacking</a></li><li class="chapter-item expanded "><a href="chapter_7_9_summary.html"><strong aria-hidden="true">1.7.8.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="part_i_conclusion.html"><strong aria-hidden="true">1.8.</strong> Conclusion</a></li></ol></li><li class="chapter-item expanded "><a href="part_ii_distributed_systems.html"><strong aria-hidden="true">2.</strong> Distributed Systems</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_8_1_introduction_and_overview.html"><strong aria-hidden="true">2.1.</strong> Introduction and Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_8_2_concurrent_execution.html"><strong aria-hidden="true">2.1.1.</strong> Concurrent Execution</a></li><li class="chapter-item expanded "><a href="chapter_8_3_fallacies_of_distributed_computing.html"><strong aria-hidden="true">2.1.2.</strong> Fallacies of Distributed Computing</a></li><li class="chapter-item expanded "><a href="chapter_8_4_distributed_systems_abstrictions.html"><strong aria-hidden="true">2.1.3.</strong> Distributed Systems Abstriction</a></li><li class="chapter-item expanded "><a href="chapter_8_5_two_generals_problem.html"><strong aria-hidden="true">2.1.4.</strong> Two Generals Problem</a></li><li class="chapter-item expanded "><a href="chapter_8_6_flp_impossibility.html"><strong aria-hidden="true">2.1.5.</strong> FLP Impossibility)</a></li><li class="chapter-item expanded "><a href="chapter_8_7_system_synchrony.html"><strong aria-hidden="true">2.1.6.</strong> System Synchrony</a></li><li class="chapter-item expanded "><a href="chapter_8_8_failure_models.html" class="active"><strong aria-hidden="true">2.1.7.</strong> Failure Models</a></li><li class="chapter-item expanded "><a href="chapter_8_9_summary.html"><strong aria-hidden="true">2.1.8.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_9_1_failure_dection.html"><strong aria-hidden="true">2.2.</strong> Failure Dectection</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_9_2_heartbeats_and_pings.html"><strong aria-hidden="true">2.2.1.</strong> Heartbeats and Pinga</a></li></ol></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Database Internals</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#failure-models" id="failure-models">Failure Models</a></h1>
+<p>我们一直都在提及 <em>Failures</em> 故障，但到目前为止他都是相当宽泛的通用概念，可能会包含许多的含义。类似我们对不同时间做出的假设，我们可以假设可能出现的几种不同类型的故障。<em>Failure Model</em> 故障模型就是在分布式系统中用来定义处理器会在什么情况下崩溃，然后算法则会在开发中来使用这些假设。比如我们可以假设处理器的崩溃是不可恢复的，或他只能够在某段时间之后才回复，或者他会在提供不正确的值时失去控制而产生故障。</p>
+<p>在分布式系统中，处理器会依赖于其他的节点来执行算法，因此故障可能会导致整个系统出现不正确的执行状况。</p>
+<p>我们会讨论分布式系统中的许多种故障模型，比如 <em>Crash</em> 崩溃，<em>Omission</em> 遗漏跟 <em>Arbitray</em> 任意的故障。这个列表并不完整，但他覆盖了大部分真实系统中适用的重要场景。</p>
+<h2><a class="header" href="#crash-faults" id="crash-faults">Crash Faults</a></h2>
+<p>正常情况下，我们期望处理器会正确的执行算法中的所有步骤。让处理器崩溃最简单的方式是停止算法所需执行的步骤并且也不发送消息给其他的处理器。换句话说，就是这个处理器崩溃了。大部分时间里，我们假设一个 <em>Crash-Stop</em> 崩溃停止的处理器抽象，他定义的是，一个处理器崩溃后，会一直保持在这个崩溃的状态。</p>
+<p>这个模型没有假设处理器无法在崩溃后恢复，也不会试图去阻止他进行恢复。他只意味着这个算法并不依赖于不正确或不存活节点的恢复。没有东西会阻止处理器进行恢复、追赶上整个系统的状态，然后作为算法的下一个实例参与进去。</p>
+<p>失效的处理器不能够继续在他们失效的轮次中再次作为协商的参与者加入。将这些恢复的处理器当成新的、具有不同标识符的参与者的模型并不等于 <em>Crash-Recovery</em> 模型 <em>(后面会讨论)</em>，因为大部分的算法会使用预定义好的处理器列表，并定义能够容忍多少个故障的节点来明确其故障的语义。</p>
+<p><em>Crash-Recovery</em> 崩溃恢复是一个不同的处理抽象，他指的是处理器在执行算法必须的处理过程中被停止，并在稍后的某个时刻恢复并尝试继续执行后续的步骤。实现恢复的功能需要在系统中添加状态的持久化及定义恢复所需协议的支持。允许崩溃恢复的算法需要先定义所有可能进行恢复的状态，因为恢复的处理可能会需要从上次处理的步骤开始继续执行。</p>
+<p>为了能够实现恢复的算法，需要将状态跟标识符同时列入考虑。在崩溃恢复这个场景中，还可以看到一个特殊的 <em>Omission Failure</em> 遗漏故障场景，在其他处理器的视角中，无法触达的跟已经崩溃然后恢复的处理器之间并没有区别。</p>
+<h2><a class="header" href="#omission-faults" id="omission-faults">Omission Faults</a></h2>
+<p>另一个故障的模型是 <em>Omission Faults</em> 遗漏故障，这个模型假设处理器会跳过或是没办法执行算法的某些步骤，或者是这些执行的结果对于其他的参与者来说是不可见的，或者他没办法从其他的参与者中接收或发送消息。遗漏故障能够感知处理器之间因为网络连接、路由器故障、网络堵塞等问题出现的网络分区。网络分区表现为独立的处理器或处理器组之间的消息遗漏。在这里可以使用遗漏某些处理器之间发送或接收的消息来模拟崩溃。</p>
+<p>当一个处理器相对于其他的参与者来说运行的很慢，以至于无法在期望的时间内回复响应时，这是对于系统的其他部分来说，他可能已经被丢弃了。这个缓慢的节点不会直接停止，而是会尝试将已经不同步的结果发给其他的节点。</p>
+<p>遗漏故障在算法在我们原本认为必须要执行的步骤被跳过或他的执行结果是不可见时就会产生。比如，当一个消息在返回给参与者时丢失，并且发送者在没有再次发送的情况下，当他已经成功送达了，继续执行后续的步骤。遗漏故障也可能会在断续的宕机、网络的超载、队列被填满等情形发生。</p>
+<h2><a class="header" href="#arbitrary-faults" id="arbitrary-faults">Arbitrary Faults</a></h2>
+<p>最难以攻克的故障类型是 <em>Arbitrary</em> 武断的或 <em>Byzantine</em> 拜占庭故障：一个处理器在违反了算法定义的情况下继续执行算法的步骤 <em>(比如，如果一个处理器在一个一致性算法中选择了一个其他参与者没提议过的值)</em>。</p>
+<p>这种故障可能是因为软件的 Bug 产生，或是因为处理器之间运行了算法的不同版本，这种场景的故障是比较容易发现跟理解的。在我们没办法控制所有的处理器时，这个问题会变得比较困难，因为其中的某些处理器可能会有意的去误导其他的处理器。</p>
+<p>你可能听过听过航空领域中对拜占庭故障的容错能力：飞机跟航空系统并不会从子组件的表面值中获取响应，并对其进行交叉的校验。另一个广为人知的应用是加密的数字货币，他是没有权威的认证中心的，不同的部分控制这不同的节点，敌对的参与者会有丢弃某些值跟尝试通过提供错误响应来玩弄系统的动机。</p>
+<h2><a class="header" href="#handing-failures" id="handing-failures">Handing Failures</a></h2>
+<p>我们可以通过将处理器进行分组为算法引入冗余处理来掩盖故障：就算其中一个处理器发生失效了，用户也察觉不到这个故障。</p>
+<p>在发生故障的时候也可能存在一些性能上的惩罚：正常的执行需要依赖于处理器能够正常响应，因此有些时候系统需要退回到较慢的执行路线来进行错误处理跟更正。许多的故障能够通过软件层级来避免，如代码审核、全面的测试、确保消息在指定的超时时间内送达跟进行重试、以及确保执行的步骤会跟本地执行的顺序一致。</p>
+<p>我们要介绍的大部分算法都假设使用崩溃故障模型并通过引入冗余副本来处理故障。这些假设有助于创建运行的更好跟更易于理解跟实现的算法。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="chapter_8_7_system_synchrony.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="chapter_8_9_summary.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="chapter_8_7_system_synchrony.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="chapter_8_9_summary.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

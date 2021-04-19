@@ -1,0 +1,246 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Two Generals Problem - Database Internals</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="part_1_storage_engine.html"><strong aria-hidden="true">1.</strong> Storage Engine</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_1_introduction_and_overview.html"><strong aria-hidden="true">1.1.</strong> Introduction and Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_1_2_dbms_architecture.html"><strong aria-hidden="true">1.1.1.</strong> DBMS Architecture</a></li><li class="chapter-item expanded "><a href="chapter_1_3_memory_disk_base_dbms.html"><strong aria-hidden="true">1.1.2.</strong> Memory- Versus Disk-Based DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_4_column_row_oriented.html"><strong aria-hidden="true">1.1.3.</strong> Column- Versus Row-Oriented DBMS</a></li><li class="chapter-item expanded "><a href="chapter_1_5_data_files_and_index_files.html"><strong aria-hidden="true">1.1.4.</strong> Data Files and Index Files</a></li><li class="chapter-item expanded "><a href="chapter_1_6_buffering_immutability_and_ordering.html"><strong aria-hidden="true">1.1.5.</strong> Buffering Immutability and Ordering</a></li><li class="chapter-item expanded "><a href="chapter_1_7_summary.html"><strong aria-hidden="true">1.1.6.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_2_1_btree_basic.html"><strong aria-hidden="true">1.2.</strong> BTree Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_2_2_binary_search_trees.html"><strong aria-hidden="true">1.2.1.</strong> Binary Search Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_3_disk_based_structures.html"><strong aria-hidden="true">1.2.2.</strong> Disk Based Structures</a></li><li class="chapter-item expanded "><a href="chapter_2_4_ubiquitous_btrees.html"><strong aria-hidden="true">1.2.3.</strong> Ubiquitous B-Trees</a></li><li class="chapter-item expanded "><a href="chapter_2_5_summary.html"><strong aria-hidden="true">1.2.4.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_3_1_file_format.html"><strong aria-hidden="true">1.3.</strong> File Format</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_3_2_motivation.html"><strong aria-hidden="true">1.3.1.</strong> Motivation</a></li><li class="chapter-item expanded "><a href="chapter_3_3_binary_encoding.html"><strong aria-hidden="true">1.3.2.</strong> Binary Encoding</a></li><li class="chapter-item expanded "><a href="chapter_3_4_general_principles.html"><strong aria-hidden="true">1.3.3.</strong> General Principles</a></li><li class="chapter-item expanded "><a href="chapter_3_5_page_structure.html"><strong aria-hidden="true">1.3.4.</strong> Page Structure</a></li><li class="chapter-item expanded "><a href="chapter_3_6_slotted_pages.html"><strong aria-hidden="true">1.3.5.</strong> Slotted Pages</a></li><li class="chapter-item expanded "><a href="chapter_3_7_cell_layout.html"><strong aria-hidden="true">1.3.6.</strong> Cell Layout</a></li><li class="chapter-item expanded "><a href="chapter_3_8_combining_cell_into_slotted_pages.html"><strong aria-hidden="true">1.3.7.</strong> Combining Cell into Slotted Pages</a></li><li class="chapter-item expanded "><a href="chapter_3_9_managing_variable_size_data.html"><strong aria-hidden="true">1.3.8.</strong> Managing Variable Size Data</a></li><li class="chapter-item expanded "><a href="chapter_3_10_versioning.html"><strong aria-hidden="true">1.3.9.</strong> Versioning</a></li><li class="chapter-item expanded "><a href="chapter_3_11_checksumming.html"><strong aria-hidden="true">1.3.10.</strong> Checksumming</a></li><li class="chapter-item expanded "><a href="chapter_3_12_summary.html"><strong aria-hidden="true">1.3.11.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_4_1_implementing_btrees.html"><strong aria-hidden="true">1.4.</strong> Implementing BTrees</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_4_2_page_header.html"><strong aria-hidden="true">1.4.1.</strong> Page Header</a></li><li class="chapter-item expanded "><a href="chapter_4_3_binary_search.html"><strong aria-hidden="true">1.4.2.</strong> Binary Search</a></li><li class="chapter-item expanded "><a href="chapter_4_4_propagating_spits_and_merges.html"><strong aria-hidden="true">1.4.3.</strong> Propagating Splits and Merges</a></li><li class="chapter-item expanded "><a href="chapter_4_5_rebalacing.html"><strong aria-hidden="true">1.4.4.</strong> Rebalacing</a></li><li class="chapter-item expanded "><a href="chapter_4_6_right_only_appends.html"><strong aria-hidden="true">1.4.5.</strong> Right-Only Appends</a></li><li class="chapter-item expanded "><a href="chapter_4_7_compression.html"><strong aria-hidden="true">1.4.6.</strong> Compression</a></li><li class="chapter-item expanded "><a href="chapter_4_8_vacuum_and_maintenance.html"><strong aria-hidden="true">1.4.7.</strong> Vacuum and Maintenance</a></li><li class="chapter-item expanded "><a href="chapter_4_9_summary.html"><strong aria-hidden="true">1.4.8.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_5_1_transaction_processing_and_recovery.html"><strong aria-hidden="true">1.5.</strong> Transaction Processing and Recovery</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_5_2_buffer_management.html"><strong aria-hidden="true">1.5.1.</strong> Buffer Management</a></li><li class="chapter-item expanded "><a href="chapter_5_3_recovery.html"><strong aria-hidden="true">1.5.2.</strong> Recovery</a></li><li class="chapter-item expanded "><a href="chapter_5_4_concurrency_control.html"><strong aria-hidden="true">1.5.3.</strong> Concurrenty Control</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_6_1_btree_variants.html"><strong aria-hidden="true">1.6.</strong> B-Trees Variant</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_6_2_copy_on_write.html"><strong aria-hidden="true">1.6.1.</strong> Copy-on-Write</a></li><li class="chapter-item expanded "><a href="chapter_6_3_abstracting_node_updates.html"><strong aria-hidden="true">1.6.2.</strong> Abstracting Node Updates</a></li><li class="chapter-item expanded "><a href="chapter_6_4_lary_btrees.html"><strong aria-hidden="true">1.6.3.</strong> Lazy B-Trees</a></li><li class="chapter-item expanded "><a href="chapter_6_5_fd_trees.html"><strong aria-hidden="true">1.6.4.</strong> FD-Trees</a></li><li class="chapter-item expanded "><a href="chapter_6_6_bw_trees.html"><strong aria-hidden="true">1.6.5.</strong> Bw-Trees</a></li><li class="chapter-item expanded "><a href="chapter_6_7_cache_oblivious_trees.html"><strong aria-hidden="true">1.6.6.</strong> Cache-Oblivious B-Trees</a></li><li class="chapter-item expanded "><a href="chapter_6_8_summary.html"><strong aria-hidden="true">1.6.7.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_7_1_log_structured_storage.html"><strong aria-hidden="true">1.7.</strong> Log-Structure Storage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_7_2_lsm_trees.html"><strong aria-hidden="true">1.7.1.</strong> LSM Trees</a></li><li class="chapter-item expanded "><a href="chapter_7_3_read_write_space_amplification.html"><strong aria-hidden="true">1.7.2.</strong> Read, Write, and Space Amplification</a></li><li class="chapter-item expanded "><a href="chapter_7_4_implementation_details.html"><strong aria-hidden="true">1.7.3.</strong> Implemetation Details</a></li><li class="chapter-item expanded "><a href="chapter_7_5_unordered_lsm_storage.html"><strong aria-hidden="true">1.7.4.</strong> Unordered LSM Storage</a></li><li class="chapter-item expanded "><a href="chapter_7_6_concurrency_in_lsm_trees.html"><strong aria-hidden="true">1.7.5.</strong> Concurrency in LSM Trees</a></li><li class="chapter-item expanded "><a href="chapter_7_7_log_stacking.html"><strong aria-hidden="true">1.7.6.</strong> Log Stacking</a></li><li class="chapter-item expanded "><a href="chapter_7_8_llama_and_mindful_stacking.html"><strong aria-hidden="true">1.7.7.</strong> LLAMA and Mindful Stacking</a></li><li class="chapter-item expanded "><a href="chapter_7_9_summary.html"><strong aria-hidden="true">1.7.8.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="part_i_conclusion.html"><strong aria-hidden="true">1.8.</strong> Conclusion</a></li></ol></li><li class="chapter-item expanded "><a href="part_ii_distributed_systems.html"><strong aria-hidden="true">2.</strong> Distributed Systems</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_8_1_introduction_and_overview.html"><strong aria-hidden="true">2.1.</strong> Introduction and Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_8_2_concurrent_execution.html"><strong aria-hidden="true">2.1.1.</strong> Concurrent Execution</a></li><li class="chapter-item expanded "><a href="chapter_8_3_fallacies_of_distributed_computing.html"><strong aria-hidden="true">2.1.2.</strong> Fallacies of Distributed Computing</a></li><li class="chapter-item expanded "><a href="chapter_8_4_distributed_systems_abstrictions.html"><strong aria-hidden="true">2.1.3.</strong> Distributed Systems Abstriction</a></li><li class="chapter-item expanded "><a href="chapter_8_5_two_generals_problem.html" class="active"><strong aria-hidden="true">2.1.4.</strong> Two Generals Problem</a></li><li class="chapter-item expanded "><a href="chapter_8_6_flp_impossibility.html"><strong aria-hidden="true">2.1.5.</strong> FLP Impossibility)</a></li><li class="chapter-item expanded "><a href="chapter_8_7_system_synchrony.html"><strong aria-hidden="true">2.1.6.</strong> System Synchrony</a></li><li class="chapter-item expanded "><a href="chapter_8_8_failure_models.html"><strong aria-hidden="true">2.1.7.</strong> Failure Models</a></li><li class="chapter-item expanded "><a href="chapter_8_9_summary.html"><strong aria-hidden="true">2.1.8.</strong> Summary</a></li></ol></li><li class="chapter-item expanded "><a href="chapter_9_1_failure_dection.html"><strong aria-hidden="true">2.2.</strong> Failure Dectection</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chapter_9_2_heartbeats_and_pings.html"><strong aria-hidden="true">2.2.1.</strong> Heartbeats and Pinga</a></li></ol></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Database Internals</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#two-generals-problem" id="two-generals-problem">Two Generals' Problem</a></h1>
+<p>在分布式系统中最广为人知并且最突出的关于共识的描述是对于 <em>Two Generals' Problem</em> 两将军问题的实验性思考。</p>
+<p>这个思考展示了在可能产生故障的连接上进行的异步的通信，是不可能实现共识的。尽管 TCP 展示了 Perfect link 完美连接的属性，但需要记住一个非常重要的点，连接是完美的并不保证完美的送达。他也没有保证参与者们在整个过程都能够存活，他所关注的只有信息的传输，</p>
+<p>假设有两支军队由两个将军统领，并准备去攻打一个城市。军队分别驻扎在城市的两边并且只有两边同时进行围攻才能战胜。</p>
+<p>将军们则是使用发送消息的方式来进行通信，并且已经制定好了攻击的计划。现在他们剩下要做的是是否要去执行这个计划。这个问题有一些变种是其中一个将军具有更高的级别，但需要确保去协调这次攻击；或者是将军们需要先对具体的时间达成共识。这些细节并没有有改变这个问题的定义：将军们需要达成某种共识。</p>
+<p>军队的将军需要的是达成的共识是要么一起去执行这次进攻，要么都不进攻。将军 A 发送了消息 MSG(N)，表明如果其他人也同意的话，这次进攻会在一个指定的时间开始。</p>
+<p>在 A 派出了这个信使之后没办法确认信使是否已经传达消息：因为信使可能被俘虏了导致没法送达消息。在将军 B 接收到这个消息后，他需要发送出他的确认消息 ACK(MSG(N))。Figure 8-4 展示了消息发送出去然后收到另一方的确认的情况。</p>
+<p><img src="chapter_8_5_two_generals_problem.assets/image-20210414120446948.png" alt="image-20210414120446948" /></p>
+<p>而负责传递确认消息的信使也可能会因为被俘虏导致消息传递失败。同样的 B 也没有任何办法能够知道信使是否能够将确认的消息送达。</p>
+<p>为了确认这点，B 需要等待 ACK(ACK(MSG(N)))，第二个用来确认 A 已经收到确认消息的确认消息。</p>
+<p>不管将军们相互发送了多少次确认的消息，为了能够安全的处理这次进攻，他们最后总会剩一个 ACK 消息是需要确认的。将军们必然会怀疑最后的这个确认消息是否安全的送达。</p>
+<p>我们会发现没有做任何时间上的假设：两个将军的通信是完全异步的。在这里并没有设置将军需要作出回复的时间上限。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="chapter_8_4_distributed_systems_abstrictions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="chapter_8_6_flp_impossibility.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="chapter_8_4_distributed_systems_abstrictions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="chapter_8_6_flp_impossibility.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
