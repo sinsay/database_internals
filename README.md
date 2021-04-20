@@ -9,14 +9,14 @@ chinese translation of database internals, now the progress is
     - [x] Two Generals' Problem
     - [x] System Synchrony
     - [x] Failure Models
-  - [ ] Chapter 9 - Failure Detection
-    - [ ] Hearbeats and Pings
-    - [ ] Phi-Accural Failure Detector
-    - [ ] Gossip and Failure Dectection
-    - [ ] Reversing Failure Detection Problem Statement
-    - [ ] Summary
+  - [x] Chapter 9 - Failure Detection
+    - [x] Hearbeats and Pings
+    - [x] Phi-Accural Failure Detector
+    - [x] Gossip and Failure Dectection
+    - [x] Reversing Failure Detection Problem Statement
+    - [x] Summary
   - [ ] Chapter 10 - Leader Election
-    - [ ] Bully Algorithm
+    - [x] Bully Algorithm
     - [ ] Next-in-Line Failover
     - [ ] Candidate/Ordinary Optimization
     - [ ] Invitation Algorithm
