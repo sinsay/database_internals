@@ -17,8 +17,8 @@ chinese translation of database internals, now the progress is
     - [x] Summary
   - [ ] Chapter 10 - Leader Election
     - [x] Bully Algorithm
-    - [ ] Next-in-Line Failover
-    - [ ] Candidate/Ordinary Optimization
+    - [x] Next-in-Line Failover
+    - [x] Candidate/Ordinary Optimization
     - [ ] Invitation Algorithm
     - [ ] Ring Algorithm
     - [ ] Summary
