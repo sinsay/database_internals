@@ -2394,7 +2394,28 @@ i *= 2;
 <p>这个算法的一个明显的问题是他在产生网络分区的时候会违反了安全性的保证 <em>(同一个时刻最多只会有一个领导者被选出来)</em>。他很容易会导致节点被分裂成多个独立功能子集的情况，这时每个子集都会有子集的领导者。这种状况被称为 <em>Split Brain</em> 脑裂。</p>
 <p>这个算法的另一个问题是对高排名的节点具有严重的偏向性，当这些节点不稳定的时候可能会导致无限的进行选举的情形。一个不稳定的高排名的节点会选择自己成为领导者，然后短时间内又出故障，然后又再次赢得选举，又再次故障，导致这个过程会无限的重复下去。这个问题可以通过在选举中分发节点的质量指标，并将其作为选举的考虑因素之一来解决。</p>
 <h1><a class="header" href="#next-in-line-failover" id="next-in-line-failover">Next-in-Line Failover</a></h1>
+<p>有许多 <em>Bully</em> 算法的变种尝试去提升他的许多属性，比如我们可以使用多个 <em>Next-in-line</em> 的替代处理器来进行故障转移，以此缩短重新选举的时间。</p>
+<p>每个被选举出来的领导者会提供一个转移故障的节点列表。当任意一个处理器检测到领导者发生故障，他会从已故障提供的可替代节点中排名最高的处理器发送信息来开启新一轮的选举。如果其中一个提名的备用处理器是正常的，他就会直接成为新的领导者，而不需要执行整个完整的选举轮次。</p>
+<p>如果一个检测到领导者已经崩溃的处理器是前领导者提供的列表中排名最高的，他可以直接通知其他的处理器他成为了新的 Leader。</p>
+<p>Figure 10-2 展示了使用了这个优化方案的处理过程</p>
+<ul>
+<li><em>a)</em> 领导者 6 设置了可替代的处理器列表为 [5, 4] 然后崩溃了，3 发现了领导者崩溃然后联系了 5 这个可替代列表中具有最高排名的处理器。</li>
+<li><em>b)</em> 5 响应了 3 通知他自己还活跃着，防止他去联系可替代列表中的其他节点</li>
+<li><em>c)</em> 5 通知了其他的节点他成为了新的领导者</li>
+</ul>
+<p><img src="chapter_10_3_next_in_line_failover.assets/image-20210421093830965.png" alt="image-20210421093830965" /></p>
+<p>最终的结果是，在 <em>next-in-line</em> 处理器列表存在活跃的处理器时，我们只需要少数的几个步骤就能完成选举。</p>
 <h1><a class="header" href="#candidateordinary-optimization" id="candidateordinary-optimization">Candidate/Ordinary Optimization</a></h1>
+<p>另一个尝试降低消息数量的算法是将节点分割成两个子集，一个是 <em>Candidate</em> 候选人，另一个是 <em>Ordinary</em> 普通节点，并且只有换选人节点最终才能够成为领导者。</p>
+<p>普通节点通过联系候选人节点来初始化一个选举，收集候选人的信息，选择排名最高的活跃候选人作为新的领导者，然后将这个选举的结果通知给其他的节点。</p>
+<p>为了解决同时发生多个选举的问题，算法的处理器会使用一个变量局点 δ 来决定处理器的延迟，将节点之间显著的区分开来，这样就能够让一个节点在其他节点之前来启动这个选举。局点的时间通常会大于消息往返所需的时间，而具有较高优先级的节点会具有较低的 δ，他们之间的关系是相反的。</p>
+<p>Figure 10-3 展示了选举处理的步骤</p>
+<ul>
+<li><em>a)</em> 普通处理器 4 发现领导者处理器 6 发生故障，他联系了候选人集合中的处理器，并开启了新一轮的选举</li>
+<li><em>b)</em> 候选人响应了处理器 4 告知他自己是活跃的</li>
+<li>4 通知所有的处理器新的领导者是 2</li>
+</ul>
+<p><img src="chapter_10_4_candidate_ordinary_optimization.assets/image-20210421104618126.png" alt="image-20210421104618126" /></p>
 <h1><a class="header" href="#invitation-algorithm" id="invitation-algorithm">Invitation Algorithm</a></h1>
 <h1><a class="header" href="#ring-algorithm" id="ring-algorithm">Ring Algorithm</a></h1>
 <h1><a class="header" href="#summary-10" id="summary-10">Summary</a></h1>
