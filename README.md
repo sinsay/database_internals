@@ -15,13 +15,13 @@ chinese translation of database internals, now the progress is
     - [x] Gossip and Failure Dectection
     - [x] Reversing Failure Detection Problem Statement
     - [x] Summary
-  - [ ] Chapter 10 - Leader Election
+  - [x] Chapter 10 - Leader Election
     - [x] Bully Algorithm
     - [x] Next-in-Line Failover
     - [x] Candidate/Ordinary Optimization
-    - [ ] Invitation Algorithm
-    - [ ] Ring Algorithm
-    - [ ] Summary
+    - [x] Invitation Algorithm
+    - [x] Ring Algorithm
+    - [x] Summary
   - [ ] Chapter 11 - Replication and Consistency
     - [ ] Archieving Availability
     - [ ] Infamous CAP
