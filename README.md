@@ -23,8 +23,8 @@ chinese translation of database internals, now the progress is
     - [x] Ring Algorithm
     - [x] Summary
   - [ ] Chapter 11 - Replication and Consistency
-    - [ ] Archieving Availability
-    - [ ] Infamous CAP
+    - [x] Archieving Availability
+    - [x] Infamous CAP
     - [ ] Shared Memory
     - [ ] Ordering
     - [ ] Consistency Models
